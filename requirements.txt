@@ -6,4 +6,3 @@ SQLAlchemy==1.4.36
 load-dotenv
 marshmallow==3.18.0
 requests
-gunicorn
