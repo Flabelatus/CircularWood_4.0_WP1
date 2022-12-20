@@ -7,6 +7,7 @@ from load_dotenv import load_dotenv
 
 from db import db
 from resources.wood import blp as wood_blueprint
+from resources.tagslist import blp as tags_blueprint
 
 
 def create_app(db_url=None):
@@ -33,5 +34,6 @@ def create_app(db_url=None):
         db.create_all()
 
     api.register_blueprint(wood_blueprint)
+    api.register_blueprint(tags_blueprint)
 
     return app
