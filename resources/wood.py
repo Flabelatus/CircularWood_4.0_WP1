@@ -46,6 +46,23 @@ class ResidualWood(MethodView):
             "message": "wood deleted from database."
         }
 
+    @blp.arguments(WoodSchema)
+    @blp.response(200, WoodSchema)
+    def put(self, parsed_data, wood_id):
+        wood = ResidualWoodModel.query.filter_by(wood_id).first()
+        if wood:
+            wood.reserved = parsed_data.get('reserved', 0)
+            wood.reservation_name = parsed_data.get('reservation_name', "_")
+            wood.reservation_time = parsed_data.get('reservation_time', "")
+            wood.requirements = parsed_data.get('requirements', 0)
+        else:
+            wood = ResidualWoodModel(id=wood_id, **parsed_data)
+
+        db.session.add(wood)
+        db.session.commit()
+
+        return wood
+
 
 @blp.route('/waste_wood')
 class WasteWoodList(MethodView):
