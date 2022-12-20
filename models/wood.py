@@ -12,6 +12,16 @@ class ResidualWoodModel(db.Model):
     density = db.Column(db.Float(precision=2), nullable=False)
     timestamp = db.Column(db.String, nullable=False)
     color = db.Column(db.String(80), nullable=False)
+    reserved = db.Column(db.Boolean, default=False)
+    reservation_name = db.Column(db.String(80))
+    reservation_time = db.Column(db.String(80))
+    requirements = db.Column(db.Integer)
+    source = db.Column(db.String(256))
+    price = db.Column(db.Float(precision=2))
+    info = db.Column(db.String(256))
+    type = db.Column(db.String)
+
+    tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
 
 
 class WasteWoodModel(db.Model):
@@ -28,4 +38,14 @@ class WasteWoodModel(db.Model):
     damaged = db.Column(db.Boolean, nullable=False)
     stained = db.Column(db.Boolean, nullable=False)
     contains_metal = db.Column(db.Boolean, nullable=False, default=False)
+    reserved = db.Column(db.Boolean, default=False)
+    reservation_name = db.Column(db.String(80))
+    reservation_time = db.Column(db.String(80))
+    requirements = db.Column(db.Integer)
+    source = db.Column(db.String(256))
+    price = db.Column(db.Float(precision=2))
+    info = db.Column(db.String(256))
+    type = db.Column(db.String)
+
+
 
