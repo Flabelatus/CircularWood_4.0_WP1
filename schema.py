@@ -44,3 +44,20 @@ class TagAndWoodSchema(Schema):
     wood = fields.Nested(WoodSchema)
     tag = fields.Nested(TagSchema)
 
+
+class WoodUpdateSchema(Schema):
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    weight = fields.Float()
+    density = fields.Float()
+    timestamp = fields.Str()
+    color = fields.Str()
+    reserved = fields.Bool()
+    reservation_name = fields.Str()
+    reservation_time = fields.Str()
+    requirements = fields.Int()
+    source = fields.Str()
+    price = fields.Float()
+    info = fields.Str()
+    type = fields.Str()
