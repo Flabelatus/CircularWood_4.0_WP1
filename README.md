@@ -29,6 +29,8 @@ the database. As each wood can have several tags. And each tag can be associated
 For the data validation, Marshmallow library is used to create the schemas that would be used. 
 Each of the API methods check for these schemas. 
 
+An example of the serialized JSON for the data relating to residual wood
+
 
 ### Docker
 In order to run the server for development, you need to run the Docker container. 
