@@ -1,5 +1,5 @@
 # CW4.0 
-```dev``` branch
+```master``` branch
 
 ## This repository contains the work files for the CW4.0 Research project in HVA Robot Lab
  For the CW4.0 the goal is to create a database of residual wood that can store information from the wood.
@@ -13,12 +13,26 @@ The API resources for wood and tagging of wood. The full documentation of the AP
 the swagger-ui accessing is through: http://localhost/swagger-ui for development server and 
 https://rbotlab-residualwood.onrender.com/swagger-ui for the production server
 
+Endpoints:
+```
+/residual_wood 
+/residual_wood/{wood_id}
+/tags
+/tag/{tag_id}
+/residual_wood/{wood_id}/tag/{tag_id}
+/woods_tags/{woods_tag_id}
+/tag/{tag_name}
+/residual_wood/tag/{tag_name}
+```
+Methods:
+```[GET, PUT, POST, DELETE]```
+
 The API blueprints and their interactions are in the resources, directory.
 
 In order to create the blueprints the flask-smorest library is used.
 
 ### Database
-The database is created using SQLAlchemy is used due to its features for ORM nature.
+The database is created using SQLAlchemy is used.
 You can find the initiation of the database models in the ```./models/wood.py``` for the wood database
 and ```./models/tags.py``` for the created tags that relates to the wood. 
 
@@ -30,6 +44,28 @@ For the data validation, Marshmallow library is used to create the schemas that 
 Each of the API methods check for these schemas. 
 
 An example of the serialized JSON for the data relating to residual wood
+
+```[
+  {
+    "color": "222,130,34",
+    "density": 257.0,
+    "height": 21.0,
+    "id": 1,
+    "info": "Residual wood from the lab",
+    "length": 1040.0,
+    "price": 5.0,
+    "requirements": 1,
+    "reservation_name": "Timo",
+    "reservation_time": "2022-12-21 11:37:56",
+    "reserved": true,
+    "source": "Robot Lab",
+    "timestamp": "2022-12-21 11:37:56",
+    "type": "Hardwood",
+    "weight": 449.59,
+    "width": 80.0
+  }
+]
+```
 
 
 ### Docker
