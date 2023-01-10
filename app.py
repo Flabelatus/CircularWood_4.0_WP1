@@ -7,6 +7,7 @@ from load_dotenv import load_dotenv
 
 from db import db
 from resources.wood import blp as wood_blueprint
+from resources.tagslist import blp as tags_blueprint
 
 
 def create_app(db_url=None):
@@ -14,12 +15,12 @@ def create_app(db_url=None):
     load_dotenv()
 
     app.config['PROPAGATE_EXCEPTIONS'] = True
-    app.config['API_TITLE'] = "To-Do App REST API"
+    app.config['API_TITLE'] = "Residual Wood REST API"
     app.config['API_VERSION'] = "v1"
     app.config['OPENAPI_VERSION'] = '3.0.3'
-    app.config["OPENAPI_PREFIX"] = "/"
+    app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
-    app.config["OPENAPI_SWAGGER_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -33,5 +34,6 @@ def create_app(db_url=None):
         db.create_all()
 
     api.register_blueprint(wood_blueprint)
+    api.register_blueprint(tags_blueprint)
 
     return app
