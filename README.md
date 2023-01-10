@@ -11,7 +11,7 @@ or run this command in the terminal > ```pip install -r requirements.txt```
 ### Residual wood REST API
 The API resources for wood and tagging of wood. The full documentation of the API endpoints are available at 
 the swagger-ui accessing is through: http://localhost/swagger-ui for development server and 
-https://rbotlab-residualwood.onrender.com/swagger-ui for the production server
+https://robotlab-residualwood.onrender.com/swagger-ui for the production server
 
 Endpoints:
 ```
