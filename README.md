@@ -32,7 +32,7 @@ The API blueprints and their interactions are in the resources, directory.
 In order to create the blueprints the flask-smorest library is used.
 
 ### Database
-The database is created using SQLAlchemy is used.
+The database is created using SQLAlchemy.
 You can find the initiation of the database models in the ```./models/wood.py``` for the wood database
 and ```./models/tags.py``` for the created tags that relates to the wood. 
 
