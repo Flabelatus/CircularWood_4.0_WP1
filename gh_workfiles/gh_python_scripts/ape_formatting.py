@@ -15,15 +15,15 @@ for i in range(len(database_elements)):
                 (i, j, float(
                     database_elements[i] / (design_elements[j] + bit_diameter)
                 )
+                 )
             )
-        )
-            
+
 dic = {}
 
 # Hashtable
 for i in range(len(design_elements)):
     dic[i] = []
-    
+
 for i in range(len(pairs)):
     if pairs[i][1] in dic.keys():
         dic[pairs[i][1]].append(

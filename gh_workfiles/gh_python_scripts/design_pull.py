@@ -81,12 +81,12 @@ class Blocks:
         """Return the width of the block as float"""
         widths = self.get_block_length(position=position)
         return widths
-        
+
     def get_block_height(self, position=3):
         heights = self.get_block_length(position=position)
         return heights
-    
-    
+
+
 class DesignModel:
     """_Class representing the design object and methods to fit the wood planks
     that are varaible in dimensions, within the boundary of the design_
@@ -112,10 +112,10 @@ class DesignModel:
         self.index_list = []
         self.selection = []
         self.flatten_values()
-    
+
     def flatten_values(self):
         """_Flatten the Length, Width and Height values_"""
-        
+
         flatten_path_width = ghp.GH_Path(0)
         self.blocks_width.Flatten(flatten_path_width)
         flatten_path_length = ghp.GH_Path(0)
@@ -146,20 +146,20 @@ class DesignRegion:
             if z_values == min(z_coords):
                 lowest_srf = exploded_surfaces[i]
         return lowest_srf
-    
+
     def select_custom_face(self, selected_index):
         exploded_surfaces = self.explode()
         for index, item in enumerate(exploded_surfaces):
             if index == selected_index:
                 return item
-    
+
     def find_edge(self, edge_index, surface_index):
         """Get the edge to populate blocks across within the design boundary"""
         selected_face = self.select_custom_face(surface_index)
         for index, item in enumerate(rs.DuplicateEdgeCurves(selected_face)):
             if index == edge_index:
                 return item
-                
+
 
 class LinearElement:
     def __init__(self, line, blocks, used_blocks_index):
@@ -181,7 +181,7 @@ class LinearElement:
         self.index_list = []
         self.used_index = used_blocks_index
         self.base = None
-            
+
     def filter_used_blocks(self):
         unused_indexes = []
         for index in range(len(self.blocks.source)):
@@ -189,14 +189,14 @@ class LinearElement:
                 continue
             unused_indexes.append(index)
         return unused_indexes
-    
+
     def pick_element(self, available_length, tolerane, r_tolerance):
         """_Select elements to build linear parts. Check the ratio
             of width and height as well_"""
 
-        blocks_dict = {}    # blocks_dict = {lengths: blocks}
-        lengths = th.tree_to_list(self.blocks.get_block_length())   # Python list
-        
+        blocks_dict = {}  # blocks_dict = {lengths: blocks}
+        lengths = th.tree_to_list(self.blocks.get_block_length())  # Python list
+
         filtered_blocks = self.filter_used_blocks()
         list_of_available_blocks = [self.blocks.source[i] for i in filtered_blocks]
 
@@ -219,14 +219,14 @@ class LinearElement:
             for key, value in blocks_dict.items():
                 if int(key) in length_range[i]:
                     inner.append((value, key))
-                    
+
                     self.selection.append(value)
                     del blocks_dict[key]
                     for index, item in enumerate(list_of_available_blocks):
                         if item == value:
                             self.index_list.append(index)
             block_list.append(inner)
-#            print(inner)
+        #            print(inner)
         return th.list_to_tree(block_list[:], source=[0])
 
 
@@ -236,7 +236,7 @@ def main():
     global normal
     global linear_indecies
     global available_length
-    
+
     test = DesignModel(design_boundary, wood_from_db, heights, 5)
     print(test)
     all_blocks = test.blocks.source
@@ -248,7 +248,7 @@ def main():
 
     a = LinearElement(line_segment, wood_from_db, packed_indecies)
     available_length = []
-        
+
     for i in line_segment:
         available_length.append(rs.CurveLength(i))
 
@@ -263,4 +263,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
