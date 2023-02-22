@@ -36,12 +36,12 @@ class TagUpdateSchema(Schema):
 
 
 class TagSchema(PlainTagSchema):
-    woods = fields.Nested(WoodSchema(), dump_only=True)
+    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True, load_instance=True))
 
 
 class TagAndWoodSchema(Schema):
     message = fields.Str()
-    wood = fields.Nested(WoodSchema)
+    # wood = fields.Nested(WoodSchema)
     tag = fields.Nested(TagSchema)
 
 
