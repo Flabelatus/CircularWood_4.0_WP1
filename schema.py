@@ -61,3 +61,12 @@ class WoodUpdateSchema(Schema):
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
+
+
+class DesignRequirements(Schema):
+    index = fields.Int()
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    tag = fields.Str()
+    part = fields.Str()
