@@ -64,9 +64,17 @@ class WoodUpdateSchema(Schema):
 
 
 class DesignRequirementSchema(Schema):
-    part_index = fields.Int()
-    length = fields.Float()
-    width = fields.Float()
-    height = fields.Float()
+    part_index = fields.Str()
+    length = fields.Str()
+    width = fields.Str()
+    height = fields.Str()
     tag = fields.Str()
     part = fields.Str()
+    project_id = fields.Str()
+    created_at = fields.Int()
+
+
+class RequirementAndWoodSchema(Schema):
+    message = fields.Str()
+    # wood = fields.Nested(WoodSchema)
+    tag = fields.Nested(DesignRequirementSchema)
