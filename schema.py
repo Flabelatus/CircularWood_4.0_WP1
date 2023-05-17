@@ -64,7 +64,7 @@ class WoodUpdateSchema(Schema):
 
 
 class DesignRequirementSchema(Schema):
-    index = fields.Int()
+    part_index = fields.Int()
     length = fields.Float()
     width = fields.Float()
     height = fields.Float()
