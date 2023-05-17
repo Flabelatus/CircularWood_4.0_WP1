@@ -8,6 +8,7 @@ from load_dotenv import load_dotenv
 from db import db
 from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
+from resources.design_requirements import design_blp
 
 
 def create_app(db_url=None):
@@ -29,11 +30,12 @@ def create_app(db_url=None):
     migrate = Migrate(app, db)
     api = Api(app)
 
-    @app.before_first_request
-    def create_tables():
-        db.create_all()
+    # @app.before_first_request
+    # def create_tables():
+    #     db.create_all()
 
     api.register_blueprint(wood_blueprint)
     api.register_blueprint(tags_blueprint)
+    api.register_blueprint(design_blp)
 
     return app

@@ -63,7 +63,7 @@ class WoodUpdateSchema(Schema):
     type = fields.Str()
 
 
-class DesignRequirements(Schema):
+class DesignRequirementSchema(Schema):
     index = fields.Int()
     length = fields.Float()
     width = fields.Float()
