@@ -74,7 +74,13 @@ class DesignRequirementSchema(Schema):
     created_at = fields.Int()
 
 
-class RequirementAndWoodSchema(Schema):
+class GHRequirementAndWoodSchema(Schema):
     message = fields.Str()
     # wood = fields.Nested(WoodSchema)
-    tag = fields.Nested(DesignRequirementSchema)
+    requirements_gh = fields.Nested(DesignRequirementSchema)
+
+
+class DashboardRequirementAndWoodSchema(Schema):
+    message = fields.Str()
+    # wood = fields.Nested(WoodSchema)
+    requirements_dashboard = fields.Nested(DesignRequirementSchema)

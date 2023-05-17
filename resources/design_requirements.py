@@ -6,7 +6,7 @@ from flask_smorest import abort, Blueprint
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
 from models import DesignRequirementModelFromGH, DesignRequirementsModelFromDashboard, ResidualWoodModel
-from schema import DesignRequirementSchema, RequirementAndWoodSchema
+from schema import DesignRequirementSchema, GHRequirementAndWoodSchema
 
 design_blp = Blueprint(
     'Design Requirements',
@@ -98,7 +98,7 @@ class DesignRequirementDashboardByID(MethodView):
 @design_blp.route("/gh/residual_wood/<int:wood_id>/requirement/<int:requirement_id>")
 class LinkGHRequirementsToWood(MethodView):
 
-    @design_blp.response(201, RequirementAndWoodSchema)
+    @design_blp.response(201, GHRequirementAndWoodSchema)
     def post(self, wood_id, requirement_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         requirement_gh = DesignRequirementModelFromGH.query.get_or_404(requirement_id)
@@ -115,7 +115,7 @@ class LinkGHRequirementsToWood(MethodView):
             "wood": wood
         }
 
-    @design_blp.response(200, RequirementAndWoodSchema)
+    @design_blp.response(200, GHRequirementAndWoodSchema)
     def delete(self, wood_id, requirement_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         requirement_gh = DesignRequirementModelFromGH.query.get_or_404(requirement_id)
@@ -137,7 +137,7 @@ class LinkGHRequirementsToWood(MethodView):
 @design_blp.route("/dashboard/residual_wood/<int:wood_id>/requirement/<int:requirement_id>")
 class LinkDashboardRequirementsToWood(MethodView):
 
-    @design_blp.response(201, RequirementAndWoodSchema)
+    @design_blp.response(201, GHRequirementAndWoodSchema)
     def post(self, wood_id, requirement_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         requirement_dashboard = DesignRequirementModelFromGH.query.get_or_404(requirement_id)
@@ -154,7 +154,7 @@ class LinkDashboardRequirementsToWood(MethodView):
             "wood": wood
         }
 
-    @design_blp.response(200, RequirementAndWoodSchema)
+    @design_blp.response(200, GHRequirementAndWoodSchema)
     def delete(self, wood_id, requirement_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         requirement_dashboard = DesignRequirementsDashboard.query.get_or_404(requirement_id)

@@ -7,7 +7,7 @@ class WoodsRequirementsFromDashboardModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     wood_id = db.Column(db.Integer, db.ForeignKey('residual_wood.id'))
-    requirement_id = db.Column(db.Integer, db.ForeignKey('requirements_from_dashboard.id'))
+    dashboard_requirement_id = db.Column(db.Integer, db.ForeignKey('requirements_from_dashboard.id'))
 
 
 class WoodRequirementsFromGHModel(db.Model):
@@ -15,5 +15,5 @@ class WoodRequirementsFromGHModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     wood_id = db.Column(db.Integer, db.ForeignKey('residual_wood.id'))
-    requirement_id = db.Column(db.Integer, db.ForeignKey('requirements_from_grasshopper.id'))
+    gh_requirement_id = db.Column(db.Integer, db.ForeignKey('requirements_from_grasshopper.id'))
 
