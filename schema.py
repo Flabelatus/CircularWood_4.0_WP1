@@ -36,11 +36,51 @@ class TagUpdateSchema(Schema):
 
 
 class TagSchema(PlainTagSchema):
-    woods = fields.Nested(WoodSchema(), dump_only=True)
+    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True, load_instance=True))
 
 
 class TagAndWoodSchema(Schema):
     message = fields.Str()
-    wood = fields.Nested(WoodSchema)
+    # wood = fields.Nested(WoodSchema)
     tag = fields.Nested(TagSchema)
 
+
+class WoodUpdateSchema(Schema):
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    weight = fields.Float()
+    density = fields.Float()
+    timestamp = fields.Str()
+    color = fields.Str()
+    reserved = fields.Bool()
+    reservation_name = fields.Str()
+    reservation_time = fields.Str()
+    requirements = fields.Int()
+    source = fields.Str()
+    price = fields.Float()
+    info = fields.Str()
+    type = fields.Str()
+
+
+class DesignRequirementSchema(Schema):
+    part_index = fields.Str()
+    length = fields.Str()
+    width = fields.Str()
+    height = fields.Str()
+    tag = fields.Str()
+    part = fields.Str()
+    project_id = fields.Str()
+    created_at = fields.Int()
+
+
+class GHRequirementAndWoodSchema(Schema):
+    message = fields.Str()
+    # wood = fields.Nested(WoodSchema)
+    requirements_gh = fields.Nested(DesignRequirementSchema)
+
+
+class DashboardRequirementAndWoodSchema(Schema):
+    message = fields.Str()
+    # wood = fields.Nested(WoodSchema)
+    requirements_dashboard = fields.Nested(DesignRequirementSchema)

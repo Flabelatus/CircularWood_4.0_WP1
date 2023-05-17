@@ -23,6 +23,17 @@ class ResidualWoodModel(db.Model):
 
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
 
+    requirements_gh = db.relationship(
+        "WoodRequirementsFromGHModel",
+        back_populates="woods",
+        secondary="woods_requirements_gh",
+    )
+    requirements_dashboard = db.relationship(
+        "DesignRequirementsModelFromDashboard",
+        back_populates="woods",
+        secondary="woods_requirements_dashboard"
+    )
+
 
 class WasteWoodModel(db.Model):
     __tablename__ = 'waste_wood'
@@ -46,6 +57,3 @@ class WasteWoodModel(db.Model):
     price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
     type = db.Column(db.String)
-
-
-
