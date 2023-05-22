@@ -83,4 +83,4 @@ class GHRequirementAndWoodSchema(Schema):
 class DashboardRequirementAndWoodSchema(Schema):
     message = fields.Str()
     # wood = fields.Nested(WoodSchema)
-    requirements_dashboard = fields.Nested(DesignRequirementSchema)
+    requirements_dashboard = fields.Nested(DesignRequirementSchema, load_instance=True)

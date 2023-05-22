@@ -23,11 +23,13 @@ class ResidualWoodModel(db.Model):
 
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
 
-    requirements_gh = db.relationship(
-        "WoodRequirementsFromGHModel",
-        back_populates="woods",
-        secondary="woods_requirements_gh",
-    )
+    # requirements_gh = db.relationship(
+    #     "WoodRequirementsFromGHModel",
+    #     back_populates="woods",
+    #     primaryjoin="ResidualWoodModel.id == WoodRequirementsFromGHModel.wood_id",
+    #     secondaryjoin="ResidualWoodModel.id == WoodsRequirementsFromDashboardModel.wood_id",
+    #     secondary="woods_requirements_gh",
+    # )
     requirements_dashboard = db.relationship(
         "DesignRequirementsModelFromDashboard",
         back_populates="woods",
