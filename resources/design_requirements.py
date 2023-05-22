@@ -61,7 +61,7 @@ class DesignRequirementByID(MethodView):
 class DesignRequirementsDashboard(MethodView):
     @design_blp.response(200, DesignRequirementSchema(many=True))
     def get(self) -> List[DesignRequirementsModelFromDashboard]:
-        return DesignRequirementModelFromGH.query.order_by(DesignRequirementModelFromGH.created_at.desc()).all()
+        return DesignRequirementsModelFromDashboard.query.order_by(DesignRequirementsModelFromDashboard.created_at.desc()).all()
 
     @design_blp.arguments(DesignRequirementSchema)
     @design_blp.response(200, DesignRequirementSchema)
