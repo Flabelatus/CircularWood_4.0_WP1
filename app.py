@@ -30,9 +30,9 @@ def create_app(db_url=None):
     migrate = Migrate(app, db)
     api = Api(app)
 
-    @app.before_first_request
-    def create_tables():
-        db.create_all()
+    # @app.before_first_request
+    # def create_tables():
+    #     db.create_all()
 
     api.register_blueprint(wood_blueprint)
     api.register_blueprint(tags_blueprint)
