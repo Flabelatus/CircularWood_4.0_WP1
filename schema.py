@@ -13,7 +13,6 @@ class WoodSchema(Schema):
     reserved = fields.Bool()
     reservation_name = fields.Str()
     reservation_time = fields.Str()
-    requirements = fields.Int()
     source = fields.Str()
     price = fields.Float()
     info = fields.Str()
@@ -45,6 +44,18 @@ class TagAndWoodSchema(Schema):
     tag = fields.Nested(TagSchema)
 
 
+class PlainDesignRequirementSchema(Schema):
+    id = fields.Int(dump_only=True)
+    part_index = fields.Str()
+    length = fields.Str()
+    width = fields.Str()
+    height = fields.Str()
+    tag = fields.Str()
+    part = fields.Str()
+    project_id = fields.Str()
+    created_at = fields.Int()
+
+
 class WoodUpdateSchema(Schema):
     length = fields.Float()
     width = fields.Float()
@@ -56,31 +67,17 @@ class WoodUpdateSchema(Schema):
     reserved = fields.Bool()
     reservation_name = fields.Str()
     reservation_time = fields.Str()
-    requirements = fields.Int()
     source = fields.Str()
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
 
 
-class DesignRequirementSchema(Schema):
-    part_index = fields.Str()
-    length = fields.Str()
-    width = fields.Str()
-    height = fields.Str()
-    tag = fields.Str()
-    part = fields.Str()
-    project_id = fields.Str()
-    created_at = fields.Int()
+class DesignRequirementSchema(PlainDesignRequirementSchema):
+    woods = fields.Nested(WoodSchema(), dump_only=True, load_instance=True)
 
 
-class GHRequirementAndWoodSchema(Schema):
+class DesignRequirementsAndWoodsSchema(Schema):
     message = fields.Str()
-    # wood = fields.Nested(WoodSchema)
-    requirements_gh = fields.Nested(DesignRequirementSchema)
-
-
-class DashboardRequirementAndWoodSchema(Schema):
-    message = fields.Str()
-    # wood = fields.Nested(WoodSchema)
-    requirements_dashboard = fields.Nested(DesignRequirementSchema, load_instance=True)
+    wood = fields.Nested(WoodSchema(), load_instance=True)
+    requirements = fields.Nested(DesignRequirementSchema(), load_instance=True)

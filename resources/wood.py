@@ -54,7 +54,6 @@ class ResidualWood(MethodView):
             wood.reserved = parsed_data.get('reserved', 0)
             wood.reservation_name = parsed_data.get('reservation_name', "_")
             wood.reservation_time = parsed_data.get('reservation_time', "")
-            wood.requirements = parsed_data.get('requirements', 0)
             wood.length = parsed_data.get('length', 0)
             wood.width = parsed_data.get('width', 0)
             wood.height = parsed_data.get('height', 0)

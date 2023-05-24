@@ -15,7 +15,6 @@ class ResidualWoodModel(db.Model):
     reserved = db.Column(db.Boolean, default=False)
     reservation_name = db.Column(db.String(80))
     reservation_time = db.Column(db.String(80))
-    requirements = db.Column(db.Integer)
     source = db.Column(db.String(256))
     price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
@@ -23,17 +22,10 @@ class ResidualWoodModel(db.Model):
 
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
 
-    # requirements_gh = db.relationship(
-    #     "WoodRequirementsFromGHModel",
-    #     back_populates="woods",
-    #     primaryjoin="ResidualWoodModel.id == WoodRequirementsFromGHModel.wood_id",
-    #     secondaryjoin="ResidualWoodModel.id == WoodsRequirementsFromDashboardModel.wood_id",
-    #     secondary="woods_requirements_gh",
-    # )
-    requirements_dashboard = db.relationship(
-        "DesignRequirementsModelFromDashboard",
+    requirements = db.relationship(
+        "DesignRequirementsModelFromClient",
         back_populates="woods",
-        secondary="woods_requirements_dashboard"
+        secondary="woods_requirements"
     )
 
 
@@ -54,7 +46,6 @@ class WasteWoodModel(db.Model):
     reserved = db.Column(db.Boolean, default=False)
     reservation_name = db.Column(db.String(80))
     reservation_time = db.Column(db.String(80))
-    requirements = db.Column(db.Integer)
     source = db.Column(db.String(256))
     price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
