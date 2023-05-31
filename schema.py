@@ -46,13 +46,13 @@ class TagAndWoodSchema(Schema):
 
 class PlainDesignRequirementSchema(Schema):
     id = fields.Int(dump_only=True)
-    part_index = fields.Str()
-    length = fields.Str()
-    width = fields.Str()
-    height = fields.Str()
+    part_index = fields.Int()
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
     tag = fields.Str()
     part = fields.Str()
-    project_id = fields.Str()
+    project_id = fields.Int()
     created_at = fields.Int()
 
 
