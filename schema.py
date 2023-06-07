@@ -52,7 +52,7 @@ class PlainDesignRequirementSchema(Schema):
     height = fields.Float()
     tag = fields.Str()
     part = fields.Str()
-    project_id = fields.Int()
+    project_id = fields.Str()
     created_at = fields.Int()
 
 
