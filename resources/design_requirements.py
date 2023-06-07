@@ -40,7 +40,7 @@ class DesignRequirementsFromClient(MethodView):
         return design_requirements
 
 
-@design_blp.route("/requirement/client/<int:requirement_id>")
+@design_blp.route("/requirements/client/<int:requirement_id>")
 class DesignRequirementsFromClientByID(MethodView):
     @design_blp.response(200, DesignRequirementSchema)
     def get(self, requirement_id: int) -> Union[DesignRequirementsModelFromClient, None]:
