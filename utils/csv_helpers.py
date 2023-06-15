@@ -88,7 +88,6 @@ class ManualCSVDataToResidualWoodDB:
 if __name__ == "__main__":
     out = ManualCSVDataToResidualWoodDB()
     data_to_insert = out.compile_data()
-    print(len(data_to_insert))
 
     for i in range(len(data_to_insert)):
         api_call(
