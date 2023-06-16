@@ -79,7 +79,7 @@ class ManualCSVDataToResidualWoodDB:
                 "source": self.source,
                 "timestamp": self.timestamp,
                 "info": self.info,
-                "density": ((self.lengths[i] * self.widths[i] * self.heights[i]) / self.weights[i]) / (10 ** 5)
+                "density": ((self.lengths[i] * self.widths[i] * self.heights[i]) / self.weights[i]) / (10 ** 3)
             })
 
         return self.output
