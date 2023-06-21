@@ -60,6 +60,15 @@ class DesignRequirementsFromClientByID(MethodView):
         }
 
 
+@design_blp.route("/requirements/client/<string:project_id>")
+class DesignRequirementsFromClientByProjectID(MethodView):
+    @design_blp.response(200, DesignRequirementSchema(many=True))
+    def get(self, project_id: str) -> List[DesignRequirementsModelFromClient]:
+        # get all the requirements in the database descending by created time
+        return DesignRequirementsModelFromClient.query.filter_by(project_id=project_id).order_by(
+            DesignRequirementsModelFromClient.created_at.desc()).all()
+
+
 @design_blp.route("/residual_wood/link/<int:wood_id>/requirement/<int:requirement_id>")
 class LinkRequirementsToWood(MethodView):
 
