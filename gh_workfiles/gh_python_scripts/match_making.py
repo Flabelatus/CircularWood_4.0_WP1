@@ -31,6 +31,7 @@ class MatchMaker:
         self.matched_stool_part_length = []
         self.removed_ids = []
         self.removed_lengths = []
+        self.selected_ape = []
 
     def run(self):
         count = 0
@@ -56,33 +57,37 @@ class MatchMaker:
                     apes.append(floor(self.longest_lenghts[i] / self.stool_pt_lengths[j]))
                 self.ape.append(apes)
 
-            #            print("Longest IDs: ", self.longest_ids)
             selected_ape = [a[0] for a in self.ape][index]
             selected_length = self.longest_lenghts[count]
 
             x = self.stool_pt_lengths[count:int(selected_ape) + count]
-            self.matched_stool_part_length.append(x)
 
             if x:
+                self.matched_stool_part_length.append(x)
+
                 self.removed_ids.append(self.longest_ids[0])
                 self.longest_ids.remove(self.longest_ids[0])
+
                 self.removed_lengths.append(self.longest_lenghts[0])
                 self.longest_lenghts.remove(self.longest_lenghts[0])
+
+                self.selected_ape.append(selected_ape)
 
             count += int(selected_ape)
             index += 1
 
             try:
                 for i in range(count):
-                    chunk_lengths = []
+                    chunck_lengths = []
                     self.stool_parts.remove(self.stool_parts[i])
-                    chunk_lengths.append(x[i])
+                    chunck_lengths.append(x[i])
             except:
                 pass
 
             if self.verbose:
                 print("---------------------------------------------------")
                 print("list length (stool parts): ", len(self.stool_parts))
+                #                print("Longest IDs: ", self.longest_ids[0])
                 print("stool part lengths: ", x, "INDEX: ", self.removed_ids[-1])
                 print("APE: ", selected_ape)
 
@@ -104,4 +109,5 @@ if __name__ == "__main__":
 
     removed_ids = d.removed_ids
     removed_lengths = d.removed_lengths
-    matched_stool_part_length = th.list_to_tree(d.matched_stool_part_length)
+    matched_stool_part_length = th.list_to_tree(d.matched_stool_part_length, 0)
+    amount_per_element = th.list_to_tree(d.selected_ape, 0)
