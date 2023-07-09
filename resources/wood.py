@@ -48,8 +48,8 @@ class ResidualWood(MethodView):
 
     @blp.arguments(WoodSchema)
     @blp.response(200, WoodUpdateSchema)
-    def put(self, parsed_data, wood_id):
-        wood = ResidualWoodModel.query.filter_by(id=wood_id).first()
+    def patch(self, parsed_data, wood_id):
+        wood = ResidualWoodModel.query.get_or_404(wood_id)
         if wood:
             wood.reserved = parsed_data.get('reserved', 0)
             wood.reservation_name = parsed_data.get('reservation_name', "_")
@@ -65,9 +65,6 @@ class ResidualWood(MethodView):
             wood.type = parsed_data.get('type', "")
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
-
-        else:
-            wood = ResidualWoodModel(id=wood_id, **parsed_data)
 
         db.session.add(wood)
         db.session.commit()
