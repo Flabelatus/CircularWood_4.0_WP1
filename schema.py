@@ -3,6 +3,7 @@ from marshmallow import fields, Schema
 
 class WoodSchema(Schema):
     id = fields.Int(dump_only=True)
+    name = fields.Str()
     length = fields.Float(required=True)
     width = fields.Float(required=True)
     height = fields.Float(required=True)
@@ -17,6 +18,7 @@ class WoodSchema(Schema):
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
+    image = fields.Str()
 
 
 class WasteWoodSchema(WoodSchema):

@@ -51,6 +51,7 @@ class ResidualWood(MethodView):
     def patch(self, parsed_data, wood_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         if wood:
+            wood.name = parsed_data.get('name', "Iroko natural")
             wood.reserved = parsed_data.get('reserved', 0)
             wood.reservation_name = parsed_data.get('reservation_name', "_")
             wood.reservation_time = parsed_data.get('reservation_time', "")
@@ -65,6 +66,7 @@ class ResidualWood(MethodView):
             wood.type = parsed_data.get('type', "")
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
+            wood.image = parsed_data.get('image', '/path/to/image.jpg')
 
         db.session.add(wood)
         db.session.commit()
