@@ -11,14 +11,15 @@ class WoodSchema(Schema):
     density = fields.Float(required=True)
     timestamp = fields.Str(required=True)
     color = fields.Str(required=True)
-    reserved = fields.Bool()
-    reservation_name = fields.Str()
-    reservation_time = fields.Str()
+    # reserved = fields.Bool()
+    # reservation_name = fields.Str()
+    # reservation_time = fields.Str()
     source = fields.Str()
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
     image = fields.Str()
+    intake_id = fields.Int()
 
 
 class WasteWoodSchema(WoodSchema):
@@ -64,15 +65,16 @@ class WoodUpdateSchema(Schema):
     height = fields.Float()
     weight = fields.Float()
     density = fields.Float()
-    timestamp = fields.Str()
+    # timestamp = fields.Str()
     color = fields.Str()
-    reserved = fields.Bool()
-    reservation_name = fields.Str()
-    reservation_time = fields.Str()
+    # reserved = fields.Bool()
+    # reservation_name = fields.Str()
+    # reservation_time = fields.Str()
     source = fields.Str()
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
+    intake_id = fields.Int()
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
