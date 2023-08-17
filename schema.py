@@ -75,6 +75,7 @@ class WoodUpdateSchema(Schema):
     info = fields.Str()
     type = fields.Str()
     intake_id = fields.Int()
+    name = fields.Str()
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
