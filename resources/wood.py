@@ -46,7 +46,7 @@ class ResidualWood(MethodView):
             "message": "wood deleted from database."
         }
 
-    @blp.arguments(WoodSchema)
+    @blp.arguments(WoodUpdateSchema)
     @blp.response(200, WoodUpdateSchema)
     def patch(self, parsed_data, wood_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
