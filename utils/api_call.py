@@ -11,7 +11,7 @@ def api_call(end_point: str, payload: dict, method: str) -> Response:
 
 
 def bulk_update_call(index_list_to_update, payload):
-    route = "http://localhost:5000/residual_wood/"
+    route = "http://localhost:5001/residual_wood/"
     for i in range(len(index_list_to_update)):
         response = request(
             method="PATCH",
