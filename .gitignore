@@ -2,5 +2,6 @@
 .idea
 .env
 /__pycache__
-/venv
 *.3dm
+/venv
+

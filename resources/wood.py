@@ -46,11 +46,12 @@ class ResidualWood(MethodView):
             "message": "wood deleted from database."
         }
 
-    @blp.arguments(WoodSchema)
+    @blp.arguments(WoodUpdateSchema)
     @blp.response(200, WoodUpdateSchema)
     def patch(self, parsed_data, wood_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         if wood:
+            wood.name = parsed_data.get('name', "Iroko natural")
             wood.reserved = parsed_data.get('reserved', 0)
             wood.reservation_name = parsed_data.get('reservation_name', "_")
             wood.reservation_time = parsed_data.get('reservation_time', "")
@@ -61,10 +62,19 @@ class ResidualWood(MethodView):
             wood.source = parsed_data.get('source', "")
             wood.price = parsed_data.get('price', 0.0)
             wood.info = parsed_data.get('info', "")
-            wood.timestamp = parsed_data.get('timestamp', "")
+            # wood.timestamp = parsed_data.get('timestamp', "")
             wood.type = parsed_data.get('type', "")
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
+            wood.image = parsed_data.get('image', '/path/to/image.jpg')
+            # wood.intake_id = parsed_data.get("intake_id", 1)
+            wood.wood_species = parsed_data.get('wood_species', "")
+            wood.label = parsed_data.get('label', "")
+            wood.paint = parsed_data.get('paint', "")
+            wood.project_type = parsed_data.get('project_type', "")
+            wood.is_fire_treated = parsed_data.get('is_fire_treated', 0)
+            wood.is_straight = parsed_data.get('is_straight', 1)
+            wood.is_planed = parsed_data.get('is_planed', 1)
 
         db.session.add(wood)
         db.session.commit()

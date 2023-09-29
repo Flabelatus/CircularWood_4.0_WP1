@@ -3,6 +3,7 @@ from marshmallow import fields, Schema
 
 class WoodSchema(Schema):
     id = fields.Int(dump_only=True)
+    name = fields.Str()
     length = fields.Float(required=True)
     width = fields.Float(required=True)
     height = fields.Float(required=True)
@@ -17,6 +18,15 @@ class WoodSchema(Schema):
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
+    image = fields.Str()
+    # intake_id = fields.Int()
+    wood_species = fields.Str()
+    label = fields.Str()
+    paint = fields.Str()
+    project_type = fields.Str()
+    is_fire_treated = fields.Bool()
+    is_straight = fields.Bool()
+    is_planed = fields.Bool()
 
 
 class WasteWoodSchema(WoodSchema):
@@ -62,7 +72,7 @@ class WoodUpdateSchema(Schema):
     height = fields.Float()
     weight = fields.Float()
     density = fields.Float()
-    timestamp = fields.Str()
+    # timestamp = fields.Str()
     color = fields.Str()
     reserved = fields.Bool()
     reservation_name = fields.Str()
@@ -71,6 +81,15 @@ class WoodUpdateSchema(Schema):
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
+    # intake_id = fields.Int()
+    name = fields.Str()
+    wood_species = fields.Str()
+    label = fields.Str()
+    paint = fields.Str()
+    project_type = fields.Str()
+    is_fire_treated = fields.Bool()
+    is_straight = fields.Bool()
+    is_planed = fields.Bool()
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
