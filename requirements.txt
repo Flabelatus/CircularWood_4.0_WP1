@@ -9,3 +9,4 @@ requests
 passlib
 psycopg2
 gunicorn
+pandas

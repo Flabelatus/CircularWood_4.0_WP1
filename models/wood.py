@@ -15,15 +15,18 @@ class ResidualWoodModel(db.Model):
     reserved = db.Column(db.Boolean, default=False)
     reservation_name = db.Column(db.String(80))
     reservation_time = db.Column(db.String(80))
-    requirements = db.Column(db.Integer)
     source = db.Column(db.String(256))
     price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
     type = db.Column(db.String)
-    # confirmation
-    # Ratio
 
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
+
+    requirements = db.relationship(
+        "DesignRequirementsModelFromClient",
+        back_populates="woods",
+        secondary="woods_requirements"
+    )
 
 
 class WasteWoodModel(db.Model):
@@ -43,11 +46,7 @@ class WasteWoodModel(db.Model):
     reserved = db.Column(db.Boolean, default=False)
     reservation_name = db.Column(db.String(80))
     reservation_time = db.Column(db.String(80))
-    requirements = db.Column(db.Integer)
     source = db.Column(db.String(256))
     price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
     type = db.Column(db.String)
-
-
-

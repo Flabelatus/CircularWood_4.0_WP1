@@ -41,11 +41,10 @@ class Tag(MethodView):
 
     @blp.arguments(TagUpdateSchema)
     @blp.response(200, TagUpdateSchema)
-    def put(self, parsed_data, tag_id):
-        tag = TagModel.query.filter_by(id=tag_id).first()
+    def patch(self, parsed_data, tag_id):
+        tag = TagModel.query.get_or_404(tag_id)
         if tag:
             tag.name = parsed_data['name']
-        tag = TagModel(**parsed_data, id=tag_id)
         try:
             db.session.add(tag)
             db.session.commit()
