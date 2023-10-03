@@ -45,26 +45,32 @@ Each of the API methods check for these schemas.
 
 An example of the serialized JSON for the data relating to residual wood
 
-```[
-  {
-    "color": "222,130,34",
-    "density": 257.0,
-    "height": 21.0,
-    "id": 1,
-    "info": "Residual wood from the lab",
-    "length": 1040.0,
-    "price": 5.0,
-    "requirements": 1,
-    "reservation_name": "Timo",
-    "reservation_time": "2022-12-21 11:37:56",
-    "reserved": true,
-    "source": "Robot Lab",
-    "timestamp": "2022-12-21 11:37:56",
-    "type": "Hardwood",
-    "weight": 449.59,
-    "width": 80.0
-  }
-]
+```{
+	"color": "222,130,34",
+	"density": 0.19444153846153847,
+	"height": 10.0,
+	"id": 10,
+	"image": null,
+	"info": "Intake for residual wood in Robot Lab HvA, for production of the Stool in WP1 for CW4.0 Project",
+	"is_fire_treated": false,
+	"is_planed": true,
+	"is_straight": true,
+	"label": null,
+	"length": 1674.0,
+	"name": null,
+	"paint": null,
+	"price": 0.0,
+	"project_type": null,
+	"reservation_name": "-",
+	"reservation_time": "-",
+	"reserved": false,
+	"source": "HvA Jakoba Mulderhuis (JMH)",
+	"timestamp": "2023-10-02 15:25-27",
+	"type": "Hardwood",
+	"weight": 13000.0,
+	"width": 151.0,
+	"wood_species": null
+}
 ```
 
 
