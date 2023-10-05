@@ -20,11 +20,9 @@ class ResidualWoodList(MethodView):
     @blp.arguments(WoodSchema)
     @blp.response(201, WoodSchema)
     def post(self, parsed_data):
-        last_wood = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
-        last_wood_id = last_wood.id
 
         wood = ResidualWoodModel(**parsed_data)
-        wood.wood_id = '0' * (7 - len(str(last_wood_id))) + str(last_wood_id)
+        # wood.wood_id = '0' * (7 - len(str(wood.id))) + str(wood.id)
 
         try:
             db.session.add(wood)
