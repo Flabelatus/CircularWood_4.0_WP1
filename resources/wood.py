@@ -20,7 +20,12 @@ class ResidualWoodList(MethodView):
     @blp.arguments(WoodSchema)
     @blp.response(201, WoodSchema)
     def post(self, parsed_data):
+
+        last_wood = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
+        print(last_wood.length)
+
         wood = ResidualWoodModel(**parsed_data)
+
         try:
             db.session.add(wood)
             db.session.commit()
@@ -67,7 +72,7 @@ class ResidualWood(MethodView):
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
             wood.image = parsed_data.get('image', '/path/to/image.jpg')
-            # wood.intake_id = parsed_data.get("intake_id", 1)
+            wood.intake_id = parsed_data.get("intake_id", 1)
             wood.wood_species = parsed_data.get('wood_species', "")
             wood.label = parsed_data.get('label', "")
             wood.paint = parsed_data.get('paint', "")
@@ -75,6 +80,7 @@ class ResidualWood(MethodView):
             wood.is_fire_treated = parsed_data.get('is_fire_treated', 0)
             wood.is_straight = parsed_data.get('is_straight', 1)
             wood.is_planed = parsed_data.get('is_planed', 1)
+            wood.storage_location = parsed_data.get('storage_location', "")
 
         db.session.add(wood)
         db.session.commit()

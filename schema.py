@@ -19,7 +19,7 @@ class WoodSchema(Schema):
     info = fields.Str()
     type = fields.Str()
     image = fields.Str()
-    # intake_id = fields.Int()
+    intake_id = fields.Int()
     wood_species = fields.Str()
     label = fields.Str()
     paint = fields.Str()
@@ -27,6 +27,8 @@ class WoodSchema(Schema):
     is_fire_treated = fields.Bool()
     is_straight = fields.Bool()
     is_planed = fields.Bool()
+    storage_location = fields.Str()
+    wood_id = fields.Str()
 
 
 class WasteWoodSchema(WoodSchema):

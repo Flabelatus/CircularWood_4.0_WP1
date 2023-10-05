@@ -6,7 +6,6 @@ class ResidualWoodModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80))
-    # intake_id = db.Column(db.Integer)
     length = db.Column(db.Float(precision=2), nullable=False)
     width = db.Column(db.Float(precision=2), nullable=False)
     height = db.Column(db.Float(precision=2), nullable=False)
@@ -30,6 +29,10 @@ class ResidualWoodModel(db.Model):
     is_fire_treated = db.Column(db.Boolean, default=False)
     is_straight = db.Column(db.Boolean, default=True)
     is_planed = db.Column(db.Boolean, default=True)
+
+    intake_id = db.Column(db.Integer)
+    storage_location = db.Column(db.String)
+    wood_id = db.Column(db.String)
 
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
 
