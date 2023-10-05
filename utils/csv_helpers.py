@@ -26,7 +26,7 @@ class ManualCSVDataToResidualWoodDB:
         )
 
         self.source = kwargs.get("source", "HvA Jakoba Mulderhuis (JMH)")
-        self.price = kwargs.get("price", 0)
+        self.price = kwargs.get("price", 0.0)
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M-%S")
 
         self.reserved = False
@@ -56,14 +56,16 @@ class ManualCSVDataToResidualWoodDB:
 
     def compile_data(self):
         df = self.data_frame
+        df = df.fillna('')
         df['weight'] = df['weight'].astype(float) * 10
 
         for index, row in df.iterrows():
             d = {
-                "length": float(row['length']),
-                "width": float(row['width']),
-                "height": float(row['height']),
-                "weight": float(row['weight']),
+                "length": row['length'],
+                "name": "Red oak FSC",
+                "width": row['width'],
+                "height": row['height'],
+                "weight": int(row['weight']),
                 "color": self.color[0],
                 "reserved": self.reserved,
                 "reservation_name": self.reserved_by,
@@ -73,8 +75,8 @@ class ManualCSVDataToResidualWoodDB:
                 "source": self.source,
                 "timestamp": self.timestamp,
                 "info": row['info'],
-                "density": ((row['length'] * row['width'] * row['height']) / row['weight']) / 1000,
-                "wood_id": self.wood_id[index],
+                "density": int((row['length'] * row['width'] * row['height']) / row['weight']),
+                "wood_id": self.generate_label_from_column()[index],
                 "storage_location": row['storage_location'],
                 "intake_id": 1
             }
@@ -86,13 +88,13 @@ if __name__ == "__main__":
     out = ManualCSVDataToResidualWoodDB()
     data_to_insert = out.compile_data()
     out.generate_label_from_column()
+    #
+    # for data in data_to_insert:
+    #     # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
+    #     api_call(
+    #         end_point="residual_wood",
+    #         payload=data,
+    #         method="POST"
+    #     )
 
-    json_data = json.dumps(data_to_insert)
-
-    for i, data in enumerate(data_to_insert):
-        requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', json=json.dumps(data))
-        # api_call(
-        #     end_point="residual_wood",
-        #     payload=data,
-        #     method="POST"
-        # )
+    out.clean_db(263)
