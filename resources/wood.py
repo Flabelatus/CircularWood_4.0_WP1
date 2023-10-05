@@ -20,10 +20,6 @@ class ResidualWoodList(MethodView):
     @blp.arguments(WoodSchema)
     @blp.response(201, WoodSchema)
     def post(self, parsed_data):
-
-        last_wood = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
-        print(last_wood.length)
-
         wood = ResidualWoodModel(**parsed_data)
 
         try:

@@ -28,7 +28,7 @@ class WoodSchema(Schema):
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
-    wood_id = fields.Str()
+    wood_id = fields.Str(required=True)
 
 
 class WasteWoodSchema(WoodSchema):
