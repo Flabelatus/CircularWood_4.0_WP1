@@ -64,6 +64,15 @@ class ResidualWood(MethodView):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         return wood
 
+    @blp.response(200, WoodSchema)
+    def delete(self, wood_id):
+        wood = ResidualWoodModel.query.get_or_404(wood_id)
+        db.session.delete(wood)
+        db.session.commit()
+        return {
+            "message": "wood deleted from database."
+        }
+
     @blp.arguments(WoodUpdateSchema)
     @blp.response(200, WoodUpdateSchema)
     def patch(self, parsed_data, wood_id):
