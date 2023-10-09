@@ -83,7 +83,7 @@ class WoodUpdateSchema(Schema):
     price = fields.Float()
     info = fields.Str()
     type = fields.Str()
-    # intake_id = fields.Int()
+    intake_id = fields.Int()
     name = fields.Str()
     wood_species = fields.Str()
     label = fields.Str()
@@ -92,6 +92,10 @@ class WoodUpdateSchema(Schema):
     is_fire_treated = fields.Bool()
     is_straight = fields.Bool()
     is_planed = fields.Bool()
+    storage_location = fields.Str()
+    wood_id = fields.Str()
+    image = fields.Str()
+
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):

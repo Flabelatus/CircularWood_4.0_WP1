@@ -97,4 +97,4 @@ if __name__ == "__main__":
             method="POST"
         )
 
-    # out.clean_db(263)
+    # out.clean_db(40)

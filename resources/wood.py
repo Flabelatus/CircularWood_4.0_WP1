@@ -5,7 +5,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from models import ResidualWoodModel, WasteWoodModel
 from schema import WoodSchema, WasteWoodSchema, WoodUpdateSchema
 
-
 blp = Blueprint('DataWood', 'wood', description='Operations on the wood')
 
 
@@ -22,7 +21,16 @@ class ResidualWoodList(MethodView):
     def post(self, parsed_data):
 
         wood = ResidualWoodModel(**parsed_data)
-        # wood.wood_id = '0' * (7 - len(str(wood.id))) + str(wood.id)
+
+        # Get the latest item in the database
+        last_wood_in_db = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
+
+        # Get the integer value of the last wood_id
+        wood_db_int = int(last_wood_in_db.wood_id)
+
+        # Set the new wood_id incrementing based on the formatting e.g. '0000001' from the
+        # last existing wood_id in the database
+        wood.wood_id = '0' * (7 - len(str(wood_db_int))) + str(wood_db_int + 1)
 
         try:
             db.session.add(wood)
@@ -30,6 +38,22 @@ class ResidualWoodList(MethodView):
         except SQLAlchemyError as e:
             abort(500, message=str(e))
         return wood
+
+    @blp.arguments(WoodSchema(partial=["length", "width", "height", "timestamp", "color", "density", "weight"]))
+    @blp.response(200, WoodSchema)
+    def delete(self, parsed_data):
+
+        wood_id_str = parsed_data['wood_id']
+        wood = ResidualWoodModel.query.filter(ResidualWoodModel.wood_id == wood_id_str).first()
+
+        if wood:
+            db.session.delete(wood)
+            db.session.commit()
+            return {
+                "message": "wood deleted from database."
+            }
+        else:
+            abort(404)
 
 
 @blp.route('/residual_wood/<int:wood_id>')
@@ -39,15 +63,6 @@ class ResidualWood(MethodView):
     def get(self, wood_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         return wood
-
-    @blp.response(200, WoodSchema)
-    def delete(self, wood_id):
-        wood = ResidualWoodModel.query.get_or_404(wood_id)
-        db.session.delete(wood)
-        db.session.commit()
-        return {
-            "message": "wood deleted from database."
-        }
 
     @blp.arguments(WoodUpdateSchema)
     @blp.response(200, WoodUpdateSchema)
@@ -79,6 +94,7 @@ class ResidualWood(MethodView):
             wood.is_straight = parsed_data.get('is_straight', 1)
             wood.is_planed = parsed_data.get('is_planed', 1)
             wood.storage_location = parsed_data.get('storage_location', "")
+            wood.wood_id = parsed_data.get('wood_id', "")
 
         db.session.add(wood)
         db.session.commit()
