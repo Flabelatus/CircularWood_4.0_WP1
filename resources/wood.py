@@ -25,8 +25,10 @@ class ResidualWoodList(MethodView):
         # Get the latest item in the database
         last_wood_in_db = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
 
-        # Get the integer value of the last wood_id
-        wood_db_int = int(last_wood_in_db.wood_id)
+        wood_db_int = 1
+        if last_wood_in_db:
+            # Get the integer value of the last wood_id
+            wood_db_int = int(last_wood_in_db.wood_id)
 
         # Set the new wood_id incrementing based on the formatting e.g. '0000001' from the
         # last existing wood_id in the database

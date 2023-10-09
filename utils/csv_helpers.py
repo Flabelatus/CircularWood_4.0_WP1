@@ -89,12 +89,12 @@ if __name__ == "__main__":
     data_to_insert = out.compile_data()
     out.generate_label_from_column()
     #
-    # for data in data_to_insert:
-    #     # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
-    #     api_call(
-    #         end_point="residual_wood",
-    #         payload=data,
-    #         method="POST"
-    #     )
+    for data in data_to_insert:
+        # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
+        api_call(
+            end_point="residual_wood",
+            payload=data,
+            method="POST"
+        )
 
-    out.clean_db(100)
+    # out.clean_db(100)
