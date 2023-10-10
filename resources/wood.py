@@ -5,7 +5,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from models import ResidualWoodModel, WasteWoodModel
 from schema import WoodSchema, WasteWoodSchema, WoodUpdateSchema
 
-
 blp = Blueprint('DataWood', 'wood', description='Operations on the wood')
 
 
@@ -20,13 +19,43 @@ class ResidualWoodList(MethodView):
     @blp.arguments(WoodSchema)
     @blp.response(201, WoodSchema)
     def post(self, parsed_data):
+
         wood = ResidualWoodModel(**parsed_data)
+
+        # Get the latest item in the database
+        last_wood_in_db = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
+
+        wood_db_int = 1
+        if last_wood_in_db:
+            # Get the integer value of the last wood_id
+            wood_db_int = int(last_wood_in_db.wood_id)
+
+        # Set the new wood_id incrementing based on the formatting e.g. '0000001' from the
+        # last existing wood_id in the database
+        wood.wood_id = '0' * (7 - len(str(wood_db_int))) + str(wood_db_int + 1)
+
         try:
             db.session.add(wood)
             db.session.commit()
         except SQLAlchemyError as e:
             abort(500, message=str(e))
         return wood
+
+    @blp.arguments(WoodSchema(partial=["length", "width", "height", "timestamp", "color", "density", "weight"]))
+    @blp.response(200, WoodSchema)
+    def delete(self, parsed_data):
+
+        wood_id_str = parsed_data['wood_id']
+        wood = ResidualWoodModel.query.filter(ResidualWoodModel.wood_id == wood_id_str).first()
+
+        if wood:
+            db.session.delete(wood)
+            db.session.commit()
+            return {
+                "message": "wood deleted from database."
+            }
+        else:
+            abort(404)
 
 
 @blp.route('/residual_wood/<int:wood_id>')
@@ -67,7 +96,7 @@ class ResidualWood(MethodView):
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
             wood.image = parsed_data.get('image', '/path/to/image.jpg')
-            # wood.intake_id = parsed_data.get("intake_id", 1)
+            wood.intake_id = parsed_data.get("intake_id", 1)
             wood.wood_species = parsed_data.get('wood_species', "")
             wood.label = parsed_data.get('label', "")
             wood.paint = parsed_data.get('paint', "")
@@ -75,6 +104,8 @@ class ResidualWood(MethodView):
             wood.is_fire_treated = parsed_data.get('is_fire_treated', 0)
             wood.is_straight = parsed_data.get('is_straight', 1)
             wood.is_planed = parsed_data.get('is_planed', 1)
+            wood.storage_location = parsed_data.get('storage_location', "")
+            wood.wood_id = parsed_data.get('wood_id', "")
 
         db.session.add(wood)
         db.session.commit()
