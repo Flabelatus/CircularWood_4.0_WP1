@@ -4,20 +4,20 @@ import json
 import pandas as pd
 import requests
 
-from utils.api_call import api_call
-
 
 class ManualCSVDataToResidualWoodDB:
     """Follows the schema of the residual wood"""
 
     def __init__(
             self,
-            fp: str = "../csv_data/wood database v3.1.csv",
+            fp: str = "../data_backup/wood database v3.1.csv",
             delimiter: str = ";",
+            backup_fp: str = "./../data_backup/backup_11-02-2023.json",
             save_file: str = "../wood database v3.1.json",
             **kwargs
     ):
         self.fp = fp
+        self.backup_fp = backup_fp
         self.save_file = save_file
         self.delimiter = delimiter
         self.info = kwargs.get(
@@ -50,9 +50,73 @@ class ManualCSVDataToResidualWoodDB:
         return pd.read_csv(self.fp, delimiter=self.delimiter)
 
     @staticmethod
-    def clean_db(last_index):
-        for index in range(1, last_index + 1):
+    def clean_db(start_index, end_index):
+        for index in range(start_index, end_index + 1):
             requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
+
+    def restore_backup(self):
+        all_rows = list()
+
+        with open(self.backup_fp, 'r') as back_up_data:
+            rows = json.load(back_up_data)
+
+            for i in range(252, len(rows)):
+                del rows[i]['id']
+
+                # del rows[i]['timestamp']
+                # del rows[i]['density']
+                # del rows[i]['wood_id']
+                # rows[i]['density'] = 100
+
+                rows[i]['label'] = ""
+                rows[i]['reservation_name'] = ""
+                rows[i]['reservation_time'] = ""
+
+                rows[i]['paint'] = ""
+                rows[i]['project_type'] = ""
+                rows[i]['image'] = ""
+                rows[i]['price'] = 0
+                rows[i]['intake_id'] = 1
+                rows[i]['wood_species'] = ""
+                rows[i]['name'] = ""
+
+                all_rows.append(rows[i])
+
+            for r in all_rows:
+                body = json.dumps(r)
+                # print(body)
+                requests.post(
+                    url="https://robotlab-residualwood.onrender.com/residual_wood",
+                    headers={'Content-Type': 'application/json'},
+                    data=body
+                )
+
+    def apply_correction(self):
+        existing_rows = []
+        with open(self.backup_fp, 'r') as back_up_data:
+            rows = json.load(back_up_data)
+            for i in range(len(rows)):
+                del rows[i]['timestamp']
+
+                rows[i]['weight'] /= 10
+
+                if rows[i]['weight'] != 0 and 0 < rows[i]['weight'] < 10:
+                    rows[i]['weight'] *= 1000
+
+                if i > 252:
+                    rows[i]['weight'] *= 10
+
+                rows[i]['source'] = "HvA Jakoba Mulderhuis (JMH)"
+
+                try:
+                    rows[i]['density'] = rows[i]['weight'] / rows[i]['length'] * rows[i]['width'] * rows[i]['height'] * 0.1
+                except ZeroDivisionError:
+                    rows[i]['density'] = 0
+
+                existing_rows.append(rows[i])
+
+            for r in existing_rows:
+                print(f"ID:{r['id']}", r)
 
     def compile_data(self):
         df = self.data_frame
@@ -88,13 +152,15 @@ if __name__ == "__main__":
     out = ManualCSVDataToResidualWoodDB()
     data_to_insert = out.compile_data()
     out.generate_label_from_column()
-    #
-    for data in data_to_insert:
-        # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
-        api_call(
-            end_point="residual_wood",
-            payload=data,
-            method="POST"
-        )
+    out.apply_correction()
+    # out.restore_backup()
 
-    # out.clean_db(100)
+    # for data in data_to_insert:
+    #     # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
+    #     api_call(
+    #         end_point="residual_wood",
+    #         payload=data,
+    #         method="PATCH"
+    #     )
+
+    # out.clean_db(252, 260)
