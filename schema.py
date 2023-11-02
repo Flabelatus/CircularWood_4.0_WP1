@@ -97,7 +97,6 @@ class WoodUpdateSchema(Schema):
     image = fields.Str()
 
 
-
 class DesignRequirementSchema(PlainDesignRequirementSchema):
     woods = fields.Nested(WoodSchema(), dump_only=True, load_instance=True)
 
