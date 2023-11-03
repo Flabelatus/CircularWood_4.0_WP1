@@ -1,3 +1,8 @@
+"""
+Some scripts to help overwriting data in the database for correction etc.
+For further questions you can contact me: j.jooshesh@hva.nl
+"""
+
 import datetime
 import json
 
@@ -5,54 +10,40 @@ import pandas as pd
 import requests
 
 
-class ManualCSVDataToResidualWoodDB:
-    """Follows the schema of the residual wood"""
+BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
+CSV_FILEPATH = ""
+SAVING_FILEPATH = ""
 
-    def __init__(
-            self,
-            fp: str = "../data_backup/wood database v3.1.csv",
-            delimiter: str = ";",
-            backup_fp: str = "./../data_backup/backup_11-02-2023.json",
-            save_file: str = "../wood database v3.1.json",
-            **kwargs
-    ):
+
+class ManualCSVDataToResidualWoodDB:
+    """This class is to help manipulating the wood database according to the data in the csv format that are manually
+     measuredFollows the schema of the residual wood"""
+
+    def __init__(self, fp: str = CSV_FILEPATH, delimiter: str = ";", backup_fp: str = BACKUP_FILEPATH,
+                 save_file: str = SAVING_FILEPATH, **kwargs):
+
         self.fp = fp
         self.backup_fp = backup_fp
         self.save_file = save_file
         self.delimiter = delimiter
-        self.info = kwargs.get(
-            "info",
-            "Intake for residual wood in Robot Lab HvA, for production of the Stool in WP1 for CW4.0 Project"
-        )
 
-        self.source = kwargs.get("source", "HvA Jakoba Mulderhuis (JMH)")
-        self.price = kwargs.get("price", 0.0)
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M-%S")
-
-        self.reserved = False
-        self.reserved_by = "-"
-        self.reserved_at = "-"
-
-        self.color = kwargs.get("color", ["222,130,34"])
-        self.wood_id = self.generate_label_from_column()
         self.output = []
-
-    def generate_label_from_column(self) -> list:
-        wood_id = self.data_frame['wood_id']
-        generated_wood_ids = []
-        for k, v in wood_id.items():
-            label_format = '0' * (7 - len(str(v))) + str(v)
-            generated_wood_ids.append(label_format)
-        return generated_wood_ids
 
     @property
     def data_frame(self):
-        return pd.read_csv(self.fp, delimiter=self.delimiter)
+        if self.fp != "":
+            return pd.read_csv(self.fp, delimiter=self.delimiter)
+        else:
+            print('The path to CSV does not exist')
+            return None
 
     @staticmethod
     def clean_db(start_index, end_index):
         for index in range(start_index, end_index + 1):
-            requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
+            print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
+            # For safety this request is commented.
+            # requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
 
     def restore_backup(self):
         all_rows = list()
@@ -60,63 +51,63 @@ class ManualCSVDataToResidualWoodDB:
         with open(self.backup_fp, 'r') as back_up_data:
             rows = json.load(back_up_data)
 
-            for i in range(252, len(rows)):
+            for i in range(1, len(rows)):
                 del rows[i]['id']
 
-                # del rows[i]['timestamp']
-                # del rows[i]['density']
-                # del rows[i]['wood_id']
-                # rows[i]['density'] = 100
-
-                rows[i]['label'] = ""
-                rows[i]['reservation_name'] = ""
-                rows[i]['reservation_time'] = ""
-
-                rows[i]['paint'] = ""
-                rows[i]['project_type'] = ""
-                rows[i]['image'] = ""
-                rows[i]['price'] = 0
-                rows[i]['intake_id'] = 1
-                rows[i]['wood_species'] = ""
-                rows[i]['name'] = ""
+                for j in range(len(rows)):
+                    for key in rows[i]:
+                        if rows[i][key] is None:
+                            if key != 'price':
+                                rows[i][key] = ""
+                            else:
+                                rows[i][key] = 0
 
                 all_rows.append(rows[i])
 
             for r in all_rows:
                 body = json.dumps(r)
-                # print(body)
-                requests.post(
-                    url="https://robotlab-residualwood.onrender.com/residual_wood",
-                    headers={'Content-Type': 'application/json'},
-                    data=body
-                )
+                print(body)
+
+                # For safety this is disabled
+
+                # requests.post(
+                #     url="https://robotlab-residualwood.onrender.com/residual_wood",
+                #     headers={'Content-Type': 'application/json'},
+                #     data=body
+                # )
 
     def apply_correction(self):
-        existing_rows = []
+        updated_rows = []
         with open(self.backup_fp, 'r') as back_up_data:
-            rows = json.load(back_up_data)
-            for i in range(len(rows)):
-                del rows[i]['timestamp']
+            existing_rows = json.load(back_up_data)
+            for i in range(len(existing_rows)):
 
-                rows[i]['weight'] /= 10
+                # delete this field as it's not needed to update
+                del existing_rows[i]['timestamp']
+                existing_rows[i]['source'] = "HvA Jakoba Mulderhuis (JMH)"
 
-                if rows[i]['weight'] != 0 and 0 < rows[i]['weight'] < 10:
-                    rows[i]['weight'] *= 1000
+                # Here you can add any changes needed to update the database
+                #
 
-                if i > 252:
-                    rows[i]['weight'] *= 10
+                # After the changes, add them to th rows
+                updated_rows.append(existing_rows[i])
 
-                rows[i]['source'] = "HvA Jakoba Mulderhuis (JMH)"
+        # update all the rows
+        for r in updated_rows:
+            new_row = r.copy()
+            del new_row['id']
 
-                try:
-                    rows[i]['density'] = rows[i]['weight'] / rows[i]['length'] * rows[i]['width'] * rows[i]['height'] * 0.1
-                except ZeroDivisionError:
-                    rows[i]['density'] = 0
+            payload = json.dumps(new_row)
 
-                existing_rows.append(rows[i])
+            print(r['id'], "This is just printed statement, the request is not sent")
 
-            for r in existing_rows:
-                print(f"ID:{r['id']}", r)
+            # For safety this is disabled
+
+            # requests.patch(
+            #     url=f"https://robotlab-residualwood.onrender.com/residual_wood/{r['id']}",
+            #     headers={'Content-Type': 'application/json'},
+            #     data=payload
+            # )
 
     def compile_data(self):
         df = self.data_frame
@@ -130,17 +121,16 @@ class ManualCSVDataToResidualWoodDB:
                 "width": row['width'],
                 "height": row['height'],
                 "weight": int(row['weight']),
-                "color": self.color[0],
-                "reserved": self.reserved,
-                "reservation_name": self.reserved_by,
-                "reservation_time": self.reserved_at,
+                "color": "222,130,34",
+                "reserved": False,
+                "reservation_name": "",
+                "reservation_time": "",
                 "type": "hardwood",
-                "price": self.price,
-                "source": self.source,
+                "price": 0,
+                "source": "HvA Jakoba Mulderhuis (JMH)",
                 "timestamp": self.timestamp,
                 "info": row['info'],
-                "density": int((row['length'] * row['width'] * row['height']) / row['weight']),
-                "wood_id": self.generate_label_from_column()[index],
+                "density": int(row['weight'] / (row['length'] * row['width'] * row['height']) * 1000000),
                 "storage_location": row['storage_location'],
                 "intake_id": 1
             }
@@ -149,18 +139,31 @@ class ManualCSVDataToResidualWoodDB:
 
 
 if __name__ == "__main__":
+
+    """
+    WARNING: 
+
+    *** ONLY RUN THE FOLLOWING FUNCTIONS IF YOU KNOW WHAT YOU ARE DOING! THIS CAN
+    LEAD TO MESSING UP WITH THE DATA IN THE WOOD DATABASE ***
+
+    ===============================================================================
+        SET OF FUNCTIONS TO EITHER DELETE ALL DATA OR RESTORE ACCORDING TO THE BACKUP.
+        FOR NOW THEY ARE COMMENTED OUT TO PREVENT ACCIDENTAL EXECUTION.
+    ===============================================================================
+    """
+
+    # Initiating the class
     out = ManualCSVDataToResidualWoodDB()
-    data_to_insert = out.compile_data()
-    out.generate_label_from_column()
-    out.apply_correction()
+
+    # To update all the rows for correction of data
+    # out.apply_correction()
+
+    # To read and restore a backup file
     # out.restore_backup()
 
-    # for data in data_to_insert:
-    #     # requests.post(url='https://robotlab-residualwood.onrender.com/residual_wood', data=data)
-    #     api_call(
-    #         end_point="residual_wood",
-    #         payload=data,
-    #         method="PATCH"
-    #     )
+    # To remove rows from the database based on range of row IDs
+    # out.clean_db(1, 459)
 
-    # out.clean_db(252, 260)
+    # For inserting data from CSV to the DB
+    # data_to_insert = out.compile_data()
+
