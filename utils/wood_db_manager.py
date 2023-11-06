@@ -9,15 +9,17 @@ import json
 import pandas as pd
 import requests
 
-
 BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
 CSV_FILEPATH = ""
 SAVING_FILEPATH = ""
 
 
-class ManualCSVDataToResidualWoodDB:
-    """This class is to help manipulating the wood database according to the data in the csv format that are manually
-     measuredFollows the schema of the residual wood"""
+class WoodDbManager:
+    """
+    The class specifically designed for managing a database of residual wood incorporating features for reading
+    from a CSV file, cleaning the database, restoring data from a backup, and
+    applying corrections to the database entries.
+    """
 
     def __init__(self, fp: str = CSV_FILEPATH, delimiter: str = ";", backup_fp: str = BACKUP_FILEPATH,
                  save_file: str = SAVING_FILEPATH, **kwargs):
@@ -39,11 +41,12 @@ class ManualCSVDataToResidualWoodDB:
             return None
 
     @staticmethod
-    def clean_db(start_index, end_index):
+    def clean_up_data(start_index, end_index):
         for index in range(start_index, end_index + 1):
             print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
             # For safety this request is commented.
-            # requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
+            # r = requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
+            # print(r.status_code)
 
     def restore_backup(self):
         all_rows = list()
@@ -51,7 +54,7 @@ class ManualCSVDataToResidualWoodDB:
         with open(self.backup_fp, 'r') as back_up_data:
             rows = json.load(back_up_data)
 
-            for i in range(1, len(rows)):
+            for i in range(0, len(rows)):
                 del rows[i]['id']
 
                 for j in range(len(rows)):
@@ -70,21 +73,23 @@ class ManualCSVDataToResidualWoodDB:
 
                 # For safety this is disabled
 
-                # requests.post(
+                # r = requests.post(
                 #     url="https://robotlab-residualwood.onrender.com/residual_wood",
                 #     headers={'Content-Type': 'application/json'},
                 #     data=body
                 # )
+                # print(r.status_code)
 
     def apply_correction(self):
         updated_rows = []
         with open(self.backup_fp, 'r') as back_up_data:
             existing_rows = json.load(back_up_data)
-            for i in range(len(existing_rows)):
-
+            for i in range(400, 458):
                 # delete this field as it's not needed to update
                 del existing_rows[i]['timestamp']
-                existing_rows[i]['source'] = "HvA Jakoba Mulderhuis (JMH)"
+                existing_rows[i]['source'] = "Hooidrift 129B"
+                existing_rows[i]['name'] = "Red oak FSC"
+                existing_rows[i]['price'] = 0.27
 
                 # Here you can add any changes needed to update the database
                 #
@@ -99,17 +104,18 @@ class ManualCSVDataToResidualWoodDB:
 
             payload = json.dumps(new_row)
 
-            print(r['id'], "This is just printed statement, the request is not sent")
+            print(r['id'], "This is just printed statement, the request is not sent", r['name'])
 
             # For safety this is disabled
 
-            # requests.patch(
+            # r = requests.patch(
             #     url=f"https://robotlab-residualwood.onrender.com/residual_wood/{r['id']}",
             #     headers={'Content-Type': 'application/json'},
             #     data=payload
             # )
+            # print(r.status_code)
 
-    def compile_data(self):
+    def compile_data_from_csv(self):
         df = self.data_frame
         df = df.fillna('')
         df['weight'] = df['weight'].astype(float) * 10
@@ -139,7 +145,6 @@ class ManualCSVDataToResidualWoodDB:
 
 
 if __name__ == "__main__":
-
     """
     WARNING: 
 
@@ -153,7 +158,7 @@ if __name__ == "__main__":
     """
 
     # Initiating the class
-    out = ManualCSVDataToResidualWoodDB()
+    out = WoodDbManager()
 
     # To update all the rows for correction of data
     # out.apply_correction()
@@ -162,8 +167,7 @@ if __name__ == "__main__":
     # out.restore_backup()
 
     # To remove rows from the database based on range of row IDs
-    # out.clean_db(1, 459)
+    # out.clean_up_data(1, 459)
 
     # For inserting data from CSV to the DB
-    # data_to_insert = out.compile_data()
-
+    # data_to_insert = out.compile_data_from_csv()
