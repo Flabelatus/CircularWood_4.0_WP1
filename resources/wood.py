@@ -1,5 +1,6 @@
 from flask_smorest import abort, Blueprint
 from flask.views import MethodView
+from flask_jwt_extended import jwt_required
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
 from models import ResidualWoodModel, WasteWoodModel
@@ -41,6 +42,7 @@ class ResidualWoodList(MethodView):
             abort(500, message=str(e))
         return wood
 
+    @jwt_required()
     @blp.arguments(WoodSchema(partial=["length", "width", "height", "timestamp", "color", "density", "weight"]))
     @blp.response(200, WoodSchema)
     def delete(self, parsed_data):
@@ -66,6 +68,7 @@ class ResidualWood(MethodView):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
         return wood
 
+    @jwt_required()
     @blp.response(200, WoodSchema)
     def delete(self, wood_id):
         wood = ResidualWoodModel.query.get_or_404(wood_id)
@@ -75,6 +78,7 @@ class ResidualWood(MethodView):
             "message": "wood deleted from database."
         }
 
+    @jwt_required()
     @blp.arguments(WoodUpdateSchema)
     @blp.response(200, WoodUpdateSchema)
     def patch(self, parsed_data, wood_id):

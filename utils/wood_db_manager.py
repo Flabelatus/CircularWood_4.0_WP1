@@ -52,7 +52,12 @@ class WoodDbManager:
             # print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
             # For safety this request is commented.
             url = URL + "residual_wood/" + (str(index))
-            r = requests.delete(url=url)
+            access_token = ""
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + access_token
+            }
+            r = requests.delete(url=url, headers=headers)
             print(r.json())
 
     def restore_backup(self):
@@ -76,7 +81,6 @@ class WoodDbManager:
 
             for row in all_rows:
                 body = json.dumps(row)
-                print(body)
 
                 # For safety this is disabled
 
@@ -122,6 +126,37 @@ class WoodDbManager:
             # )
             # print(r)
 
+    def filter_removed_ids_from_csv(self):
+
+        self.compile_data_from_csv()
+
+        ids_from_csv = []
+        all_ids = []
+
+        for row in self.output:
+            ids_from_csv.append(row['id'])
+        resp = requests.get(url=f"{URL}residual_wood")
+        for r in resp.json():
+            all_ids.append(r['id'])
+
+        ids_to_delete = set(all_ids).difference(ids_from_csv)
+
+        jwt_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc2NjY4LCJqdGkiOiJlOGZjY"
+                     "WVkZC0yZmYzLTRhYzMtOTRlMy1hYmM4Y2JlMTFiM2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTkzNzY"
+                     "2NjgsImV4cCI6MTY5OTM3NzU2OCwiaXNfYWRtaW4iOnRydWV9.lJ3VflMuKI2G451mz09Ty6B80CUfuhbqMVDLYozSsl4")
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + jwt_token
+        }
+
+        for i in sorted(ids_to_delete):
+            resp = requests.delete(
+                url=f"{URL}residual_wood/{i}",
+                headers=headers
+            )
+
+            print(resp.json())
+
     @staticmethod
     def update_specified_rows(row_id: int, data: List[Dict]):
 
@@ -135,10 +170,18 @@ class WoodDbManager:
                 payload.append(updating_row)
         print(payload[0])
         json_payload = json.dumps(payload[0])
-
+        access_token = (
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc1NDMwLCJqdGkiOiI0YTRiMD"
+            "dlOS0xNTcwLTRkYjQtODE0NC1lOTk0NGE2ZDZhMDUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTkzNzU0"
+            "MzAsImV4cCI6MTY5OTM3NjMzMCwiaXNfYWRtaW4iOnRydWV9.QMAcPDR8fOtlCfwAyl5ORtkwfl8RTo7nChR4xPgZZQE"
+        )
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access_token
+        }
         resp = requests.patch(
             url=f"{URL}residual_wood/{row_id}",
-            headers={'Content-Type': 'application/json'},
+            headers=headers,
             data=json_payload
         )
         print(resp.json())
@@ -192,6 +235,8 @@ if __name__ == "__main__":
 
     # Initiating the class
     out = WoodDbManager()
+
+    out.filter_removed_ids_from_csv()
 
     # compile data from the manually entered data in csv
     # out.compile_data_from_csv()
