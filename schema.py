@@ -105,3 +105,10 @@ class DesignRequirementsAndWoodsSchema(Schema):
     message = fields.Str()
     wood = fields.Nested(WoodSchema(), load_instance=True)
     requirements = fields.Nested(DesignRequirementSchema(), load_instance=True)
+
+
+class UserSchema(Schema):
+    id = fields.Int(dump_only=True)
+    username = fields.Str(required=True)
+    # This must stay load only, since we never want to return the password
+    password = fields.Str(required=True, load_only=True)
