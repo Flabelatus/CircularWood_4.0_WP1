@@ -5,13 +5,19 @@ For further questions you can contact me: j.jooshesh@hva.nl
 
 import datetime
 import json
+import os
+from typing import List, Dict
 
 import pandas as pd
+from load_dotenv import load_dotenv
 import requests
 
 BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
-CSV_FILEPATH = ""
+CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
 SAVING_FILEPATH = ""
+
+load_dotenv()
+URL = os.getenv("URL")
 
 
 class WoodDbManager:
@@ -43,10 +49,11 @@ class WoodDbManager:
     @staticmethod
     def clean_up_data(start_index, end_index):
         for index in range(start_index, end_index + 1):
-            print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
+            # print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
             # For safety this request is commented.
-            # r = requests.delete(url=f"https://robotlab-residualwood.onrender.com/residual_wood/{index}")
-            # print(r.status_code)
+            url = URL + "residual_wood/" + (str(index))
+            r = requests.delete(url=url)
+            print(r.json())
 
     def restore_backup(self):
         all_rows = list()
@@ -67,18 +74,18 @@ class WoodDbManager:
 
                 all_rows.append(rows[i])
 
-            for r in all_rows:
-                body = json.dumps(r)
+            for row in all_rows:
+                body = json.dumps(row)
                 print(body)
 
                 # For safety this is disabled
 
-                # r = requests.post(
-                #     url="https://robotlab-residualwood.onrender.com/residual_wood",
-                #     headers={'Content-Type': 'application/json'},
-                #     data=body
-                # )
-                # print(r.status_code)
+                resp = requests.post(
+                    url=f"{URL}residual_wood",
+                    headers={'Content-Type': 'application/json'},
+                    data=body
+                )
+                print(resp.json())
 
     def apply_correction(self):
         updated_rows = []
@@ -113,34 +120,60 @@ class WoodDbManager:
             #     headers={'Content-Type': 'application/json'},
             #     data=payload
             # )
-            # print(r.status_code)
+            # print(r)
+
+    @staticmethod
+    def update_specified_rows(row_id: int, data: List[Dict]):
+
+        payload = []
+
+        for row in data:
+            if row_id == row['id']:
+                updating_row = row.copy()
+                del updating_row['id']
+                del updating_row['timestamp']
+                payload.append(updating_row)
+        print(payload[0])
+        json_payload = json.dumps(payload[0])
+
+        resp = requests.patch(
+            url=f"{URL}residual_wood/{row_id}",
+            headers={'Content-Type': 'application/json'},
+            data=json_payload
+        )
+        print(resp.json())
 
     def compile_data_from_csv(self):
         df = self.data_frame
         df = df.fillna('')
-        df['weight'] = df['weight'].astype(float) * 10
 
-        for index, row in df.iterrows():
-            d = {
-                "length": row['length'],
-                "name": "Red oak FSC",
-                "width": row['width'],
-                "height": row['height'],
-                "weight": int(row['weight']),
-                "color": "222,130,34",
-                "reserved": False,
-                "reservation_name": "",
-                "reservation_time": "",
-                "type": "hardwood",
-                "price": 0,
-                "source": "HvA Jakoba Mulderhuis (JMH)",
-                "timestamp": self.timestamp,
-                "info": row['info'],
-                "density": int(row['weight'] / (row['length'] * row['width'] * row['height']) * 1000000),
-                "storage_location": row['storage_location'],
-                "intake_id": 1
-            }
-            self.output.append(d)
+        try:
+            for index, row in df.iterrows():
+                d = {
+                    "id": int(row['id']),
+                    "length": float(row['length']),
+                    "name": "Red oak FSC",
+                    "width": float(row['width']),
+                    "height": float(row['height']),
+                    "weight": float(row['weight']),
+                    "color": "222,130,34",
+                    "reserved": False,
+                    "reservation_name": "",
+                    "reservation_time": "",
+                    "type": "hardwood",
+                    "price": 0.0,
+                    "source": "HvA Jakoba Mulderhuis (JMH)",
+                    "timestamp": self.timestamp,
+                    "info": row['info'],
+                    "density": float(float(row['weight']) / (
+                            float(row['length']) * float(row['width']) * float(row['height'])) * 1000000),
+                    "storage_location": row['storage_location'],
+                    "intake_id": 1
+                }
+                self.output.append(d)
+        except ValueError:
+            pass
+
         return self.output
 
 
@@ -160,6 +193,13 @@ if __name__ == "__main__":
     # Initiating the class
     out = WoodDbManager()
 
+    # compile data from the manually entered data in csv
+    # out.compile_data_from_csv()
+
+    # update rows by ids
+    # for r in out.output:
+    #     out.update_specified_rows(r['id'], out.output)
+
     # To update all the rows for correction of data
     # out.apply_correction()
 
@@ -167,7 +207,7 @@ if __name__ == "__main__":
     # out.restore_backup()
 
     # To remove rows from the database based on range of row IDs
-    # out.clean_up_data(1, 459)
+    # out.clean_up_data(1, 101)
 
     # For inserting data from CSV to the DB
     # data_to_insert = out.compile_data_from_csv()

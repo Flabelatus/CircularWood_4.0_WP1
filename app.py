@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
+from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_smorest import Api
 from load_dotenv import load_dotenv
@@ -9,6 +10,8 @@ from db import db
 from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
 from resources.design_requirements import design_blp
+from resources.user import user_blp
+from blocklist import BLOCKLIST
 
 
 def create_app(db_url=None):
@@ -30,6 +33,80 @@ def create_app(db_url=None):
     migrate = Migrate(app, db)
     api = Api(app)
 
+    app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
+    jwt = JWTManager(app)
+
+    @jwt.needs_fresh_token_loader
+    def token_not_fresh_callback(jwt_header, jwt_payload):
+        return (
+            jsonify(
+                {
+                    "description": "the token is not fresh",
+                    "error": "fresh_token_required"
+                }
+            ), 401
+        )
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_in_blocklist(jwt_header, jwt_payload):
+        """
+        The function to get the `jti` from the JWT in the Blocklist
+        :param jwt_header: The header from the JWT to be used in case of need
+        :param jwt_payload: The JWT payload to check for `jti`
+        :return: The `jti` of the JWT from the blocklist.
+        """
+        return jwt_payload['jti'] in BLOCKLIST
+
+    @jwt.revoked_token_loader
+    def revoked_token_callback(jwt_header, jwt_payload):
+        return (
+            jsonify(
+                {
+                    "description": "the token has been revoked.",
+                    "error": "token_revoked"
+                }
+            ), 401
+        )
+
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
+        if identity == 1:
+            return {"is_admin": True}
+        return {"is_admin": False}
+
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_payload):
+        return (
+            jsonify(
+                {
+                    "message": "the token has expired.",
+                    "error": "token_expired"
+                }
+            ), 401
+        )
+
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return (
+            jsonify(
+                {
+                    "message": "signature verification failed.",
+                    "error": "invalid_token"
+                }
+            ), 401
+        )
+
+    @jwt.unauthorized_loader
+    def missing_token_callback(error):
+        return (
+            jsonify(
+                {
+                    "message": "request does not contain a valid access token.",
+                    "error": "authorization_required"
+                }
+            ), 401
+        )
+
     @app.before_first_request
     def create_tables():
         db.create_all()
@@ -37,5 +114,6 @@ def create_app(db_url=None):
     api.register_blueprint(wood_blueprint)
     api.register_blueprint(tags_blueprint)
     api.register_blueprint(design_blp)
+    api.register_blueprint(user_blp)
 
     return app
