@@ -17,7 +17,7 @@ CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
 SAVING_FILEPATH = ""
 
 load_dotenv()
-URL = os.getenv("URL")
+URL = os.getenv("PRODUCTION_URL")
 
 
 class WoodDbManager:
@@ -52,7 +52,10 @@ class WoodDbManager:
             # print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
             # For safety this request is commented.
             url = URL + "residual_wood/" + (str(index))
-            access_token = ""
+            access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
+                            "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
+                            "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
+                            "UsIpdJLVGVg0O3sDMMLko")
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + access_token
@@ -141,12 +144,13 @@ class WoodDbManager:
 
         ids_to_delete = set(all_ids).difference(ids_from_csv)
 
-        jwt_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc2NjY4LCJqdGkiOiJlOGZjY"
-                     "WVkZC0yZmYzLTRhYzMtOTRlMy1hYmM4Y2JlMTFiM2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTkzNzY"
-                     "2NjgsImV4cCI6MTY5OTM3NzU2OCwiaXNfYWRtaW4iOnRydWV9.lJ3VflMuKI2G451mz09Ty6B80CUfuhbqMVDLYozSsl4")
+        access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
+                        "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
+                        "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
+                        "UsIpdJLVGVg0O3sDMMLko")
         headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + jwt_token
+            "Authorization": "Bearer " + access_token
         }
 
         for i in sorted(ids_to_delete):
@@ -170,11 +174,10 @@ class WoodDbManager:
                 payload.append(updating_row)
         print(payload[0])
         json_payload = json.dumps(payload[0])
-        access_token = (
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc1NDMwLCJqdGkiOiI0YTRiMD"
-            "dlOS0xNTcwLTRkYjQtODE0NC1lOTk0NGE2ZDZhMDUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTkzNzU0"
-            "MzAsImV4cCI6MTY5OTM3NjMzMCwiaXNfYWRtaW4iOnRydWV9.QMAcPDR8fOtlCfwAyl5ORtkwfl8RTo7nChR4xPgZZQE"
-        )
+        access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
+                        "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
+                        "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
+                        "UsIpdJLVGVg0O3sDMMLko")
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + access_token

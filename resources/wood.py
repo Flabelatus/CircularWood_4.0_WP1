@@ -23,17 +23,17 @@ class ResidualWoodList(MethodView):
 
         wood = ResidualWoodModel(**parsed_data)
 
-        # Get the latest item in the database
-        last_wood_in_db = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
-
-        wood_db_int = 0
-        if last_wood_in_db:
-            # Get the integer value of the last wood_id
-            wood_db_int = int(last_wood_in_db.wood_id)
-
-        # Set the new wood_id incrementing based on the formatting e.g. '0000001' from the
-        # last existing wood_id in the database
-        wood.wood_id = '0' * (7 - len(str(wood_db_int))) + str(wood_db_int + 1)
+        # # Get the latest item in the database
+        # last_wood_in_db = ResidualWoodModel.query.order_by(ResidualWoodModel.id.desc()).first()
+        #
+        # wood_db_int = 0
+        # if last_wood_in_db:
+        #     # Get the integer value of the last wood_id
+        #     wood_db_int = int(last_wood_in_db.wood_id)
+        #
+        # # Set the new wood_id incrementing based on the formatting e.g. '0000001' from the
+        # # last existing wood_id in the database
+        # wood.wood_id = '0' * (7 - len(str(wood_db_int))) + str(wood_db_int + 1)
 
         try:
             db.session.add(wood)
