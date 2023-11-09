@@ -15,7 +15,7 @@ import requests
 BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
 CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
 SAVING_FILEPATH = ""
-
+AUTH = os.getenv("ACCESS_TOKEN")
 load_dotenv()
 URL = os.getenv("PRODUCTION_URL")
 
@@ -34,6 +34,7 @@ class WoodDbManager:
         self.backup_fp = backup_fp
         self.save_file = save_file
         self.delimiter = delimiter
+        self.access_token = ""
 
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M-%S")
         self.output = []
@@ -46,16 +47,12 @@ class WoodDbManager:
             print('The path to CSV does not exist')
             return None
 
-    @staticmethod
-    def clean_up_data(start_index, end_index):
+    def clean_up_data(self, start_index, end_index):
         for index in range(start_index, end_index + 1):
             # print("Deleting row :", index, " -- Request is not sent, this is printed statement only")
             # For safety this request is commented.
             url = URL + "residual_wood/" + (str(index))
-            access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
-                            "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
-                            "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
-                            "UsIpdJLVGVg0O3sDMMLko")
+            access_token = self.access_token
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + access_token
@@ -93,6 +90,39 @@ class WoodDbManager:
                     data=body
                 )
                 print(resp.json())
+
+    @staticmethod
+    def register():
+        inputs = {
+            "username": "javid",
+            "password": "12345"
+        }
+
+        payload = json.dumps(inputs)
+        r = requests.post(url=URL + "register", data=payload, headers={"Content-Type": "application/json"})
+        print(r.json())
+
+    def login(self):
+        credentials = {
+            "username": "javid",
+            "password": "12345"
+        }
+        payload = json.dumps(credentials)
+
+        r = requests.post(url=URL + "login", data=payload, headers={"Content-Type": "application/json"})
+        self.access_token = r.json()['access_token']
+        print(r.json())
+
+    def logout(self):
+        print(self.access_token)
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + self.access_token
+        }
+
+        r = requests.post(url=URL + "logout", headers=headers)
+
+        print(r.json())
 
     def apply_correction(self):
         updated_rows = []
@@ -144,10 +174,8 @@ class WoodDbManager:
 
         ids_to_delete = set(all_ids).difference(ids_from_csv)
 
-        access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
-                        "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
-                        "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
-                        "UsIpdJLVGVg0O3sDMMLko")
+        access_token = self.access_token
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + access_token
@@ -158,12 +186,9 @@ class WoodDbManager:
                 url=f"{URL}residual_wood/{i}",
                 headers=headers
             )
-
             print(resp.json())
 
-    @staticmethod
-    def update_specified_rows(row_id: int, data: List[Dict]):
-
+    def update_specified_rows(self, row_id: int, data: List[Dict]):
         payload = []
 
         for row in data:
@@ -174,14 +199,12 @@ class WoodDbManager:
                 payload.append(updating_row)
         print(payload[0])
         json_payload = json.dumps(payload[0])
-        access_token = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjk5Mzc3MjY3LCJqdGkiO"
-                        "iI2YTZjMzMxZC1hODE5LTQxY2YtYjY0OC1hOWQ3ZmYwZGI4ZGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYm"
-                        "YiOjE2OTkzNzcyNjcsImV4cCI6MTY5OTM3ODE2NywiaXNfYWRtaW4iOnRydWV9.VKcrvVaWTKOKGEmE0Z3Tvq"
-                        "UsIpdJLVGVg0O3sDMMLko")
+        access_token = self.access_token
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + access_token
         }
+
         resp = requests.patch(
             url=f"{URL}residual_wood/{row_id}",
             headers=headers,
@@ -236,26 +259,33 @@ if __name__ == "__main__":
     ===============================================================================
     """
 
-    # Initiating the class
+    # INITIALIZING THE CLASS
     out = WoodDbManager()
 
-    out.filter_removed_ids_from_csv()
+    # REGISTER
+    # out.register()
 
-    # compile data from the manually entered data in csv
-    # out.compile_data_from_csv()
+    # LOGIN
+    out.login()
 
-    # update rows by ids
+    # REMOVE THE NON-EXISTING ID
+    # out.filter_removed_ids_from_csv()
+
+    # UPDATE ROWS BY ID
     # for r in out.output:
     #     out.update_specified_rows(r['id'], out.output)
 
-    # To update all the rows for correction of data
+    # UPDATE ALL THE ROWS FOR CORRECTION OF DATA
     # out.apply_correction()
 
-    # To read and restore a backup file
+    # READ AND RESTORE A BACKUP FILE
     # out.restore_backup()
 
-    # To remove rows from the database based on range of row IDs
-    # out.clean_up_data(1, 101)
+    # REMOVE ROWS FROM DB BASED ON RANGE OF ID
+    # out.clean_up_data(1, 459)
 
-    # For inserting data from CSV to the DB
-    # data_to_insert = out.compile_data_from_csv()
+    # INSERT DATA FROM CSV TO DB
+    # out.compile_data_from_csv()
+
+    # LOG OUT
+    # out.logout()
