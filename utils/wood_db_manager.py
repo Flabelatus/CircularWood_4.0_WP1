@@ -15,9 +15,8 @@ import requests
 BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
 CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
 SAVING_FILEPATH = ""
-AUTH = os.getenv("ACCESS_TOKEN")
+
 load_dotenv()
-URL = os.getenv("PRODUCTION_URL")
 
 
 class WoodDbManager:
