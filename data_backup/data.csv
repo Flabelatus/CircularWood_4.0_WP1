@@ -1,0 +1,445 @@
+color;density;height;id;image;info;intake_id;is_fire_treated;is_planed;is_straight;label;length;name;paint;price;project_type;reservation_name;reservation_time;reserved;source;storage_location;timestamp;type;weight;width;wood_id;wood_species
+150,143,116;626;20.0;1;/path/to/image.jpg;Twisted;1.0;FALSE;TRUE;TRUE;;1629;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:40;hardwood;3350;164;;
+176,167,149;447;27.0;2;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1565;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:40;hardwood;3650;193;;
+173,159,140;552;27.0;3;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1894;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;10/10/2023 10:40;hardwood;5450;193;;
+140,115,89;750;18.0;4;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;925;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;10/10/2023 10:40;hardwood;1600;128;;
+167,158,145;461;43.0;9;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1075;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:40;hardwood;3050;143;;
+126,114,91;514;10.0;10;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1674;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:40;hardwood;1300;151;;
+159,151,132;318;11.0;11;/path/to/image.jpg;Grove;1.0;FALSE;TRUE;TRUE;;1514;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:40;hardwood;600;113;;
+183,172,148;383;12.0;12;/path/to/image.jpg;Groves;1.0;FALSE;TRUE;TRUE;;2017;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:40;hardwood;1050;113;;
+168, 169, 163;422;23.0;13;/path/to/image.jpg;Cracked;1.0;FALSE;TRUE;TRUE;;1427;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:40;hardwood;1900;137;;
+152,121,75;390;12.0;14;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1887;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;10/10/2023 10:40;hardwood;1000;113;;
+149,131,101;391;12.0;15;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1886;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D5;10/10/2023 10:40;hardwood;1000;113;;
+156,139,109;362;12.0;16;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1831;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D7;10/10/2023 10:40;hardwood;900;113;;
+152,140,124;383;12.0;17;/path/to/image.jpg;Groves;1.0;FALSE;TRUE;TRUE;;2017;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:40;hardwood;1050;113;;
+170,139,97;332;12.0;18;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1883;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D5;10/10/2023 10:40;hardwood;850;113;;
+162,162,152;338;12.0;19;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1743;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:40;hardwood;800;113;;
+173,149,114;400;12.0;20;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1933;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:40;hardwood;1050;113;;
+144,137,122;322;12.0;21;/path/to/image.jpg;Groves;1.0;FALSE;TRUE;TRUE;;1715;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:40;hardwood;750;113;;
+179,159,125;410;12.0;23;/path/to/image.jpg;Cracked;1.0;FALSE;TRUE;TRUE;;1079;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;10/10/2023 10:40;hardwood;600;113;;
+159,142,115;400;12.0;25;/path/to/image.jpg;groves;1.0;FALSE;TRUE;TRUE;;1165;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:40;hardwood;700;125;;
+184,169,141;368;12.0;26;/path/to/image.jpg;groves;1.0;FALSE;TRUE;TRUE;;1168;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:40;hardwood;650;126;;
+167, 163, 152;641;34.0;27;/path/to/image.jpg;wood missing;1.0;FALSE;TRUE;TRUE;;1340;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:40;hardwood;3800;130;;
+149,106,61;500;28.0;28;/path/to/image.jpg;Twisted;1.0;FALSE;TRUE;TRUE;;1600;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:40;hardwood;2600;116;;
+158, 134, 97;516;4.0;29;/path/to/image.jpg;chips missing;1.0;FALSE;TRUE;TRUE;;1395;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:40;hardwood;300;104;;
+149, 148, 140;1935;31.0;31;/path/to/image.jpg;Slighty bended;1.0;FALSE;TRUE;TRUE;;1317;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:40;hardwood;2450;31;;
+157,146,120;475;45.0;32;/path/to/image.jpg;Holes;1.0;FALSE;TRUE;TRUE;;1710;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:40;hardwood;3400;93;;
+140,128,110;448;37.0;33;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2100;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:40;hardwood;3100;89;;Fure
+162,152,141;577;27.0;35;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;753;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C14;10/10/2023 10:40;hardwood;1350;115;;
+180,158,119;574;23.0;36;/path/to/image.jpg;groves;1.0;FALSE;TRUE;TRUE;;1165;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:40;hardwood;1400;91;;
+163,129,91;664;43.0;37;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1199;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:40;hardwood;2500;73;;
+130,95,65;448;27.0;38;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1670;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:40;hardwood;1800;89;;
+174, 163, 145;507;21.0;39;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1290;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:40;hardwood;1100;80;;
+148, 140, 124;731;19.0;40;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1230;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:40;hardwood;1350;79;;
+117,126,78;574;17.0;41;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1571;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:40;hardwood;1150;75;;
+155,131,93;491;43.0;42;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1750;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:40;hardwood;2700;73;;
+167,155,137;492;23.0;43;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1027;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;10/10/2023 10:40;hardwood;850;73;;
+140,99,63;641;17.0;44;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1569;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:40;hardwood;1250;73;;
+180,157,121;373;17.0;45;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;970;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;10/10/2023 10:40;hardwood;450;73;;
+149,141,129;479;43.0;46;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1005;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;10/10/2023 10:40;hardwood;1450;70;;
+187, 178, 165;634;50.0;47;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1197;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:40;hardwood;1900;50;;
+165,145,117;499;49.0;48;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1875;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D5;10/10/2023 10:40;hardwood;3350;73;;
+151,121,89;996;9.0;49;/path/to/image.jpg;Unusable;1.0;FALSE;TRUE;TRUE;;1150;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:40;hardwood;650;63;;
+162,134,95;447;39.0;50;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1643;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:40;hardwood;1750;61;;
+161,151,138;349;14.0;51;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;839;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;10/10/2023 10:40;hardwood;300;73;;
+181,167,133;424;37.0;52;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1617;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:40;hardwood;1500;59;;
+191,163,137;754;20.0;53;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1047;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;10/10/2023 10:40;hardwood;900;57;;
+143,121,81;402;17.0;54;/path/to/image.jpg;slighty bended;1.0;FALSE;TRUE;TRUE;;2107;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:40;hardwood;850;59;;?
+188,178,145;417;34.0;56;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1987;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:40;hardwood;1550;55;;
+150,141,129;543;43.0;57;/path/to/image.jpg;Hole;1.0;FALSE;TRUE;TRUE;;874;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;10/10/2023 10:40;hardwood;1450;71;;
+170,158,142;543;43.0;58;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;874;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;10/10/2023 10:40;hardwood;1450;71;;
+154,140,127;548;37.0;60;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;810;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;10/10/2023 10:40;hardwood;1200;73;;
+161, 132, 96;549;65.0;61;/path/to/image.jpg;chipped + missing part;1.0;FALSE;TRUE;TRUE;;1000;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;10/10/2023 10:40;hardwood;2000;56;;
+134, 128, 118;380;53.0;62;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1220;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:40;hardwood;1450;59;;
+124, 115, 105;437;65.0;63;/path/to/image.jpg;chipped;1.0;FALSE;TRUE;TRUE;;1000;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;10/10/2023 10:40;hardwood;1850;65;;
+155, 93, 41;597;37.0;64;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1210;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:40;hardwood;2700;101;;
+158,165,158;537;29.0;65;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1924;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:40;hardwood;1650;55;;
+107, 82, 52;791;23.0;66;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1424;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:40;hardwood;1400;54;;
+172,161,136;683;11.0;67;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2009;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:40;hardwood;800;53;;
+137, 124, 108;631;11.0;68;/path/to/image.jpg;damaged;1.0;FALSE;TRUE;TRUE;;1439;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:40;hardwood;500;50;;
+188,178,162;687;36.0;69;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;825;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;10/10/2023 10:40;hardwood;1000;49;;
+106, 66, 30;367;33.0;71;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1154;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:40;hardwood;700;50;;
+155, 141, 122;1343;14.0;72;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1400;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:40;hardwood;1159;44;;
+160,139,107;542;43.0;73;/path/to/image.jpg;Holes;1.0;FALSE;TRUE;TRUE;;1796;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:40;hardwood;1800;43;;
+185,171,139;508;43.0;74;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1862;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:40;hardwood;1750;43;;
+164,148,114;517;30.0;75;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1795;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:40;hardwood;1450;52;;
+133, 95, 64;609;16.0;76;/path/to/image.jpg;Wood is chipped;1.0;FALSE;TRUE;TRUE;;1425;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:40;hardwood;750;54;;
+160, 152, 136;462;21.0;77;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1043;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;10/10/2023 10:40;hardwood;800;79;;
+112,79,55;721;30.0;78;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1570;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:40;hardwood;1700;50;;
+148,110,76;482;30.0;79;/path/to/image.jpg;slighty bended;1.0;FALSE;TRUE;TRUE;;1920;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;10/10/2023 10:40;hardwood;1250;45;;
+165,147,111;416;33.0;80;/path/to/image.jpg;Holes;1.0;FALSE;TRUE;TRUE;;1690;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:40;hardwood;1000;43;;
+136,112,85;611;20.0;81;/path/to/image.jpg;Bended;1.0;FALSE;TRUE;TRUE;;1533;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;string;hardwood;750;40;;
+129,105,71;714;20.0;82;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1750;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;1000;40;;
+131,121,108;575;20.0;83;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;825;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;10/10/2023 10:43;hardwood;950;100;;
+174,157,138;505;45.0;85;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1005;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;10/10/2023 10:43;hardwood;1600;70;;
+161,148,118;370;45.0;88;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1559;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B8;10/10/2023 10:43;hardwood;1300;50;;
+151,107,68;552;24.0;89;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1077;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:43;hardwood;900;63;;
+140, 132, 119;498;33.0;90;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1244;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;900;44;;
+141,114,88;519;18.0;91;/path/to/image.jpg;Chamfer;1.0;FALSE;TRUE;TRUE;;1645;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:43;hardwood;1000;65;;
+159, 122, 96;528;11.0;92;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1205;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;350;50;;
+165,156,141;706;20.0;93;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1074;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:43;hardwood;850;56;;
+140,127,90;585;16.0;94;/path/to/image.jpg;Needs Cut;1.0;FALSE;TRUE;TRUE;;1581;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;800;54;;
+122, 109, 89;621;16.0;95;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1491;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;800;54;;
+141, 142, 138;682;18.0;96;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1488;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;950;52;;
+172,154,132;694;22.0;97;/path/to/image.jpg;slighty bended;1.0;FALSE;TRUE;TRUE;;2098;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:43;hardwood;1700;53;;Maple
+130, 104, 73;450;35.0;98;/path/to/image.jpg;Wood is chipped;1.0;FALSE;TRUE;TRUE;;1440;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;1000;44;;
+165,154,138;328;14.0;100;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;931;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;10/10/2023 10:43;hardwood;300;70;;
+132, 114, 100;669;35.0;101;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1354;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;1300;41;;
+147, 111, 78;628;17.0;102;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1433;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:43;hardwood;750;49;;
+150,101,35;404;11.0;103;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2064;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:43;hardwood;450;49;;
+173,153,115;498;9.0;104;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1681;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;400;53;;
+180,178,128;585;31.0;105;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1153;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:43;hardwood;900;43;;
+171,162,151;449;31.0;106;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;917;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;10/10/2023 10:43;hardwood;550;43;;
+151,123,76;778;3.0;107;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1507;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:43;hardwood;250;71;;
+124,100,62;680;15.0;108;/path/to/image.jpg;Bended;1.0;FALSE;TRUE;TRUE;;1675;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;1350;79;;
+152,107,69;530;24.0;109;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;1104;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;10/10/2023 10:43;hardwood;900;64;;
+139,104,62;321;33.0;110;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1600;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;850;50;;
+156,139,118;589;32.0;111;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;863;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;10/10/2023 10:43;hardwood;700;43;;
+153,123,83;453;21.0;112;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1566;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;850;57;;
+119,83,43;477;26.0;113;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1866;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;950;41;;
+171,165,145;658;27.0;114;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1777;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;1800;57;;
+173, 153, 129;565;32.0;115;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1286;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;1000;43;;
+131,119,83;454;50.0;116;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1585;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;1800;50;;
+161,130,97;660;20.0;117;/path/to/image.jpg;chamfer;1.0;FALSE;TRUE;TRUE;;1170;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:43;hardwood;850;55;;
+152, 139, 125;422;25.0;118;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1303;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;550;40;;
+156,131,100;584;40.0;119;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1070;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:43;hardwood;1300;52;;
+140, 116, 86;574;35.0;120;/path/to/image.jpg;Wood is chipped;1.0;FALSE;TRUE;TRUE;;1492;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;1050;35;;
+164,150,132;433;18.0;121;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;970;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;10/10/2023 10:43;hardwood;500;66;;
+112, 79, 54;551;24.0;122;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1150;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:43;hardwood;700;46;;
+178, 161, 140;350;19.0;123;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1217;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;600;74;;
+164, 130, 97;539;27.0;124;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1010;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;10/10/2023 10:43;hardwood;500;34;;
+151,116,80;606;30.0;125;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1050;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:43;hardwood;650;34;;
+132,110,87;588;30.0;126;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1133;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;10/10/2023 10:43;hardwood;700;35;;
+147,131,112;417;34.0;127;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;932;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;10/10/2023 10:43;hardwood;450;34;;
+151,138,122;457;25.0;128;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;1092;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;10/10/2023 10:43;hardwood;500;40;;
+162,143,101;890;26.0;129;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1550;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:43;hardwood;1650;46;;
+157,133,100;568;13.0;130;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2083;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:43;hardwood;600;39;;?
+129,96,51;833;20.0;132;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;800;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;10/10/2023 10:43;hardwood;600;45;;
+119,82,40;1090;23.0;133;/path/to/image.jpg;Unusable;1.0;FALSE;TRUE;TRUE;;1692;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;1400;33;;
+174,155,117;539;19.0;134;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1689;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;900;52;;
+155,134,111;538;26.0;135;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1050;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;10/10/2023 10:43;hardwood;500;34;;
+116,78,33;639;12.0;136;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1684;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;750;58;;
+154,145,133;421;26.0;137;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;805;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;10/10/2023 10:43;hardwood;450;51;;
+151,143,133;368;40.0;138;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;904;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;10/10/2023 10:43;hardwood;600;45;;
+119,83,39;750;34.0;139;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;886;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;10/10/2023 10:43;hardwood;950;42;;
+169,140,102;572;44.0;140;/path/to/image.jpg;Needs cut + Hole;1.0;FALSE;TRUE;TRUE;;812;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;10/10/2023 10:43;hardwood;900;44;;
+207,169,125;564;10.0;141;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1875;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D5;10/10/2023 10:43;hardwood;550;52;;
+158,140,114;391;10.0;142;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1965;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;400;52;;
+155, 132, 106;642;16.0;143;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1460;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;1200;80;;
+147,127,101;619;24.0;144;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1930;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;1550;54;;
+142,115,83;534;11.0;145;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1700;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;850;85;;
+153,115,69;454;22.0;147;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1000;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;10/10/2023 10:43;hardwood;500;50;;
+152, 122, 93;547;5.0;148;/path/to/image.jpg;Cracked;1.0;FALSE;TRUE;TRUE;;1480;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;300;74;;
+139,127, 111;547;5.0;149;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1480;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;300;74;;
+173,156,121;647;18.0;150;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1590;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;1000;54;;
+138,113,76;621;11.0;151;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;2010;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;550;40;;
+154,138,102;527;15.0;152;/path/to/image.jpg;Chamfer;1.0;FALSE;TRUE;TRUE;;1580;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;500;40;;
+162, 124, 93;486;12.0;153;/path/to/image.jpg;Chipped;1.0;FALSE;TRUE;TRUE;;1200;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;350;50;;
+159, 124, 94;423;10.0;154;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1390;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;200;34;;
+162,156,149;402;34.0;155;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1020;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;10/10/2023 10:43;hardwood;600;43;;
+159,149,137;427;34.0;156;/path/to/image.jpg;Hole;1.0;FALSE;TRUE;TRUE;;800;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;10/10/2023 10:43;hardwood;500;43;;
+159, 141, 115;675;26.0;157;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1386;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;950;39;;
+146,125,102;925;12.0;158;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;900;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;10/10/2023 10:43;hardwood;600;60;;
+157,149,138;417;14.0;159;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;950;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;10/10/2023 10:43;hardwood;250;45;;
+138,128,115;426;22.0;160;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;800;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;10/10/2023 10:43;hardwood;300;40;;
+125, 103, 83;337;15.0;161;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1480;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;300;40;;
+193,125,97;568;20.0;162;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1680;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;650;34;;
+150,129,106;420;20.0;163;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1190;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:43;hardwood;350;35;;
+150,145,131;666;24.0;164;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1840;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;1000;34;;
+173,154,119;499;20.0;165;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1765;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;600;34;;
+177,156,122;784;15.0;166;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1860;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;700;32;;
+160,155,126;706;20.0;167;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1956;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;1050;38;;
+175,149,112;627;14.0;168;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1686;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;400;27;;
+122, 105, 83;663;30.0;170;/path/to/image.jpg;chipped;1.0;FALSE;TRUE;TRUE;;1423;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:43;hardwood;850;30;;
+160,143,101;809;21.0;171;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2000;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;850;25;;
+177,150,96;631;15.0;172;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2030;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;500;26;;
+150,126,85;752;13.0;173;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1757;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;550;32;;
+185,154,112;597;16.0;174;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1568;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;450;30;;
+143, 118, 97;630;15.0;175;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1220;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;300;26;;
+143,106,66;705;25.0;176;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;1020;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;10/10/2023 10:43;hardwood;450;25;;
+99,116,96;546;18.0;177;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1881;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D5;10/10/2023 10:43;hardwood;500;27;;
+150,130,100;763;12.0;178;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1616;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;400;27;;
+157,140,107;469;7.0;179;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1692;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;150;27;;
+162,157,137;655;12.0;180;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1906;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;10/10/2023 10:43;hardwood;450;30;;
+168,153,116;692;12.0;181;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2005;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;450;27;;
+150,115,70;590;21.0;182;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1820;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D7;10/10/2023 10:43;hardwood;700;31;;
+150,115,67;737;10.0;183;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1750;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;400;31;;
+143,137,119;780;14.0;184;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1525;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:43;hardwood;450;27;;
+136,109,68;707;17.0;185;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1941;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;700;30;;
+149,123,79;750;14.0;186;/path/to/image.jpg;slighty bended;1.0;FALSE;TRUE;TRUE;;2014;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;550;26;;
+193,158,94;629;14.0;187;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2044;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;10/10/2023 10:43;hardwood;450;25;;
+193,170,134;549;14.0;189;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1684;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;350;27;;
+151,112,60;629;24.0;190;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1589;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;600;25;;
+153,129,98;643;17.0;191;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1693;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;500;27;;
+157,118,67;633;17.0;192;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1719;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:43;hardwood;500;27;;
+170,143,100;712;24.0;193;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1583;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;650;24;;
+137,118,88;615;17.0;194;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1594;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;450;27;;
+171,157,119;746;14.0;195;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1594;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;450;27;;
+213,189,150;526;17.0;196;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1654;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:43;hardwood;400;27;;
+182,170,139;754;11.0;197;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2007;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;450;27;;
+163,142,112;753;12.0;199;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1701;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;400;26;;
+198,182,152;762;16.0;200;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1707;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;500;24;;
+181,164,134;664;21.0;201;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2007;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D2;10/10/2023 10:43;hardwood;700;25;;
+148,131,101;789;11.0;202;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1644;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:43;hardwood;300;21;;
+153, 132, 109;881;19.0;203;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1493;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;600;24;;
+179,163,131;707;12.0;204;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1745;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;400;27;;
+198,168,124;647;20.0;206;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1655;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;450;21;;
+218,160,87;734;15.0;207;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1850;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;550;27;;
+109,85,55;548;22.0;208;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1656;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;500;25;;
+230,195,141;574;19.0;210;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1865;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;550;27;;
+173,104,62;462;20.0;211;/path/to/image.jpg;Needs Cut, slightly bended;1.0;FALSE;TRUE;TRUE;;1620;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;10/10/2023 10:43;hardwood;300;20;;
+132,90,34;692;15.0;212;/path/to/image.jpg;Needs Cut, slightly bended;1.0;FALSE;TRUE;TRUE;;1520;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B;10/10/2023 10:43;hardwood;300;19;;
+127,86,30;718;12.0;213;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1526;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;250;19;;
+172,165,147;436;50.0;214;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1872;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;2900;71;;
+170,152,114;682;21.0;215;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1662;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;10/10/2023 10:43;hardwood;500;21;;
+147,128,104;735;15.0;216;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;1170;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;10/10/2023 10:43;hardwood;400;31;;
+144, 133, 119;514;20.0;217;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1250;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;450;35;;
+110, 82, 68;787;6.0;218;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1230;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;250;43;;
+120,86,49;332;34.0;219;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1590;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;900;50;;
+113, 80, 54;1070;25.0;220;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1495;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;1200;30;;
+117,81,55;701;23.0;221;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1830;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D7;10/10/2023 10:43;hardwood;650;22;;
+99,64,30;1047;25.0;222;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1528;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:43;hardwood;1000;25;;
+122, 85, 59;540;21.0;223;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1240;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;10/10/2023 10:43;hardwood;450;32;;
+117,82,39;700;20.0;224;/path/to/image.jpg;Chamfer;1.0;FALSE;TRUE;TRUE;;1570;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;10/10/2023 10:43;hardwood;550;25;;
+107,76,42;641;18.0;225;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1710;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;750;38;;
+112, 80, 56;962;18.0;226;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1443;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;750;30;;
+99,61,39;1123;29.0;227;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1534;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B;10/10/2023 10:43;hardwood;2200;44;;
+122, 97, 70;758;26.0;228;/path/to/image.jpg;chipped;1.0;FALSE;TRUE;TRUE;;1440;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:43;hardwood;1250;44;;
+143, 89, 51;817;23.0;230;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1396;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:43;hardwood;1050;40;;
+108,77,50;578;35.0;231;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1553;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B8;10/10/2023 10:43;hardwood;1100;35;;
+92,54,17;627;21.0;232;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1987;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D3;10/10/2023 10:43;hardwood;550;21;;
+99,58,10;717;24.0;233;/path/to/image.jpg;slighty bended;1.0;FALSE;TRUE;TRUE;;1859;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;800;25;;
+131,85,49;563;29.0;234;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1903;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;10/10/2023 10:43;hardwood;1150;37;;
+108,73,39;1188;19.0;235;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1743;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:43;hardwood;1850;47;;
+142, 99, 69;1140;15.0;236;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1494;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A1;10/10/2023 10:43;hardwood;1150;45;;
+115,87,52;675;19.0;237;/path/to/image.jpg;Slightly bended;1.0;FALSE;TRUE;TRUE;;1611;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;10/10/2023 10:43;hardwood;600;29;;
+118,93,51;964;11.0;238;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1755;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;950;51;;
+123,97,73;622;25.0;240;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1855;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;750;26;;
+126,77,39;679;9.0;241;/path/to/image.jpg;Groves;1.0;FALSE;TRUE;TRUE;;1835;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D6;10/10/2023 10:43;hardwood;550;49;;
+121,94,60;698;10.0;242;/path/to/image.jpg;Needs cut, Twisted;1.0;FALSE;TRUE;TRUE;;1790;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;500;40;;
+110,75,39;567;22.0;244;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1794;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;10/10/2023 10:43;hardwood;650;29;;
+88,65,49;622;12.0;245;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1507;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;10/10/2023 10:43;hardwood;450;40;;
+96,61,23;720;18.0;246;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1713;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:43;hardwood;600;27;;
+95,57,34;630;22.0;247;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1153;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;10/10/2023 10:43;hardwood;400;25;;
+104,70,27;630;15.0;248;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1824;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D7;10/10/2023 10:43;hardwood;1000;58;;
+121, 66, 40;881;16.0;249;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1255;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;10/10/2023 10:43;hardwood;850;48;;
+82, 50, 33;819;16.0;250;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1430;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;10/10/2023 10:43;hardwood;450;24;;
+104,72,43;603;18.0;251;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1709;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;10/10/2023 10:43;hardwood;650;35;;
+130,103,67;665;11.0;252;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1707;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;12/10/2023 13:48;hardwood;500;40;;
+105, 87, 67;699;22.0;253;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;975;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;12/10/2023 13:56;hardwood;600;40;;
+164,142,121;632;26.0;254;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;925;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;12/10/2023 14:03;hardwood;1750;115;;
+192,157,111;678;25.0;255;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1032;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;12/10/2023 14:04;hardwood;1050;60;;
+137,92,55;596;30.0;256;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;991;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;12/10/2023 14:06;hardwood;550;31;;
+96,63,39;1052;18.0;257;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;690;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;12/10/2023 14:09;hardwood;850;65;;
+160, 110, 77;810;58.5;258;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;783;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;12/10/2023 14:11;hardwood;2600;70;;
+167,147,118;436;15.0;259;/path/to/image.jpg;Twisted;1.0;FALSE;TRUE;TRUE;;1045;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;12/10/2023 14:21;hardwood;500;73;;
+138, 124, 107;871;10.7;260;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;1243;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;12/10/2023 14:24;hardwood;800;69;;
+92,59,33;392;31.0;262;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;876;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;12/10/2023 14:27;hardwood;800;75;;
+166,142,110;414;22.0;263;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;1040;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;12/10/2023 14:28;hardwood;750;79;;
+167,126,90;706;33.0;264;/path/to/image.jpg;not perfect;1.0;FALSE;TRUE;TRUE;;1238;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;12/10/2023 14:30;hardwood;3750;130;;
+115,62,17;608;37.0;265;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1000;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;12/10/2023 14:31;hardwood;900;40;;
+113,85,51;1411;19.0;266;/path/to/image.jpg;unusable;1.0;FALSE;TRUE;TRUE;;1149;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;12/10/2023 14:32;hardwood;2250;73;;
+104,70,40;876;11.0;267;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1037;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;12/10/2023 14:34;hardwood;450;45;;
+131,85,44;797;44.0;268;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;905;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;12/10/2023 14:35;hardwood;2000;63;;
+98,63,32;423;13.0;269;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1009;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;12/10/2023 14:37;hardwood;550;99;;
+174,131,82;1923;18.0;270;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;722;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;12/10/2023 14:39;hardwood;1400;56;;
+131,84,28;806;15.0;271;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;930;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;12/10/2023 14:41;hardwood;450;40;;
+107, 65, 37;672;27.0;272;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1033;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;12/10/2023 14:42;hardwood;750;40;;
+155,124,94;693;32.0;273;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;916;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;12/10/2023 14:43;hardwood;1200;59;;
+177,123,80;647;29.0;274;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;799;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;12/10/2023 14:45;hardwood;450;30;;
+179, 169, 149;415;40.0;275;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1090;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;12/10/2023 14:47;hardwood;1250;69;;
+161,146,122;386;22.0;276;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1030;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;12/10/2023 14:50;hardwood;700;80;;
+110,59,15;707;29.0;277;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1035;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;12/10/2023 14:52;hardwood;850;40;;
+161,104,64;679;30.0;278;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1397;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;12/10/2023 14:53;hardwood;2050;72;;
+136,81,37;1217;26.0;279;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;948;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;12/10/2023 14:55;hardwood;1650;55;;
+76,40,11;685;33.0;280;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;995;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;12/10/2023 14:56;hardwood;900;40;;
+139,111,62;609;40.0;285;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1735;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;10/10/2023 10:40;hardwood;2200;52;;
+125,80,61;859;33.0;286;/path/to/image.jpg;Bended;1.0;FALSE;TRUE;TRUE;;930;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;31/10/2023 11:58;hardwood;950;36;;
+151,110,73;585;18.0;287;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;998;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;31/10/2023 11:59;hardwood;400;38;;
+141,128,117;732;40.0;288;/path/to/image.jpg;Damaged;1.0;FALSE;TRUE;TRUE;;834;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;31/10/2023 12:00;hardwood;1100;45;;
+132,100,78;557;38.0;289;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;771;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C14;31/10/2023 12:01;hardwood;800;49;;
+126,96,56;374;39.0;290;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;813;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C12;31/10/2023 12:02;hardwood;1200;101;;
+167,124,75;485;32.0;291;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1050;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;31/10/2023 12:04;hardwood;1500;92;;
+156,148,136;403;23.0;292;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;940;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;31/10/2023 12:05;hardwood;550;63;;
+143,120,95;511;25.0;293;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1087;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;31/10/2023 12:06;hardwood;750;54;;
+96,63,34;707;20.0;294;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1632;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;31/10/2023 12:07;hardwood;600;26;;
+117,71,40;1096;29.0;295;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1537;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B;31/10/2023 12:08;hardwood;2150;44;;
+117,78,39;779;15.0;296;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1710;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B2;31/10/2023 12:09;hardwood;700;35;;
+139,120,95;482;9.0;297;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;2077;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D1;31/10/2023 12:10;hardwood;550;61;;Fure
+105,62,39;1001;24.0;299;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1163;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;31/10/2023 12:12;hardwood;1900;68;;
+154,117,98;674;25.0;300;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;883;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;31/10/2023 12:13;hardwood;700;47;;
+103, 71, 46;979;24.0;302;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1276;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;31/10/2023 12:14;hardwood;1200;40;;
+136, 89, 48;616;71.0;303;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;805;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C17;31/10/2023 12:15;hardwood;2500;71;;
+114,81,52;749;17.0;304;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1177;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;31/10/2023 12:16;hardwood;600;40;;
+161,145,120;468;22.0;305;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;939;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;31/10/2023 12:17;hardwood;600;62;;
+118,73,40;1016;9.0;307;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1025;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;31/10/2023 12:20;hardwood;450;48;;
+157,146,128;534;20.0;308;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1039;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;31/10/2023 12:21;hardwood;300;27;;
+162,152,134;550;26.0;309;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;998;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;31/10/2023 12:21;hardwood;700;49;;
+123, 83, 55;960;18.0;310;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;851;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;31/10/2023 12:22;hardwood;1250;85;;
+106,56,24;557;27.0;311;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1603;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;31/10/2023 12:23;hardwood;700;29;;
+147, 135,120;749;21.0;312;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1270;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;31/10/2023 12:24;hardwood;500;25;;
+104,75,40;639;18.0;313;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1706;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B3;31/10/2023 12:25;hardwood;550;28;;
+162,142,105;465;17.0;314;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1625;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;31/10/2023 12:26;hardwood;900;70;;
+129,99,68;762;11.0;315;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;993;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;31/10/2023 12:26;hardwood;600;72;;
+168,158,145;734;28.0;316;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;945;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;31/10/2023 12:27;hardwood;1750;90;;
+155,140,127;721;20.0;317;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;990;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;31/10/2023 12:28;hardwood;600;42;;
+124,88,48;702;18.0;318;/path/to/image.jpg;Twisted;1.0;FALSE;TRUE;TRUE;;917;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;31/10/2023 12:28;hardwood;800;69;;
+116,93,77;615;31.0;319;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1609;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;31/10/2023 12:30;hardwood;1350;44;;
+117,83,44;669;7.0;320;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1600;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;31/10/2023 12:34;hardwood;300;40;;
+129, 110, 98;410;27.0;321;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1230;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;31/10/2023 12:35;hardwood;600;44;;
+144,95,64;684;40.0;322;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;996;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C7;31/10/2023 12:36;hardwood;1800;66;;
+133,97,68;644;25.0;323;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1035;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;31/10/2023 12:37;hardwood;900;54;;
+138,99,59;674;29.0;324;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1085;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;31/10/2023 12:38;hardwood;700;33;;
+122,80,34;990;15.0;325;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1010;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;31/10/2023 12:38;hardwood;600;40;;
+101,67,44;1023;27.0;326;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1171;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;31/10/2023 12:40;hardwood;1100;34;;
+62,39,17;910;33.0;327;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1750;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B1;31/10/2023 12:44;hardwood;2050;39;;
+153,132,108;785;23.0;328;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;874;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;31/10/2023 12:47;hardwood;600;38;;
+129,84,53;562;34.0;329;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;923;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C10;31/10/2023 12:49;hardwood;600;34;;
+129,90,53;712;29.0;330;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1058;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;31/10/2023 12:49;hardwood;700;32;;
+110,73,56;792;23.0;331;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;754;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C14;31/10/2023 12:50;hardwood;550;40;;
+162,108,67;736;32.0;332;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1077;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C4;31/10/2023 12:52;hardwood;1650;65;;
+149,117,73;484;40.0;333;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1637;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B5;31/10/2023 12:54;hardwood;1650;52;;
+153,125,94;600;30.0;334;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1574;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B7;31/10/2023 12:55;hardwood;850;30;;
+105,70,40;1205;5.0;335;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1606;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B6;31/10/2023 12:57;hardwood;300;31;;
+105,67,49;1049;25.0;336;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;953;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;31/10/2023 12:59;hardwood;1150;46;;
+166,153,128;429;44.0;337;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;963;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C8;31/10/2023 13:02;hardwood;1800;99;;
+150,134,110;711;23.0;338;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1920;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);D4;31/10/2023 13:03;hardwood;2200;70;;
+145, 102, 65;733;22.0;339;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1240;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A4;31/10/2023 13:04;hardwood;1300;65;;
+140,106,59;692;30.0;340;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1164;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C2;31/10/2023 13:05;hardwood;1450;60;;
+140,107,67;645;19.0;341;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1193;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;31/10/2023 13:06;hardwood;600;41;;
+108, 61, 17;825;22.0;342;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1010;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;31/10/2023 13:07;hardwood;550;30;;
+126,92,54;683;22.0;343;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1197;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;31/10/2023 13:08;hardwood;450;25;;
+99,62,27;637;20.0;344;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1667;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);B4;31/10/2023 13:09;hardwood;850;40;;
+102, 58, 37;942;42.0;345;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1403;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A2;31/10/2023 13:10;hardwood;2500;45;;
+139,113,74;763;39.0;346;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1553;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);;31/10/2023 13:11;hardwood;1850;40;;
+154,108,66;810;38.0;347;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1194;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C1;31/10/2023 13:13;hardwood;1950;53;;
+156, 141, 127;785;15.0;348;/path/to/image.jpg;perfect;1.0;FALSE;TRUE;TRUE;;1355;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);A3;31/10/2023 13:14;hardwood;750;47;;
+179, 139, 95;652;20.0;349;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1150;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C3;31/10/2023 13:15;hardwood;600;40;;
+97,56,26;664;28.0;350;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1033;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C5;31/10/2023 13:39;hardwood;750;39;;
+115,71,47;1025;8.0;351;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;1016;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C6;31/10/2023 13:40;hardwood;400;48;;
+143, 107, 79;921;47.0;353;/path/to/image.jpg;missing parts;1.0;FALSE;TRUE;TRUE;;883;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C11;31/10/2023 13:41;hardwood;1950;51;;
+187,120,65;663;55.0;354;/path/to/image.jpg;Groove;1.0;FALSE;TRUE;TRUE;;777;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C13;31/10/2023 13:42;hardwood;1700;60;;
+128, 116, 101;697;40.0;355;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;950;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C9;31/10/2023 13:43;hardwood;2650;100;;
+156, 136, 111;724;15.0;356;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;708;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 13:44;hardwood;700;91;;
+168,160,143;461;21.0;357;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;697;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 13:45;hardwood;500;74;;
+176,148,117;681;20.0;358;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;627;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C17;31/10/2023 13:46;hardwood;1000;117;;
+117,71,44;782;20.0;359;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;719;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 13:49;hardwood;450;40;;
+145, 91, 53;1045;18.0;360;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;654;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 13:50;hardwood;800;65;;
+173,163,141;414;21.0;361;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;698;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 13:51;hardwood;450;74;;
+205, 167, 133;524;20.0;364;/path/to/image.jpg;missing a part;1.0;FALSE;TRUE;TRUE;;685;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 13:54;hardwood;1150;160;;
+166,151,124;592;36.0;365;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;666;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 13:59;hardwood;1250;88;;
+185,172,149;427;44.0;366;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;632;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C17;31/10/2023 14:00;hardwood;1700;143;;
+148, 95, 52;751;57.0;367;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;734;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C14;31/10/2023 14:02;hardwood;2200;70;;
+157,121,89;598;36.0;369;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;656;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 14:05;hardwood;1300;92;;
+159, 114, 61;658;14.0;374;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;634;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 14:11;hardwood;450;77;;
+165,163,156;550;17.0;382;/path/to/image.jpg;Hole;1.0;FALSE;TRUE;TRUE;;736;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C14;31/10/2023 14:25;hardwood;950;138;;
+202, 147, 93;390;26.0;394;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;650;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 14:40;hardwood;950;144;;
+121,78,56;1074;29.0;396;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;620;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C17;31/10/2023 14:42;hardwood;850;44;;
+144,109,71;657;14.0;437;/path/to/image.jpg;Needs cut;1.0;FALSE;TRUE;TRUE;;665;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C16;31/10/2023 15:29;hardwood;300;49;;
+184,143,98;585;26.0;456;/path/to/image.jpg;Perfect;1.0;FALSE;TRUE;TRUE;;672;Red oak FSC;;0.0;;;;FALSE;HvA Jakoba Mulderhuis (JMH);C15;31/10/2023 15:55;hardwood;450;44;;
+217,163,115;0;22.0;457;;;;FALSE;FALSE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:44;Soft;1550;98;;Douglas
+217,163,115;0;20.0;458;;;1.0;FALSE;FALSE;TRUE;0;1398;;123;0.0;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:45;Soft;1800;96;;Douglas
+217,163,115;0;21.0;459;;;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:46;Soft;1450;96;;Douglas
+217,163,115;0;22.0;462;;Perfect;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:50;Soft;1650;96;;Douglas
+217,163,115;0;22.0;464;;Perfect;;FALSE;FALSE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:51;Soft;1500;97;;Douglas
+217,163,115;0;21.0;465;;Perfect;;FALSE;FALSE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:52;Soft;1650;98;;Douglas
+217,163,115;0;21.0;466;;Perfect;;FALSE;FALSE;TRUE;0;1399;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:53;Soft;1350;97;;Douglas
+217,163,115;0;21.0;467;;Perfect;;FALSE;FALSE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:54;Soft;1425;97;;Douglas
+217,163,115;0;21.0;469;;Perfect;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 13:58;Soft;1850;96;;Douglas
+109,164,114;0;21.0;472;;Perfect;;FALSE;FALSE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 14:47;Soft;1850;96;;Douglas
+209,164,114;0;21.0;473;;Perfect;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 14:49;Soft;1550;98;;Douglas
+209,164,114;0;20.0;474;;Perfect;;FALSE;FALSE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 14:50;Soft;1650;96;;Douglas
+209,164,114;0;20.0;475;;Perfect;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 14:50;Soft;1550;98;;Douglas
+209,164,114;0;21.0;476;;Perfect;;FALSE;FALSE;TRUE;0;1400;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 14:51;Soft;1700;96;;Douglas
+209,164,114;0;44.0;477;;Perfect;;FALSE;TRUE;TRUE;0;1596;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:52;Soft;1450;44;;Spruce
+179,168,145;0;44.0;478;;Perfect;;FALSE;TRUE;TRUE;0;1394;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:54;Soft;1350;44;;Spruce
+179,168,145;0;44.0;479;;Perfect;;FALSE;TRUE;TRUE;0;1594;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:55;Soft;1550;44;;Spruce
+179,168,145;0;44.0;480;;Perfect;;FALSE;TRUE;TRUE;0;1596;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:55;Soft;1650;44;;Spruce
+179,168,145;0;44.0;481;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:56;Soft;1550;44;;Spruce
+179,168,145;0;44.0;482;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:57;Soft;1400;44;;Spruce
+179,168,145;0;44.0;483;;Perfect;;FALSE;TRUE;TRUE;0;1594;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:58;Soft;1550;44;;Spruce
+179,168,145;0;44.0;484;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 14:59;Soft;1400;44;;Spruce
+179,168,145;0;44.0;485;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:00;Soft;1450;44;;Spruce
+179,168,145;0;44.0;486;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:01;Soft;1400;44;;Spruce
+179,168,145;0;44.0;487;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:01;Soft;1450;44;;Spruce
+179,168,145;0;44.0;488;;Perfect;;FALSE;TRUE;TRUE;0;1594;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:02;Soft;1550;44;;Spruce
+179,168,145;0;44.0;489;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:03;Soft;1350;44;;Spruce
+179,168,145;0;44.0;490;;Perfect;;FALSE;TRUE;TRUE;0;1599;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:04;Soft;1550;44;;Spruce
+179,168,145;0;44.0;491;;Perfect;;FALSE;TRUE;TRUE;0;1591;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:05;Soft;1500;44;;Spruce
+179,168,145;0;44.0;492;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:06;Soft;1450;44;;Spruce
+179,168,145;0;44.0;493;;Perfect;;FALSE;TRUE;TRUE;0;1595;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:07;Soft;1500;44;;Spruce
+179,168,145;0;44.0;494;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:08;Soft;1200;44;;Spruce
+179,168,145;0;44.0;495;;Perfect;;FALSE;TRUE;TRUE;0;1401;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:09;Soft;1200;44;;Spruce
+179,168,145;0;44.0;496;;Perfect;;FALSE;TRUE;TRUE;0;1599;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:10;Soft;1400;44;;Spruce
+179,168,145;0;44.0;497;;Perfect;;FALSE;TRUE;TRUE;0;1598;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:11;Soft;1500;44;;Spruce
+179,168,145;0;44.0;498;;Perfect;;FALSE;TRUE;TRUE;0;1396;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:12;Soft;1450;44;;Spruce
+179,168,145;0;44.0;499;;Perfect;;FALSE;TRUE;TRUE;0;1596;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:12;Soft;1600;44;;Spruce
+179,168,145;0;44.0;500;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:13;Soft;1400;44;;Spruce
+179,168,145;0;44.0;501;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:14;Soft;1350;44;;Spruce
+179,168,145;0;44.0;502;;Perfect;;FALSE;TRUE;TRUE;0;1398;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:16;Soft;1150;44;;Spruce
+179,168,145;0;44.0;503;;Perfect;;FALSE;TRUE;TRUE;0;1399;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:17;Soft;1400;44;;Spruce
+179,168,145;0;44.0;504;;Perfect;;FALSE;TRUE;TRUE;0;1595;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:17;Soft;1600;44;;Spruce
+179,168,145;0;44.0;505;;Perfect;;FALSE;TRUE;TRUE;0;1593;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:18;Soft;1800;44;;Spruce
+179,168,145;0;44.0;506;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:19;Soft;1200;44;;Spruce
+179,168,145;0;44.0;507;;Perfect;;FALSE;TRUE;TRUE;0;1593;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:20;Soft;1450;44;;Spruce
+179,168,145;0;44.0;508;;Perfect;;FALSE;TRUE;TRUE;0;1399;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:20;Soft;1400;44;;Spruce
+179,168,145;0;44.0;509;;Perfect;;FALSE;TRUE;TRUE;0;1595;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:21;Soft;1550;44;;Spruce
+179,168,145;0;44.0;510;;Perfect;;FALSE;TRUE;TRUE;0;1397;;123;;1;;;FALSE;Bouwmaat;E2;09/11/2023 15:22;Soft;1500;44;;Spruce
+209,164,114 ;0;21.0;511;;Perfect;;FALSE;TRUE;TRUE;0;1697;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 15:23;Soft;2100;97;;Douglas
+209,164,114 ;0;21.0;512;;Twisted;;FALSE;FALSE;TRUE;0;1698;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 15:24;Soft;2050;96;;Douglas
+209,164,114 ;0;21.0;513;;Perfect;;FALSE;FALSE;TRUE;0;1698;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 15:25;Soft;2250;96;;Douglas
+209,164,114 ;0;21.0;514;;Perfect;;FALSE;FALSE;TRUE;0;1697;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 15:27;Soft;1800;96;;Douglas
+209,164,114 ;0;21.0;515;;Perfect;;FALSE;FALSE;TRUE;0;1697;;123;;1;;;FALSE;Bouwmaat;E1;09/11/2023 15:28;Soft;2000;97;;Douglas
+179,168,145;0;43.0;516;;Perfect;;FALSE;TRUE;TRUE;;190;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:03;Soft;150;43;;Vuren
+179,168,145;0;44.0;517;;Perfect;;FALSE;TRUE;TRUE;;195;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:10;Soft;150;44;;Vuren
+179,168,145;0;44.0;518;;Perfect;;FALSE;TRUE;TRUE;;195;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:10;Soft;150;44;;Vuren
+179,168,145;0;44.0;519;;Perfect;;FALSE;TRUE;TRUE;;196;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:11;Soft;150;44;;Vuren
+179,168,145;0;44.0;520;;Perfect;;FALSE;TRUE;TRUE;;199;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:11;Soft;150;44;;Vuren
+179,168,145;0;44.0;521;;Perfect;;FALSE;TRUE;TRUE;;192;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:12;Soft;150;44;;Vuren
+179,168,145;0;44.0;522;;Perfect;;FALSE;TRUE;TRUE;;194;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:12;Soft;150;44;;Vuren
+179,168,145;0;44.0;523;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:16;Soft;450;44;;Vuren
+179,168,145;0;44.0;524;;Perfect;;FALSE;TRUE;TRUE;;499;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:17;Soft;450;44;;Vuren
+179,168,145;0;44.0;525;;Perfect;;FALSE;TRUE;TRUE;;496;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:17;Soft;450;44;;Vuren
+179,168,145;0;44.0;526;;Perfect;;FALSE;TRUE;TRUE;;495;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:18;Soft;450;44;;Vuren
+179,168,145;0;44.0;527;;Perfect;;FALSE;TRUE;TRUE;;499;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:18;Soft;450;44;;Vuren
+179,168,145;0;44.0;528;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:19;Soft;450;44;;Vuren
+179,168,145;0;44.0;529;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:19;Soft;450;44;;Vuren
+179,168,145;0;44.0;530;;Perfect;;FALSE;TRUE;TRUE;;498;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:19;Soft;450;44;;Vuren
+179,168,145;0;44.0;531;;Perfect;;FALSE;TRUE;TRUE;;496;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:19;Soft;450;44;;Vuren
+179,168,145;0;44.0;532;;Perfect;;FALSE;TRUE;TRUE;;496;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:20;Soft;450;44;;Vuren
+179,168,145;0;44.0;533;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:20;Soft;450;44;;Vuren
+179,168,145;0;44.0;534;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:20;Soft;450;44;;Vuren
+179,168,145;0;44.0;535;;Perfect;;FALSE;TRUE;TRUE;;494;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:20;Soft;450;44;;Vuren
+179,168,145;0;44.0;536;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:21;Soft;450;44;;Vuren
+179,168,145;0;44.0;537;;Perfect;;FALSE;TRUE;TRUE;;499;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:21;Soft;450;44;;Vuren
+179,168,145;0;44.0;538;;Perfect;;FALSE;TRUE;TRUE;;499;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:21;Soft;450;44;;Vuren
+179,168,145;0;44.0;539;;Perfect;;FALSE;TRUE;TRUE;;501;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:21;Soft;450;44;;Vuren
+179,168,145;0;44.0;540;;Perfect;;FALSE;TRUE;TRUE;;498;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:22;Soft;450;44;;Vuren
+179,168,145;0;44.0;541;;Perfect;;FALSE;TRUE;TRUE;;499;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:22;Soft;450;44;;Vuren
+179,168,145;0;44.0;542;;Perfect;;FALSE;TRUE;TRUE;;497;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:22;Soft;450;44;;Vuren
+179,168,145;0;44.0;543;;Perfect;;FALSE;TRUE;TRUE;;998;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:24;Soft;750;44;;Vuren
+179,168,145;0;44.0;544;;Perfect;;FALSE;TRUE;TRUE;;999;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:24;Soft;750;44;;Vuren
+179,168,145;0;44.0;545;;Perfect;;FALSE;TRUE;TRUE;;997;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:25;Soft;750;44;;Vuren
+179,168,145;0;44.0;546;;Perfect;;FALSE;TRUE;TRUE;;1000;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:25;Soft;750;44;;Vuren
+179,168,145;0;44.0;547;;Perfect;;FALSE;TRUE;TRUE;;996;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:26;Soft;750;44;;Vuren
+179,168,145;0;44.0;548;;Perfect;;FALSE;TRUE;TRUE;;999;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:26;Soft;750;44;;Vuren
+179,168,145;0;44.0;549;;Perfect;;FALSE;TRUE;TRUE;;997;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:26;Soft;750;44;;Vuren
+179,168,145;0;44.0;550;;Perfect;;FALSE;TRUE;TRUE;;1000;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:27;Soft;750;44;;Vuren
+179,168,145;0;44.0;551;;Perfect;;FALSE;TRUE;TRUE;;997;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:27;Soft;750;44;;Vuren
+179,168,145;0;44.0;552;;Perfect;;FALSE;TRUE;TRUE;;698;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:29;Soft;600;44;;Vuren
+179,168,145;0;44.0;553;;Perfect;;FALSE;TRUE;TRUE;;698;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:29;Soft;600;44;;Vuren
+179,168,145;0;44.0;554;;Perfect;;FALSE;TRUE;TRUE;;697;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:29;Soft;600;44;;Vuren
+179,168,145;0;44.0;555;;Perfect;;FALSE;TRUE;TRUE;;697;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:29;Soft;600;44;;Vuren
+179,168,145;0;44.0;556;;Perfect;;FALSE;TRUE;TRUE;;697;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:30;Soft;600;44;;Vuren
+179,168,145;0;44.0;557;;Perfect;;FALSE;TRUE;TRUE;;699;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:30;Soft;600;44;;Vuren
+179,168,145;0;44.0;558;;Perfect;;FALSE;TRUE;TRUE;;695;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:30;Soft;600;44;;Vuren
+179,168,145;0;44.0;559;;Perfect;;FALSE;TRUE;TRUE;;696;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:30;Soft;600;44;;Vuren
+179,168,145;0;44.0;560;;Perfect;;FALSE;TRUE;TRUE;;696;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:31;Soft;600;44;;Vuren
+179,168,145;0;44.0;561;;Perfect;;FALSE;TRUE;TRUE;;696;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:31;Soft;600;44;;Vuren
+179,168,145;0;44.0;562;;Perfect;;FALSE;TRUE;TRUE;;700;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:31;Soft;600;44;;Vuren
+179,168,145;0;44.0;563;;Perfect;;FALSE;TRUE;TRUE;;996;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:31;Soft;750;44;;Vuren
+179,168,145;0;44.0;564;;Perfect;;FALSE;TRUE;TRUE;;997;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:32;Soft;750;44;;Vuren
+179,168,145;0;44.0;565;;Perfect;;FALSE;TRUE;TRUE;;998;;123;;1;;;FALSE;Bouwmaat;;10/11/2023 15:32;Soft;750;44;;Vuren
+243,195,134;0;20.0;566;;Perfect;;FALSE;FALSE;TRUE;;1590;;123;;1;;;FALSE;Bouwmaat;;14/11/2023 14:35;Soft;1900;95;;Douglas
+0;0;11.0;567;;Perfect;;FALSE;FALSE;TRUE;;498;;123;;1;;;FALSE;Leftover;;14/11/2023 16:44;Soft;1175;498;;Spaanplaat
+0;0;11.0;568;;Perfect;;FALSE;FALSE;TRUE;;498;;123;;1;;;FALSE;Leftover;;14/11/2023 16:46;Soft;1175;498;;Spaanplaat
