@@ -13,10 +13,12 @@ from load_dotenv import load_dotenv
 import requests
 
 BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
-CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
+# CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
+CSV_FILEPATH = "./../data_backup/test_.csv"
 SAVING_FILEPATH = ""
 
 load_dotenv()
+URL = os.getenv("PRODUCTION_URL")
 
 
 class WoodDbManager:
@@ -110,7 +112,7 @@ class WoodDbManager:
 
         r = requests.post(url=URL + "login", data=payload, headers={"Content-Type": "application/json"})
         self.access_token = r.json()['access_token']
-        print(r.json())
+        # print(r.json())
 
     def logout(self):
         print(self.access_token)
@@ -211,6 +213,31 @@ class WoodDbManager:
         )
         print(resp.json())
 
+    @staticmethod
+    def save_row_to_csv(start_row: int, end_row: int):
+        rows = []
+        try:
+            for i in range(start_row, end_row + 1):
+                response = requests.get(
+                    url=URL + f"residual_wood/{str(i)}",
+                    headers={"Content-Type": "application/json"}
+                )
+                print("Request {0}".format(i))
+                if response.status_code == 404:
+                    continue
+                else:
+                    rows.append(response.json())
+            for r in rows:
+                print(r)
+            try:
+                json_data = json.dumps(rows)
+                df = pd.read_json(json_data)
+                df.to_csv("./../data_backup/test_.csv", index=False, sep=";")
+            except TypeError:
+                pass
+        except KeyboardInterrupt:
+            pass
+
     def compile_data_from_csv(self):
         df = self.data_frame
         df = df.fillna('')
@@ -224,7 +251,7 @@ class WoodDbManager:
                     "width": float(row['width']),
                     "height": float(row['height']),
                     "weight": float(row['weight']),
-                    "color": "222,130,34",
+                    "color": row["color"],
                     "reserved": False,
                     "reservation_name": "",
                     "reservation_time": "",
@@ -233,15 +260,15 @@ class WoodDbManager:
                     "source": "HvA Jakoba Mulderhuis (JMH)",
                     "timestamp": self.timestamp,
                     "info": row['info'],
-                    "density": float(float(row['weight']) / (
+                    "density": int(float(row['weight']) / (
                             float(row['length']) * float(row['width']) * float(row['height'])) * 1000000),
                     "storage_location": row['storage_location'],
-                    "intake_id": 1
+                    "intake_id": 1,
+                    "wood_species": row["wood_species"]
                 }
                 self.output.append(d)
         except ValueError:
             pass
-
         return self.output
 
 
@@ -270,6 +297,9 @@ if __name__ == "__main__":
     # REMOVE THE NON-EXISTING ID
     # out.filter_removed_ids_from_csv()
 
+    # INSERT DATA FROM CSV TO DB
+    # out.compile_data_from_csv()
+
     # UPDATE ROWS BY ID
     # for r in out.output:
     #     out.update_specified_rows(r['id'], out.output)
@@ -283,8 +313,8 @@ if __name__ == "__main__":
     # REMOVE ROWS FROM DB BASED ON RANGE OF ID
     # out.clean_up_data(1, 459)
 
-    # INSERT DATA FROM CSV TO DB
-    # out.compile_data_from_csv()
+    # SAVE ROWS INTO CSV
+    # out.save_row_to_csv(1, 568)
 
     # LOG OUT
     # out.logout()
