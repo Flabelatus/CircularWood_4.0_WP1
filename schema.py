@@ -4,13 +4,13 @@ from marshmallow import fields, Schema
 class WoodSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str()
-    length = fields.Float(required=True)
-    width = fields.Float(required=True)
-    height = fields.Float(required=True)
-    weight = fields.Float(required=True)
-    density = fields.Float(required=True)
-    timestamp = fields.Str(required=True)
-    color = fields.Str(required=True)
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    weight = fields.Float()
+    density = fields.Float()
+    timestamp = fields.Str()
+    color = fields.Str()
     reserved = fields.Bool()
     reservation_name = fields.Str()
     reservation_time = fields.Str()
@@ -19,22 +19,16 @@ class WoodSchema(Schema):
     info = fields.Str()
     type = fields.Str()
     image = fields.Str()
+    has_metal = fields.Bool()
     intake_id = fields.Int()
-    wood_species = fields.Str()
-    label = fields.Str()
+    project_label = fields.Str()
     paint = fields.Str()
     project_type = fields.Str()
     is_fire_treated = fields.Bool()
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
-    wood_id = fields.Str(required=True)
-
-
-class WasteWoodSchema(WoodSchema):
-    contains_metal = fields.Bool(required=True)
-    damaged = fields.Bool(required=True)
-    stained = fields.Bool(required=True)
+    # wood_id = fields.Str(required=True)
 
 
 class PlainTagSchema(Schema):
@@ -85,7 +79,6 @@ class WoodUpdateSchema(Schema):
     type = fields.Str()
     intake_id = fields.Int()
     name = fields.Str()
-    wood_species = fields.Str()
     label = fields.Str()
     paint = fields.Str()
     project_type = fields.Str()
@@ -93,7 +86,6 @@ class WoodUpdateSchema(Schema):
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
-    wood_id = fields.Str()
     image = fields.Str()
 
 

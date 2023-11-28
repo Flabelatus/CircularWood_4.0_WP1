@@ -12,13 +12,13 @@ import pandas as pd
 from load_dotenv import load_dotenv
 import requests
 
-BACKUP_FILEPATH = "./../data_backup/backup_11_03_2023.json"
+BACKUP_FILEPATH = "./../data_backup/backup_11_28_2023.json"
 # CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
 CSV_FILEPATH = "./../data_backup/test_.csv"
 SAVING_FILEPATH = ""
 
 load_dotenv()
-URL = os.getenv("PRODUCTION_URL")
+URL = os.getenv("URL")
 
 
 class WoodDbManager:
