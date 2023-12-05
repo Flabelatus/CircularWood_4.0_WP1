@@ -7,4 +7,4 @@ class TagModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False, unique=True)
 
-    woods = db.relationship("ResidualWoodModel", back_populates='tags', secondary='woods_tags')
+    woods = db.relationship("WoodModel", back_populates='tags', secondary="woods_tags")

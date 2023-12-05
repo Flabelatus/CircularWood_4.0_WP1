@@ -7,5 +7,5 @@ class WoodsAndRequirementsFromClientModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
-    wood_id = db.Column(db.Integer, db.ForeignKey('residual_wood.id'))
+    wood_id = db.Column(db.Integer, db.ForeignKey('wood.id'))
     requirement_id = db.Column(db.Integer, db.ForeignKey('requirements.id'))

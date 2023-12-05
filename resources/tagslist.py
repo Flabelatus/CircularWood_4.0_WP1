@@ -1,7 +1,7 @@
 from db import db
 from flask.views import MethodView
 from flask_smorest import abort, Blueprint
-from models import ResidualWoodModel, TagModel, WoodTagsModel
+from models import WoodModel, TagModel, WoodTagsModel
 from schema import TagSchema, TagAndWoodSchema, TagUpdateSchema
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -64,12 +64,12 @@ class Tag(MethodView):
         }
 
 
-@blp.route("/residual_wood/<int:wood_id>/tag/<int:tag_id>")
+@blp.route("/wood/<int:wood_id>/tag/<int:tag_id>")
 class LinkTagsToWood(MethodView):
 
     @blp.response(201, TagAndWoodSchema)
     def post(self, wood_id, tag_id):
-        wood = ResidualWoodModel.query.get_or_404(wood_id)
+        wood = WoodModel.query.get_or_404(wood_id)
         tag = TagModel.query.get_or_404(tag_id)
         wood.tags.append(tag)
         try:
@@ -85,7 +85,7 @@ class LinkTagsToWood(MethodView):
 
     @blp.response(200, TagAndWoodSchema)
     def delete(self, wood_id, tag_id):
-        wood = ResidualWoodModel.query.get_or_404(wood_id)
+        wood = WoodModel.query.get_or_404(wood_id)
         tag = TagModel.query.get_or_404(tag_id)
 
         wood.tags.remove(tag)
@@ -127,7 +127,7 @@ class TagByName(MethodView):
         return tag
 
 
-@blp.route('/residual_wood/tag/<string:tag_name>')
+@blp.route('/wood/tag/<string:tag_name>')
 class WoodByTagName(MethodView):
     @blp.response(200, TagSchema(many=True))
     def get(self, tag_name):
@@ -136,7 +136,7 @@ class WoodByTagName(MethodView):
         woods_tags = WoodTagsModel.query.filter(WoodTagsModel.tag_id == tag_id).all()
 
         wood_ids = [tag.wood_id for tag in woods_tags]
-        woods = [ResidualWoodModel.query.filter_by(id=_id).first() for _id in wood_ids]
+        woods = [WoodModel.query.filter_by(id=_id).first() for _id in wood_ids]
 
         return woods
 
