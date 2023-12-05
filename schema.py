@@ -3,15 +3,19 @@ from marshmallow import fields, Schema
 
 class WoodSchema(Schema):
     id = fields.Int(dump_only=True)
+    current_id = fields.Str()
+    subsequent_id = fields.Str()
     name = fields.Str()
-    length = fields.Float(required=True)
-    width = fields.Float(required=True)
-    height = fields.Float(required=True)
-    weight = fields.Float(required=True)
-    density = fields.Float(required=True)
-    timestamp = fields.Str(required=True)
-    color = fields.Str(required=True)
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    weight = fields.Float()
+    density = fields.Float()
+    timestamp = fields.Str()
+    updated_at = fields.Str()
+    color = fields.Str()
     reserved = fields.Bool()
+    used = fields.Bool()
     reservation_name = fields.Str()
     reservation_time = fields.Str()
     source = fields.Str()
@@ -19,22 +23,16 @@ class WoodSchema(Schema):
     info = fields.Str()
     type = fields.Str()
     image = fields.Str()
+    has_metal = fields.Bool()
+    metal_bbox_coords = fields.Str()
     intake_id = fields.Int()
-    wood_species = fields.Str()
-    label = fields.Str()
+    project_label = fields.Str()
     paint = fields.Str()
     project_type = fields.Str()
     is_fire_treated = fields.Bool()
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
-    wood_id = fields.Str(required=True)
-
-
-class WasteWoodSchema(WoodSchema):
-    contains_metal = fields.Bool(required=True)
-    damaged = fields.Bool(required=True)
-    stained = fields.Bool(required=True)
 
 
 class PlainTagSchema(Schema):
@@ -68,35 +66,6 @@ class PlainDesignRequirementSchema(Schema):
     created_at = fields.Int()
 
 
-class WoodUpdateSchema(Schema):
-    length = fields.Float()
-    width = fields.Float()
-    height = fields.Float()
-    weight = fields.Float()
-    density = fields.Float()
-    # timestamp = fields.Str()
-    color = fields.Str()
-    reserved = fields.Bool()
-    reservation_name = fields.Str()
-    reservation_time = fields.Str()
-    source = fields.Str()
-    price = fields.Float()
-    info = fields.Str()
-    type = fields.Str()
-    intake_id = fields.Int()
-    name = fields.Str()
-    wood_species = fields.Str()
-    label = fields.Str()
-    paint = fields.Str()
-    project_type = fields.Str()
-    is_fire_treated = fields.Bool()
-    is_straight = fields.Bool()
-    is_planed = fields.Bool()
-    storage_location = fields.Str()
-    wood_id = fields.Str()
-    image = fields.Str()
-
-
 class DesignRequirementSchema(PlainDesignRequirementSchema):
     woods = fields.Nested(WoodSchema(), dump_only=True, load_instance=True)
 
@@ -112,3 +81,14 @@ class UserSchema(Schema):
     username = fields.Str(required=True)
     # This must stay load only, since we never want to return the password
     password = fields.Str(required=True, load_only=True)
+
+
+class ProductionSchema(Schema):
+    id = fields.Int(dump_only=True)
+    operation = fields.Str()
+    instruction = fields.Str()
+    instruction_type = fields.Str()
+    timestamp = fields.Str()
+    status = fields.Str()
+    wood_id = fields.Int()
+    wood = fields.Nested(WoodSchema(), load_instance=True)

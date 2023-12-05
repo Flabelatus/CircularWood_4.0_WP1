@@ -5,7 +5,7 @@ from flask.views import MethodView
 from flask_smorest import abort, Blueprint
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
-from models import DesignRequirementsModelFromClient, ResidualWoodModel
+from models import DesignRequirementsModelFromClient, WoodModel
 from schema import DesignRequirementSchema, DesignRequirementsAndWoodsSchema
 
 design_blp = Blueprint(
@@ -69,13 +69,13 @@ class DesignRequirementsFromClientByProjectID(MethodView):
             DesignRequirementsModelFromClient.created_at.desc()).all()
 
 
-@design_blp.route("/residual_wood/link/<int:wood_id>/requirement/<int:requirement_id>")
+@design_blp.route("/wood/link/<int:wood_id>/requirement/<int:requirement_id>")
 class LinkRequirementsToWood(MethodView):
 
     @design_blp.response(201, DesignRequirementsAndWoodsSchema)
     def get(self, wood_id: int, requirement_id: int) -> dict:
         # get the wood by ID
-        wood = ResidualWoodModel.query.get_or_404(wood_id)
+        wood = WoodModel.query.get_or_404(wood_id)
         # get the requirement by ID
         requirement_dashboard = DesignRequirementsModelFromClient.query.get_or_404(requirement_id)
 
@@ -93,13 +93,13 @@ class LinkRequirementsToWood(MethodView):
         }
 
 
-@design_blp.route("/residual_wood/unlink/<int:wood_id>/requirement/<int:requirement_id>")
+@design_blp.route("/wood/unlink/<int:wood_id>/requirement/<int:requirement_id>")
 class UnlinkRequirementsFromWood(MethodView):
 
     @design_blp.response(200, DesignRequirementsAndWoodsSchema)
     def get(self, wood_id: int, requirement_id: int) -> dict:
         # get the wood by ID
-        wood = ResidualWoodModel.query.get_or_404(wood_id)
+        wood = WoodModel.query.get_or_404(wood_id)
         # get the requirement by ID
         requirement_dashboard = DesignRequirementsModelFromClient.query.get_or_404(requirement_id)
 
