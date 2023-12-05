@@ -24,6 +24,7 @@ class WoodList(MethodView):
     def post(self, parsed_data):
 
         wood = WoodModel(**parsed_data)
+        wood.subsequent_id = 0
         wood.timestamp = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
         # Calculate density upfront
@@ -34,6 +35,11 @@ class WoodList(MethodView):
             db.session.commit()
         except SQLAlchemyError as e:
             abort(500, message=str(e))
+
+        wood.current_id = wood.id
+        db.session.add(wood)
+        db.session.commit()
+
         return wood
 
     @jwt_required()
