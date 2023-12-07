@@ -6,12 +6,13 @@ class DesignRequirementsModelFromClient(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     part_index = db.Column(db.Integer)
-    length = db.Column(db.Float)
-    width = db.Column(db.Float)
-    height = db.Column(db.Float)
+
+    # {length, width, height, ifc}
+    features = db.Column(db.String)
+
     tag = db.Column(db.String(80))
     part = db.Column(db.String(80))
-    created_at = db.Column(db.Integer)
+    created_at = db.Column(db.String)
     project_id = db.Column(db.String)
 
     woods = db.relationship("WoodModel", back_populates='requirements', secondary='woods_requirements')

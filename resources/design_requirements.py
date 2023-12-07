@@ -2,6 +2,7 @@ from time import time
 from typing import List, Union
 
 from flask.views import MethodView
+from flask_jwt_extended import jwt_required
 from flask_smorest import abort, Blueprint
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -15,7 +16,7 @@ design_blp = Blueprint(
 )
 
 
-@design_blp.route("/requirements/client")
+@design_blp.route("/design/client")
 class DesignRequirementsFromClient(MethodView):
     @design_blp.response(200, DesignRequirementSchema(many=True))
     def get(self) -> List[DesignRequirementsModelFromClient]:
@@ -40,13 +41,15 @@ class DesignRequirementsFromClient(MethodView):
         return design_requirements
 
 
-@design_blp.route("/requirements/client/<int:requirement_id>")
+# Operations on the design element by ID
+@design_blp.route("/design/client/<int:requirement_id>")
 class DesignRequirementsFromClientByID(MethodView):
     @design_blp.response(200, DesignRequirementSchema)
     def get(self, requirement_id: int) -> Union[DesignRequirementsModelFromClient, None]:
         # get the requirement by ID
         return DesignRequirementsModelFromClient.query.get_or_404(requirement_id)
 
+    @jwt_required()
     @design_blp.response(200, DesignRequirementSchema)
     def delete(self, requirement_id: int) -> dict:
         # get the requirement by ID
@@ -59,8 +62,26 @@ class DesignRequirementsFromClientByID(MethodView):
             "message": "requirement removed"
         }
 
+    @jwt_required()
+    @design_blp.arguments(DesignRequirementSchema)
+    @design_blp.response(200, DesignRequirementSchema)
+    def patch(self, parsed_data, requirement_id: int) -> DesignRequirementsModelFromClient:
+        design_req = DesignRequirementsModelFromClient.query.get_or_404(requirement_id)
+        if design_req:
+            design_req.part_index = parsed_data.get("part_index", 0)
+            design_req.features = parsed_data.get("features", "")
+            design_req.part = parsed_data.get("part", "")
+            design_req.tag = parsed_data.get("tag", "")
+            design_req.project_id = parsed_data.get("project_id", 0)
 
-@design_blp.route("/requirements/client/project/<string:project_id>")
+        db.session.add(design_req)
+        db.session.commit()
+
+        return design_req
+
+
+# Get the design element by project_id
+@design_blp.route("/design/client/project/<string:project_id>")
 class DesignRequirementsFromClientByProjectID(MethodView):
     @design_blp.response(200, DesignRequirementSchema(many=True))
     def get(self, project_id: str) -> List[DesignRequirementsModelFromClient]:
@@ -69,7 +90,7 @@ class DesignRequirementsFromClientByProjectID(MethodView):
             DesignRequirementsModelFromClient.created_at.desc()).all()
 
 
-@design_blp.route("/wood/link/<int:wood_id>/requirement/<int:requirement_id>")
+@design_blp.route("/wood/link/<int:wood_id>/design/<int:requirement_id>")
 class LinkRequirementsToWood(MethodView):
 
     @design_blp.response(201, DesignRequirementsAndWoodsSchema)
@@ -88,12 +109,12 @@ class LinkRequirementsToWood(MethodView):
             abort(500, exc=e, message="error linking dashboard requirement to wood")
 
         return {
-            "requirement": requirement_dashboard,
+            "design": requirement_dashboard,
             "wood": wood
         }
 
 
-@design_blp.route("/wood/unlink/<int:wood_id>/requirement/<int:requirement_id>")
+@design_blp.route("/wood/unlink/<int:wood_id>/design/<int:requirement_id>")
 class UnlinkRequirementsFromWood(MethodView):
 
     @design_blp.response(200, DesignRequirementsAndWoodsSchema)

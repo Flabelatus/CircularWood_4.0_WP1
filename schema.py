@@ -16,6 +16,10 @@ class WoodSchema(Schema):
     color = fields.Str()
     reserved = fields.Bool()
     used = fields.Bool()
+    used_by = fields.Str()
+    deleted = fields.Bool()
+    deleted_by = fields.Str()
+    deleted_at = fields.Str()
     reservation_name = fields.Str()
     reservation_time = fields.Str()
     source = fields.Str()
@@ -57,17 +61,15 @@ class TagAndWoodSchema(Schema):
 class PlainDesignRequirementSchema(Schema):
     id = fields.Int(dump_only=True)
     part_index = fields.Int()
-    length = fields.Float()
-    width = fields.Float()
-    height = fields.Float()
+    features = fields.Str()
     tag = fields.Str()
     part = fields.Str()
     project_id = fields.Str()
-    created_at = fields.Int()
+    created_at = fields.Str()
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
-    woods = fields.Nested(WoodSchema(), dump_only=True, load_instance=True)
+    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True), load_instance=True)
 
 
 class DesignRequirementsAndWoodsSchema(Schema):
@@ -88,7 +90,7 @@ class ProductionSchema(Schema):
     operation = fields.Str()
     instruction = fields.Str()
     instruction_type = fields.Str()
-    timestamp = fields.Str()
+    timestamp = fields.Int()
     status = fields.Str()
     wood_id = fields.Int()
     wood = fields.Nested(WoodSchema(), load_instance=True)

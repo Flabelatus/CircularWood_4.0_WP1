@@ -10,6 +10,16 @@ from schema import WoodSchema
 
 blp = Blueprint('DataWood', 'wood', description='Operations on the wood')
 
+"""
+routes:
+    /wood
+    /wood/{wood_id}
+    /wood/delete-record/{wood_id}
+    /woods/delete-all-records
+    /wood/reserve/{wood_id}
+    /wood/unreserve/{wood_id}
+"""
+
 
 @blp.route('/wood')
 class WoodList(MethodView):
@@ -42,22 +52,33 @@ class WoodList(MethodView):
 
         return wood
 
+
+@blp.route('/wood/delete-record/<int:wood_id>')
+class WoodHardDeleteByID(MethodView):
     @jwt_required()
-    @blp.arguments(WoodSchema)
     @blp.response(200, WoodSchema)
-    def delete(self, parsed_data):
+    def delete(self, wood_id: int) -> dict:
+        wood = WoodModel.query.get_or_404(wood_id)
+        db.session.delete(wood)
+        db.session.commit()
+        return {
+            "message": "wood is deleted from the records"
+        }
 
-        wood_id_str = parsed_data['wood_id']
-        wood = WoodModel.query.filter(WoodModel.wood_id == wood_id_str).first()
 
-        if wood:
-            db.session.delete(wood)
+@blp.route('/woods/delete-all-records')
+class DeleteWoodRecords(MethodView):
+    @jwt_required()
+    @blp.response(200, WoodSchema)
+    def delete(self):
+        woods = WoodModel.query.all()
+        if len(woods) > 0:
+            for wood in woods:
+                db.session.delete(wood)
             db.session.commit()
-            return {
-                "message": "wood deleted from database."
-            }
-        else:
-            abort(404)
+        return {
+            "message": "all woods records are deleted from the database"
+        }
 
 
 @blp.route('/wood/<int:wood_id>')
@@ -72,10 +93,20 @@ class WoodByID(MethodView):
     @blp.response(200, WoodSchema)
     def delete(self, wood_id):
         wood = WoodModel.query.get_or_404(wood_id)
-        db.session.delete(wood)
+        user = UserModel.query.get_or_404(get_jwt_identity())
+
+        deleted_at = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+
+        if wood and user:
+            wood.deleted = True
+            wood.deleted_at = deleted_at
+            wood.deleted_by = user
+
+        db.session.add(wood)
         db.session.commit()
+
         return {
-            "message": "wood deleted from database."
+            "message": f"wood deleted from database by {user} at {deleted_at}"
         }
 
     @jwt_required()
@@ -112,6 +143,10 @@ class WoodByID(MethodView):
             wood.is_planed = parsed_data.get('is_planed', 1)
             wood.storage_location = parsed_data.get('storage_location', "")
             wood.used = parsed_data.get("used", 0)
+            wood.used_by = parsed_data.get("used_by", "")
+            wood.deleted = parsed_data.get("deleted", 0)
+            wood.deleted_by = parsed_data.get("deleted_by", "")
+            wood.deleted_at = parsed_data.get("deleted_at", "")
         db.session.add(wood)
         db.session.commit()
 
