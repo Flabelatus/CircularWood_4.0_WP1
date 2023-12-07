@@ -8,9 +8,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from models import WoodModel, UserModel
 from schema import WoodSchema
 
-blp = Blueprint('DataWood', 'wood', description='Operations on the wood')
+blp = Blueprint('DataWood', 'wood', description='Operations on the wood resource')
 
 """
+Overview of the routes in this resource
 routes:
     /wood
     /wood/{wood_id}
@@ -26,12 +27,28 @@ class WoodList(MethodView):
 
     @blp.response(200, WoodSchema(many=True))
     def get(self):
+        """
+        Get all the woods available in the database.
+
+        Returns:
+            List[WoodModel]: List of wood objects in the database.
+        """
+
         wood = WoodModel.query.all()
         return wood
 
     @blp.arguments(WoodSchema)
     @blp.response(201, WoodSchema)
     def post(self, parsed_data):
+        """
+        Insert a new wood into the database.
+
+        Args:
+            parsed_data (dict): Parsed data from the request.
+
+        Returns:
+            WoodModel: The newly created wood object.
+        """
 
         wood = WoodModel(**parsed_data)
         wood.subsequent_id = 0
@@ -55,9 +72,21 @@ class WoodList(MethodView):
 
 @blp.route('/wood/delete-record/<int:wood_id>')
 class WoodHardDeleteByID(MethodView):
+
     @jwt_required()
     @blp.response(200, WoodSchema)
     def delete(self, wood_id: int) -> dict:
+        """
+        Delete the wood record from the database by ID. (hard delete meaning that the row will be removed from the
+        database).
+
+        Args:
+            wood_id (int): The ID of the wood record to be deleted.
+
+        Returns:
+            dict: A message indicating the success of the deletion.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         db.session.delete(wood)
         db.session.commit()
@@ -71,6 +100,13 @@ class DeleteWoodRecords(MethodView):
     @jwt_required()
     @blp.response(200, WoodSchema)
     def delete(self):
+        """
+        Delete all the wood records from the database. (hard delete meaning that all the rows will be removed from
+        the database).
+
+        Returns:
+            dict: A message indicating the success of the deletion.
+        """
         woods = WoodModel.query.all()
         if len(woods) > 0:
             for wood in woods:
@@ -86,12 +122,32 @@ class WoodByID(MethodView):
 
     @blp.response(200, WoodSchema)
     def get(self, wood_id):
+        """
+        Get wood by ID.
+
+        Args:
+            wood_id (int): The ID of the wood record to be retrieved.
+
+        Returns:
+            WoodModel: The wood object with the specified ID.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         return wood
 
     @jwt_required()
     @blp.response(200, WoodSchema)
     def delete(self, wood_id):
+        """
+        Delete wood by ID (soft delete meaning that the record stays in the database).
+
+        Args:
+            wood_id (int): The ID of the wood record to be soft-deleted.
+
+        Returns:
+            dict: A message indicating the success of the soft deletion.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         user = UserModel.query.get_or_404(get_jwt_identity())
 
@@ -113,6 +169,17 @@ class WoodByID(MethodView):
     @blp.arguments(WoodSchema)
     @blp.response(200, WoodSchema)
     def patch(self, parsed_data, wood_id):
+        """
+        Update the wood data in a row by ID.
+
+        Args:
+            parsed_data (dict): Parsed data from the request.
+            wood_id (int): The ID of the wood record to be updated.
+
+        Returns:
+            WoodModel: The updated wood object.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         if wood:
             wood.current_id = parsed_data.get('current_id', wood_id)
@@ -155,9 +222,20 @@ class WoodByID(MethodView):
 
 @blp.route("/wood/reserve/<int:wood_id>")
 class WoodReservation(MethodView):
+
     @jwt_required()
     @blp.response(200, WoodSchema)
     def get(self, wood_id: int) -> WoodModel:
+        """
+        Reserve wood by ID.
+
+        Args:
+            wood_id (int): The ID of the wood record to be reserved.
+
+        Returns:
+            WoodModel: The reserved wood object.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         if wood:
             wood.reserved = True
@@ -174,8 +252,19 @@ class WoodReservation(MethodView):
 
 @blp.route("/wood/unreserve/<int:wood_id>")
 class WoodUnreservation(MethodView):
+
     @blp.response(200, WoodSchema)
     def get(self, wood_id):
+        """
+        Unreserve wood by ID.
+
+        Args:
+            wood_id (int): The ID of the wood record to be unreserved.
+
+        Returns:
+            WoodModel: The unreserved wood object.
+        """
+
         wood = WoodModel.query.get_or_404(wood_id)
         if wood and wood.reserved:
             wood.reserved = False
