@@ -7,6 +7,7 @@ from flask_smorest import Api
 from load_dotenv import load_dotenv
 
 from db import db
+from resources.production import production_blp
 from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
 from resources.design_requirements import design_blp
@@ -115,5 +116,6 @@ def create_app(db_url=None):
     api.register_blueprint(tags_blueprint)
     api.register_blueprint(design_blp)
     api.register_blueprint(user_blp)
+    api.register_blueprint(production_blp)
 
     return app
