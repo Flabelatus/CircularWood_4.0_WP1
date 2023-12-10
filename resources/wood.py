@@ -61,6 +61,7 @@ class WoodList(MethodView):
             db.session.add(wood)
             db.session.commit()
         except SQLAlchemyError as e:
+            db.session.rollback()
             abort(500, message=str(e))
 
         wood.current_id = wood.id

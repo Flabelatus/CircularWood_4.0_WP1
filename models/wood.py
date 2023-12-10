@@ -67,12 +67,12 @@ class WoodModel(db.Model):
     intake_id = db.Column(db.Integer)
     storage_location = db.Column(db.String)
 
+    # Relationships
     tags = db.relationship("TagModel", back_populates="woods", secondary="woods_tags")
-
     requirements = db.relationship(
         "DesignRequirementsModelFromClient",
         back_populates="woods",
         secondary="woods_requirements"
     )
-
     production = db.relationship('ProductionModel')
+    history = db.relationship("HistoryModel", back_populates="wood", lazy="dynamic")

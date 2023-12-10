@@ -12,6 +12,7 @@ from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
 from resources.design_requirements import design_blp
 from resources.user import user_blp
+from resources.history import history_blp
 from blocklist import BLOCKLIST
 
 
@@ -117,5 +118,6 @@ def create_app(db_url=None):
     api.register_blueprint(design_blp)
     api.register_blueprint(user_blp)
     api.register_blueprint(production_blp)
+    api.register_blueprint(history_blp)
 
     return app

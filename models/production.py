@@ -12,11 +12,10 @@ class ProductionModel(db.Model):
     # RAPID
     instruction = db.Column(db.String)
 
-    # RAPID, Variables, JSON
     instruction_type = db.Column(db.String)
     timestamp = db.Column(db.Integer)
 
-    # pending, ,done , failed
+    # pending, done , failed
     status = db.Column(db.String)
 
     wood = db.relationship("WoodModel", back_populates='production')

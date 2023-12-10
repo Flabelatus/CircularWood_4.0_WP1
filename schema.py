@@ -94,3 +94,14 @@ class ProductionSchema(Schema):
     status = fields.Str()
     wood_id = fields.Int()
     wood = fields.Nested(WoodSchema(), load_instance=True)
+
+
+class PlainHistorySchema(Schema):
+    id = fields.Int(dump_only=True)
+    event = fields.Str()
+    created_at = fields.Str()
+    wood_id = fields.Int()
+
+
+class HistorySchema(PlainHistorySchema):
+    wood = fields.List(fields.Nested(WoodSchema(), load_instance=True))
