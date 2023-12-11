@@ -1,6 +1,13 @@
 from marshmallow import fields, Schema
 
 
+class HistorySchema(Schema):
+    id = fields.Int(dump_only=True)
+    event = fields.Str()
+    created_at = fields.Str()
+    wood_id = fields.Int()
+
+
 class WoodSchema(Schema):
     id = fields.Int(dump_only=True)
     current_id = fields.Str()
@@ -37,6 +44,8 @@ class WoodSchema(Schema):
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
+
+    history = fields.List(fields.Nested(HistorySchema(), load_instance=True))
 
 
 class PlainTagSchema(Schema):
@@ -94,14 +103,3 @@ class ProductionSchema(Schema):
     status = fields.Str()
     wood_id = fields.Int()
     wood = fields.Nested(WoodSchema(), load_instance=True)
-
-
-class PlainHistorySchema(Schema):
-    id = fields.Int(dump_only=True)
-    event = fields.Str()
-    created_at = fields.Str()
-    wood_id = fields.Int()
-
-
-class HistorySchema(PlainHistorySchema):
-    wood = fields.List(fields.Nested(WoodSchema(), load_instance=True))

@@ -41,7 +41,9 @@ class HistoryList(MethodView):
 
         history = HistoryModel(**parsed_data)
         history.created_at = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-
+        wood = WoodModel.query.get_or_404(parsed_data.get("wood_id"), 0)
+        if wood:
+            wood.history.append(history)
         try:
             db.session.add(history)
             db.session.commit()
