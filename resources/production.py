@@ -74,7 +74,7 @@ class ProductionByID(MethodView):
         return prod
 
 
-@production_blp.route("/production/<int:wood_id>")
+@production_blp.route("/production/wood/<int:wood_id>")
 class ProductionByWoodID(MethodView):
 
     @production_blp.response(200, ProductionSchema(many=True))
