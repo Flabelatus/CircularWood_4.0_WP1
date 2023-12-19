@@ -81,4 +81,4 @@ class ProductionByWoodID(MethodView):
     def get(self, wood_id: int) -> List[ProductionModel]:
         wood = WoodModel.query.get_or_404(wood_id)
         if wood:
-            return ProductionModel.query.filter_by(wood_id=wood_id).all()
+            return ProductionModel.query.filter_by(wood_id=wood.id).all()
