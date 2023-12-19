@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 from flask_smorest import abort, Blueprint
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
-from models import ProductionModel
+from models import ProductionModel, WoodModel
 from schema import ProductionSchema
 
 production_blp = Blueprint(
@@ -72,3 +72,13 @@ class ProductionByID(MethodView):
         db.session.commit()
 
         return prod
+
+
+@production_blp.route("/production/<int:wood_id>")
+class ProductionByWoodID(MethodView):
+
+    @production_blp.response(200, ProductionSchema(many=True))
+    def get(self, wood_id: int) -> List[ProductionModel]:
+        wood = WoodModel.query.get_or_404(wood_id)
+        if wood:
+            return ProductionModel.query.filter_by(wood_id=wood_id).all()
