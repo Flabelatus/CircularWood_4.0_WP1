@@ -147,4 +147,4 @@ class DesignByWoodID(MethodView):
     def get(self, wood_id: int) -> List[DesignRequirementsModelFromClient]:
         wood = WoodModel.query.get_or_404(wood_id)
         if wood:
-            return DesignRequirementsModelFromClient.query.filter_by(wood_id).all()
+            return DesignRequirementsModelFromClient.query.filter_by(wood_id=wood_id).all()
