@@ -75,6 +75,7 @@ class PlainDesignRequirementSchema(Schema):
     part = fields.Str()
     project_id = fields.Str()
     created_at = fields.Str()
+    wood_id = fields.Int()
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):

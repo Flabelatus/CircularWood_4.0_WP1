@@ -73,6 +73,7 @@ class DesignRequirementsFromClientByID(MethodView):
             design_req.part = parsed_data.get("part", "")
             design_req.tag = parsed_data.get("tag", "")
             design_req.project_id = parsed_data.get("project_id", 0)
+            design_req.wood_id = parsed_data.get("wood_id", 0)
 
         db.session.add(design_req)
         db.session.commit()
@@ -137,3 +138,13 @@ class UnlinkRequirementsFromWood(MethodView):
             "wood": wood,
             "requirement": requirement_dashboard
         }
+
+
+@design_blp.route("/design/wood/<int:wood_id>")
+class DesignByWoodID(MethodView):
+
+    @design_blp.response(200, DesignRequirementSchema(many=True))
+    def get(self, wood_id: int) -> List[DesignRequirementsModelFromClient]:
+        wood = WoodModel.query.get_or_404(wood_id)
+        if wood:
+            return DesignRequirementsModelFromClient.query.filter_by(wood_id).all()
