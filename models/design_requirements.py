@@ -14,6 +14,6 @@ class DesignRequirementsModelFromClient(db.Model):
     part = db.Column(db.String(80))
     created_at = db.Column(db.String)
     project_id = db.Column(db.String)
-    wood_id = db.Column(db.Int)
+    wood_id = db.Column(db.Integer)
 
     woods = db.relationship("WoodModel", back_populates='requirements', secondary='woods_requirements')
