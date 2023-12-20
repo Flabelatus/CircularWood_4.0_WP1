@@ -12,9 +12,9 @@ import pandas as pd
 from load_dotenv import load_dotenv
 import requests
 
-BACKUP_FILEPATH = "./../data_backup/backup_11_28_2023.json"
+BACKUP_FILEPATH = "./../data_backup/backup_11_09_2023.json"
 # CSV_FILEPATH = "./../data_backup/manual_data_entry/340_piecesdatabase.csv"
-CSV_FILEPATH = "./../data_backup/test_.csv"
+CSV_FILEPATH = "./../data_backup/data.csv"
 SAVING_FILEPATH = ""
 
 load_dotenv()
@@ -112,53 +112,16 @@ class WoodDbManager:
 
         r = requests.post(url=URL + "login", data=payload, headers={"Content-Type": "application/json"})
         self.access_token = r.json()['access_token']
-        # print(r.json())
+        print(r.json())
 
     def logout(self):
-        print(self.access_token)
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + self.access_token
         }
 
         r = requests.post(url=URL + "logout", headers=headers)
-
         print(r.json())
-
-    def apply_correction(self):
-        updated_rows = []
-        with open(self.backup_fp, 'r') as back_up_data:
-            existing_rows = json.load(back_up_data)
-            for i in range(400, 458):
-                # delete this field as it's not needed to update
-                del existing_rows[i]['timestamp']
-                existing_rows[i]['source'] = "Hooidrift 129B"
-                existing_rows[i]['name'] = "Red oak FSC"
-                existing_rows[i]['price'] = 0.27
-
-                # Here you can add any changes needed to update the database
-                #
-
-                # After the changes, add them to th rows
-                updated_rows.append(existing_rows[i])
-
-        # update all the rows
-        for r in updated_rows:
-            new_row = r.copy()
-            del new_row['id']
-
-            payload = json.dumps(new_row)
-
-            print(r['id'], "This is just printed statement, the request is not sent", r['name'])
-
-            # For safety this is disabled
-
-            # r = requests.patch(
-            #     url=f"https://robotlab-residualwood.onrender.com/residual_wood/{r['id']}",
-            #     headers={'Content-Type': 'application/json'},
-            #     data=payload
-            # )
-            # print(r)
 
     def filter_removed_ids_from_csv(self):
 
@@ -239,9 +202,11 @@ class WoodDbManager:
             pass
 
     def compile_data_from_csv(self):
+
         df = self.data_frame
         df = df.fillna('')
 
+        # Verify with the latest schema first
         try:
             for index, row in df.iterrows():
                 d = {
