@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_smorest import Api
+from flask_cors import cross_origin, CORS
 from load_dotenv import load_dotenv
 
 from db import db
@@ -18,8 +19,10 @@ from blocklist import BLOCKLIST
 
 def create_app(db_url=None):
     app = Flask(__name__)
-    load_dotenv()
+    cors = CORS(app, supports_credentials=True)
 
+    load_dotenv()
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['PROPAGATE_EXCEPTIONS'] = True
     app.config['API_TITLE'] = "Wood Database REST API"
     app.config['API_VERSION'] = "v1.1"

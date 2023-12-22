@@ -41,10 +41,6 @@ CMD ["flask", "run", "--host", "0.0.0.0"]
 FROM python:3.10
 WORKDIR /app
 
-RUN useradd -m -s /bin/bash robotlab
-RUN chown -R robotlab:robotlab /app
-USER robotlab
-
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY . .
