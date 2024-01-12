@@ -79,7 +79,7 @@ class PlainDesignRequirementSchema(Schema):
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
-    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True), load_instance=True)
+    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True), load_instance=False)
 
 
 class DesignRequirementsAndWoodsSchema(Schema):
@@ -103,4 +103,4 @@ class ProductionSchema(Schema):
     timestamp = fields.Int()
     status = fields.Str()
     wood_id = fields.Int()
-    wood = fields.Nested(WoodSchema(), load_instance=True)
+    wood = fields.Nested(WoodSchema(), load_instance=False)
