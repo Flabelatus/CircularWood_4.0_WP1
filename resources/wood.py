@@ -157,7 +157,7 @@ class WoodByID(MethodView):
         if wood and user:
             wood.deleted = True
             wood.deleted_at = deleted_at
-            wood.deleted_by = user
+            wood.deleted_by = user.username
 
         db.session.add(wood)
         db.session.commit()
