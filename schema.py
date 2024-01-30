@@ -103,4 +103,4 @@ class ProductionSchema(Schema):
     timestamp = fields.Int()
     status = fields.Str()
     wood_id = fields.Int()
-    wood = fields.Nested(WoodSchema(), load_instance=False)
+    # wood = fields.Nested(WoodSchema(), load_instance=False)
