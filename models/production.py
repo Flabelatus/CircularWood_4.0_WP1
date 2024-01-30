@@ -12,6 +12,7 @@ class ProductionModel(db.Model):
     # RAPID
     instruction = db.Column(db.String)
 
+    # This is a RAPID or mm in length for example
     instruction_type = db.Column(db.String)
     timestamp = db.Column(db.Integer)
 
