@@ -25,32 +25,6 @@ The API resources for wood and tagging of wood. The full documentation of the AP
 the swagger-ui accessing is through: http://localhost/api-docs for development server and
 https://robotlab-residualwood.onrender.com/api-docs for the production server
 
-Main Endpoints: (To be completed)
-
-```
-/register
-/login
-/logout
-/wood 
-/wood/{wood_id}
-/production
-/production/{production_id}
-/design
-/tags
-/tag/{tag_id}
-/wood/{wood_id}/tag/{tag_id}
-/woods_tags/{woods_tag_id}
-/tag/{tag_name}
-/wood/tag/{tag_name}
-```
-
-Methods:
-```[GET, PUT, POST, DELETE]```
-
-The API blueprints and their interactions are in the resources, directory.
-
-In order to create the blueprints the flask-smorest library is used.
-
 ### Database
 
 The database is created using SQLAlchemy.
@@ -65,36 +39,6 @@ the database. As each wood can have several tags. And each tag can be associated
 
 For the data validation, Marshmallow library is used to create the schemas that would be used.
 Each of the API methods check for these schemas.
-
-An example of the serialized JSON for the data relating to residual wood
-
-```{
-	"color": "222,130,34",
-	"density": 0.19444153846153847,
-	"height": 10.0,
-	"id": 10,
-	"image": "string",
-	"info": "Intake for residual wood in Robot Lab HvA, for production of the Stool in WP1 for CW4.0 Project",
-	"is_fire_treated": false,
-	"is_planed": true,
-	"is_straight": true,
-	"label": "string",
-	"length": 1674.0,
-	"name": "string",
-	"paint": "string",
-	"price": 0.0,
-	"project_type": "string",
-	"reservation_name": "-",
-	"reservation_time": "-",
-	"reserved": false,
-	"source": "HvA Jakoba Mulderhuis (JMH)",
-	"timestamp": "2023-10-02 15:25-27",
-	"type": "Hardwood",
-	"weight": 13000.0,
-	"width": 151.0,
-	"wood_species": "string"
-}
-```
 
 ## Quick Start
 
