@@ -104,3 +104,9 @@ class ProductionSchema(Schema):
     status = fields.Str()
     wood_id = fields.Int()
     # wood = fields.Nested(WoodSchema(), load_instance=False)
+
+
+class PointCloudSchema(Schema):
+    id = fields.Int(dump_only=True)
+    pcd = fields.Str()
+    wood_id = fields.Int()

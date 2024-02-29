@@ -76,3 +76,4 @@ class WoodModel(db.Model):
     )
     production = db.relationship('ProductionModel')
     history = db.relationship("HistoryModel", back_populates="wood", lazy="dynamic")
+    pointcloud = db.relationship("PointCloudModel", back_populates="wood", lazy="dynamic")

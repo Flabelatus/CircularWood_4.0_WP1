@@ -6,3 +6,4 @@ from models.woods_requirements import WoodsAndRequirementsFromClientModel
 from models.user import UserModel
 from models.production import ProductionModel
 from models.history import HistoryModel
+from models.point_cloud import PointCloudModel
