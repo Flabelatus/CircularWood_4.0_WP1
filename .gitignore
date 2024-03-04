@@ -5,3 +5,4 @@
 *.3dm
 /venv
 *.DS_Store
+/env

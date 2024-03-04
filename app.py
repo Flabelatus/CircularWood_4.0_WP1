@@ -23,7 +23,8 @@ def create_app(db_url=None):
 
     cors = CORS(
         app,
-        origins=["https://robotlab-db-gui.onrender.com", "http://localhost:3000"],
+        origins=["https://robotlab-db-gui.onrender.com",
+                 "http://localhost:3000"],
         allow_headers=[
             "Accept", "Content-Type", "X-Auth-Email", "X-Auth-Key", "X-CSRF-Token", "Origin", "X-Requested-With",
             "Authorization"
@@ -45,7 +46,8 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv("DATABASE_URL", "sqlite:///instance/data.db")
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
+        "DATABASE_URL", "sqlite:///instance/data.db")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
@@ -96,6 +98,7 @@ def create_app(db_url=None):
 
     @jwt.additional_claims_loader
     def add_claims_to_jwt(identity):
+        # Not the best way I know, but for now it works, later user modes need to be create as well.
         if identity == 1:
             return {"is_admin": True}
         return {"is_admin": False}

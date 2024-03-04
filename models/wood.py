@@ -59,9 +59,9 @@ class WoodModel(db.Model):
     # Information regarding the use of material
     reserved = db.Column(db.Boolean, default=False)
     reservation_name = db.Column(db.String(80))
-    used = db.Column(db.Boolean)
+    used = db.Column(db.Boolean, default=False)
     used_by = db.Column(db.String)
-    deleted = db.Column(db.Boolean)
+    deleted = db.Column(db.Boolean, default=False)
     deleted_by = db.Column(db.String)
 
     intake_id = db.Column(db.Integer)
