@@ -20,6 +20,13 @@ class AdminWoodList(MethodView):
     @jwt_required()
     @blp.response(200, WoodSchema(many=True))
     def get(self) -> Union[List[WoodModel], None]:
+        """
+        Retrieves the list of all available wood in the database. This action can be performed only if you are admin
+
+        Returns:
+            Union[List[WoodModel], None]: a list of all the wood existing in the database, this list includes the wood that
+            is reserved or soft deleted as well. 
+        """
         user_id = get_jwt_identity()
         if user_id != 1:
             abort(
@@ -295,9 +302,12 @@ class WoodByID(MethodView):
     @blp.response(200, WoodSchema)
     def patch(self, parsed_data, wood_id):
         """
-        Update the specific information about the wood such as dimensions, location, treatment etc.
-        in a row by wood ID Information such as reservation, deletion, usability would not be adjusted
-        in this method
+        Update the details of a wood item, including its dimensions, location, treatment, etc.,
+        identified by its unique wood ID. If you've already reserved the wood, you're allowed to
+        adjust its information. However, others cannot modify the details of a wood item that you've
+        reserved, and likewise, you cannot alter the details of wood items reserved by others.
+        Information such as reservation, deletion, usability would not be adjusted
+        in this method.
 
         Args:
             parsed_data (dict): Parsed data from the request.
@@ -350,7 +360,17 @@ class SetWoodToUsedByID(MethodView):
 
     @jwt_required()
     @blp.response(200, WoodSchema)
-    def post(self, wood_id: int):
+    def post(self, wood_id: int) -> Union[WoodModel, None]:
+        """
+        Set the status of the wood to be as 'Used'. This is more in the sense of the occasions that the wood 
+        is consumed for a specific design or project. The user can set it to used.
+
+        Args:
+            wood_id (int): The ID of the wood that needs to be set to used. 
+
+        Returns:
+            Union[WoodModel, None]: The model of the wood that was set to 'Used'
+        """
         wood = WoodModel.query.get_or_404(wood_id)
         user = UserModel.query.get_or_404(get_jwt_identity())
 
@@ -376,6 +396,15 @@ class WoodByIDAsLoggedInUser(MethodView):
     @jwt_required()
     @blp.response(200, WoodSchema)
     def get(self, wood_id: int) -> Union[WoodModel, None]:
+        """
+        Retrieve the wood by ID, this will show the reserved wood if you are the user who reserved it.
+
+        Args:
+            wood_id (int): _description_
+
+        Returns:
+            Union[WoodModel, None]: _description_
+        """
         user_id = get_jwt_identity()
         user = UserModel.query.get_or_404(user_id)
         wood = WoodModel.query.get_or_404(wood_id)
