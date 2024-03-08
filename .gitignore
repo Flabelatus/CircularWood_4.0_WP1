@@ -6,3 +6,5 @@
 /venv
 *.DS_Store
 /env
+test.py
+.DS_Store

@@ -15,6 +15,7 @@ from resources.design_requirements import design_blp
 from resources.user import user_blp
 from resources.history import history_blp
 from resources.point_cloud import pointcloud_blp
+from resources.impact import impact_blp
 from blocklist import BLOCKLIST
 
 
@@ -40,7 +41,7 @@ def create_app(db_url=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['PROPAGATE_EXCEPTIONS'] = True
     app.config['API_TITLE'] = "Wood Database REST API"
-    app.config['API_VERSION'] = "v1.1"
+    app.config['API_VERSION'] = "v1"
     app.config['OPENAPI_VERSION'] = '3.0.3'
     app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
@@ -147,5 +148,6 @@ def create_app(db_url=None):
     api.register_blueprint(production_blp)
     api.register_blueprint(history_blp)
     api.register_blueprint(pointcloud_blp)
+    api.register_blueprint(impact_blp)
 
     return app

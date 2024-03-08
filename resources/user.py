@@ -16,7 +16,8 @@ class UserLogin(MethodView):
 
     @user_blp.arguments(UserSchema)
     def post(self, parsed_data):
-        user = UserModel.query.filter(UserModel.username == parsed_data['username']).first()
+        user = UserModel.query.filter(
+            UserModel.username == parsed_data['username']).first()
         if user and pbkdf2_sha256.verify(parsed_data['password'], user.password):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(identity=user.id)
@@ -30,7 +31,8 @@ class TokenRefresh(MethodView):
     @jwt_required(refresh=True)
     def post(self):
         current_user = get_jwt_identity()
-        refreshed_token = create_access_token(identity=current_user, fresh=False)
+        refreshed_token = create_access_token(
+            identity=current_user, fresh=False)
         jti = get_jwt()['jti']
         BLOCKLIST.add(jti)
         return {"access_token": refreshed_token}

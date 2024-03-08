@@ -58,7 +58,8 @@ class TagUpdateSchema(Schema):
 
 
 class TagSchema(PlainTagSchema):
-    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True, load_instance=True))
+    woods = fields.List(fields.Nested(
+        WoodSchema(), dump_only=True, load_instance=True))
 
 
 class TagAndWoodSchema(Schema):
@@ -79,7 +80,8 @@ class PlainDesignRequirementSchema(Schema):
 
 
 class DesignRequirementSchema(PlainDesignRequirementSchema):
-    woods = fields.List(fields.Nested(WoodSchema(), dump_only=True), load_instance=False)
+    woods = fields.List(fields.Nested(
+        WoodSchema(), dump_only=True), load_instance=False)
 
 
 class DesignRequirementsAndWoodsSchema(Schema):
@@ -109,4 +111,18 @@ class ProductionSchema(Schema):
 class PointCloudSchema(Schema):
     id = fields.Int(dump_only=True)
     pcd = fields.Str()
+    wood_id = fields.Int()
+
+
+class ImpactSchema(Schema):
+    id = fields.Int(dump_only=True)
+    carbon_footprint = fields.Str()
+    codename = fields.Str()
+    eco_costs = fields.Str()
+    process = fields.Str()
+    eco_toxicity = fields.Str()
+    footprint = fields.Str()
+    resource_depletion = fields.Str()
+    human_health = fields.Str()
+    material = fields.Str()
     wood_id = fields.Int()
