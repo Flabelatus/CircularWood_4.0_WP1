@@ -26,7 +26,7 @@ class UserLogin(MethodView):
                 {"access_token": access_token, "refresh_token": refresh_token})
             response.set_cookie(
                 'refresh_token',
-                secure=True,
+                secure=False,
                 samesite="Strict",
                 value=refresh_token,
                 path="/",
