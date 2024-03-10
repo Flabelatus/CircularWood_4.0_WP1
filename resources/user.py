@@ -1,4 +1,5 @@
 from flask.views import MethodView
+from flask import make_response
 from flask_smorest import Blueprint, abort
 from passlib.hash import pbkdf2_sha256
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt, create_refresh_token, get_jwt_identity
@@ -21,14 +22,25 @@ class UserLogin(MethodView):
         if user and pbkdf2_sha256.verify(parsed_data['password'], user.password):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(identity=user.id)
-            return {"access_token": access_token, "refresh_token": refresh_token}
+            response = make_response(
+                {"access_token": access_token, "refresh_token": refresh_token})
+            response.set_cookie(
+                'refresh_token',
+                secure=True,
+                samesite="Strict",
+                value=refresh_token,
+                path="/",
+                httponly=True,
+                max_age=24 * 60 * 60
+            )
+            return response
         abort(401, message='Invalid credentials.')
 
 
 @user_blp.route("/refresh")
 class TokenRefresh(MethodView):
 
-    @jwt_required(refresh=True)
+    @jwt_required(refresh=True, verify_type=True)
     def post(self):
         current_user = get_jwt_identity()
         refreshed_token = create_access_token(
@@ -45,7 +57,17 @@ class UserLogout(MethodView):
     def post(self):
         jti = get_jwt()['jti']
         BLOCKLIST.add(jti)
-        return {"message": "Successfully logged out."}
+        response = make_response({"message": "Successfully logged out."})
+        response.set_cookie(
+            'refresh_token',
+            '',
+            expires=0,
+            httponly=True,
+            path='/',
+            secure=True,
+            samesite="Strict"
+        )
+        return response
 
 
 @user_blp.route("/register")
