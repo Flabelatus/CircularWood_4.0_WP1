@@ -24,8 +24,8 @@ def create_app(db_url=None):
 
     cors = CORS(
         app,
-        origins=["https://robotlab-db-gui.onrender.com",
-                 "http://localhost:3000"],
+        # origins=["https://robotlab-db-gui.onrender.com",
+        #          "http://localhost:3000"],
         allow_headers=[
             "Accept", "Content-Type", "X-Auth-Email", "X-Auth-Key", "X-CSRF-Token", "Origin", "X-Requested-With",
             "Authorization"
