@@ -240,14 +240,20 @@ class WoodList(MethodView):
                             continue
                         else:
                             wood_found = True
-                            impact.carbon_footprint = row["carbon"]
+                            impact.carbon_footprint = float(
+                                row["carbon"]) * (float(wood.weight) / 1000)
                             impact.codename = row["code"]
-                            impact.eco_costs = row["eco-costs"]
-                            impact.footprint = row["footprint"]
-                            impact.human_health = row["human_health"]
-                            impact.eco_toxicity = row["exo-tocicity"]
+                            impact.eco_costs = float(
+                                row["eco-costs"]) * (float(wood.weight) / 1000)
+                            impact.footprint = float(
+                                row["footprint"]) * (float(wood.weight) / 1000)
+                            impact.human_health = float(
+                                row["human_health"]) * (float(wood.weight) / 1000)
+                            impact.eco_toxicity = float(
+                                row["exo-tocicity"]) * (float(wood.weight) / 1000)
                             impact.process = row["process"]
-                            impact.resource_depletion = row["resource"]
+                            impact.resource_depletion = float(
+                                row["resource"]) * (float(wood.weight) / 1000)
                             impact.wood_id = wood.id
                     if not wood_found:
                         return wood
