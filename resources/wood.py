@@ -2,8 +2,6 @@ import datetime
 import os
 import json
 
-from os import path
-
 from typing import Union, List
 from flask_smorest import abort, Blueprint
 from flask.views import MethodView
@@ -235,21 +233,27 @@ class WoodList(MethodView):
 
             with open(path_to_idemat) as idemat_database:
                 idemat_rows = json.load(idemat_database)
-                for row in idemat_rows:
-                    if wood.name in row["process"]:
+                wood_found = False
+                if wood.name is not None:
+                    for row in idemat_rows:
+                        if wood.name not in row["process"]:
+                            continue
+                        else:
+                            wood_found = True
+                            impact.carbon_footprint = row["carbon"]
+                            impact.codename = row["code"]
+                            impact.eco_costs = row["eco-costs"]
+                            impact.footprint = row["footprint"]
+                            impact.human_health = row["human_health"]
+                            impact.eco_toxicity = row["exo-tocicity"]
+                            impact.process = row["process"]
+                            impact.resource_depletion = row["resource"]
+                            impact.wood_id = wood.id
+                    if not wood_found:
+                        return wood
 
-                        impact.carbon_footprint = row["carbon"]
-                        impact.codename = row["code"]
-                        impact.eco_costs = row["eco-costs"]
-                        impact.footprint = row["footprint"]
-                        impact.human_health = row["human_health"]
-                        impact.eco_toxicity = row["exo-tocicity"]
-                        impact.process = row["process"]
-                        impact.resource_depletion = row["resource"]
-                        impact.wood_id = wood.id
-
-            db.session.add(impact)
-            db.session.commit()
+                    db.session.add(impact)
+                    db.session.commit()
 
         except SQLAlchemyError as e:
             db.session.rollback()
