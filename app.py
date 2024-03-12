@@ -86,15 +86,12 @@ def create_app(db_url=None):
     def handle_preflight():
         if request.method == "OPTIONS":
             res = Response()
-
-            # allowed origins
             res.headers['Access-Control-Allow-Origin'] = 'https://robotlab-db-gui.onrender.com'
             res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-
             res.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-            res.headers['Access-Control-Allow-Headers'] = 'Accept, Content-Type, X-Auth-Email, X-Auth-Key, X-CSRF-Token, Origin, X-Requested-With, Authorization'
-            res.headers['Access-Control-Allow-Credentials'] = 'true'
-            res.headers['X-Content-Type-Options'] = '*'
+            res.headers['Access-Control-Allow-Headers'] = 'Accept, Content-Type, X-Auth-Email, X-Auth-Key,' \
+                                                          ' X-CSRF-Token, Origin, X-Requested-With, Authorization'
+            res.headers['Access-Control-Allow-Credentials'] = 'true'  # Allow credentials
             return res
 
     @jwt.needs_fresh_token_loader
@@ -131,7 +128,7 @@ def create_app(db_url=None):
 
     @jwt.additional_claims_loader
     def add_claims_to_jwt(identity):
-        # Not the best way I know, but for now it works, later user modes need to be create as well.
+        # Not the best way, but for now it works, later user modes need to be create as well.
         if identity == 1:
             return {"is_admin": True}
         return {"is_admin": False}
