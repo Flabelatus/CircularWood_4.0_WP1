@@ -2,7 +2,8 @@ from flask.views import MethodView
 from flask import make_response
 from flask_smorest import Blueprint, abort
 from passlib.hash import pbkdf2_sha256
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt, create_refresh_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from flask_jwt_extended import create_refresh_token, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 
 from db import db
 from models import UserModel
@@ -24,15 +25,10 @@ class UserLogin(MethodView):
             refresh_token = create_refresh_token(identity=user.id)
             response = make_response(
                 {"access_token": access_token, "refresh_token": refresh_token})
-            response.set_cookie(
-                'refresh_token',
-                secure=False,
-                samesite="Strict",
-                value=refresh_token,
-                path="/",
-                httponly=True,
-                max_age=24 * 60 * 60
-            )
+
+            set_access_cookies(
+                response, access_token)
+
             return response
         abort(401, message='Invalid credentials.')
 
@@ -58,15 +54,7 @@ class UserLogout(MethodView):
         jti = get_jwt()['jti']
         BLOCKLIST.add(jti)
         response = make_response({"message": "Successfully logged out."})
-        response.set_cookie(
-            'refresh_token',
-            '',
-            expires=0,
-            httponly=True,
-            path='/',
-            secure=True,
-            samesite="Strict"
-        )
+        unset_jwt_cookies(response)
         return response
 
 
