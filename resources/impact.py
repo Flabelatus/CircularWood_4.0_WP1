@@ -51,7 +51,7 @@ class ImpactList(MethodView):
         return ImpactModel.query.all()
 
 
-# @impact_blp.route("/impact/wood/<int:wood_id>")
+@impact_blp.route("/impact/wood/<int:wood_id>")
 class ImpactByWoodID(MethodView):
 
     @impact_blp.response(200, ImpactSchema)
@@ -70,16 +70,127 @@ class ImpactByWoodID(MethodView):
         else:
             abort(404, message="no impact model with this wood id found")
 
+    @jwt_required()
     @impact_blp.arguments(ImpactSchema)
     @impact_blp.response(200, ImpactSchema)
     def patch(self, parsed_data: Dict, wood_id: int) -> Union[ImpactModel, None]:
-        ...
+        """Method to update the records of the impact row using the wood id of the wood model related to the impact model
+
+        Args:
+            parsed_data (Dict): The arguments that is parsed as dictionary from the JSON payload
+            wood_id (int): The wood id
+
+        Returns:
+            Union[ImpactModel, None]: The impact model once successful, otherwise None.
+        """
+        impact = ImpactModel.query.filter_by(wood_id=wood_id).first()
+        if not impact:
+            abort(404, message="impact model with the wood id not found")
+
+        impact.carbon_footprint = parsed_data.get("carbon", "")
+        impact.codename = parsed_data.get("code", "")
+        impact.eco_costs = parsed_data.get("eco-costs", "")
+        impact.eco_toxicity = parsed_data.get("exo-tocicity", "")
+        impact.process = parsed_data.get("process", "")
+        impact.human_health = parsed_data.get("human_health", "")
+        impact.material = parsed_data.get("material", "")
+        impact.resource_depletion = parsed_data.get("resource", "")
+        impact.footprint = parsed_data.get("footprint", "")
+
+        try:
+            db.session.add(impact)
+            db.session.commit()
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            abort(500, message=str(err))
+
+        return impact
 
     @jwt_required()
-    def delete(self, wood_id: int) -> Union[Dict, None]:
-        ...
+    def delete(self, wood_id: int) -> Dict:
+        """Delete the impact model using the wood id of the wood model related to the impact model
+
+        Args:
+            wood_id (int): Id of the wood that is related to the impact model
+
+        Returns:
+            Union[Dict, None]: The dictionary as the message
+        """
+        impact = ImpactModel.query.filter_by(wood_id=wood_id).first()
+        if not impact:
+            abort(404, message="the impact model with current wood id not found")
+
+        db.session.delete(impact)
+        db.session.commit()
+
+        return {
+            "message": "successfully removed the impact model by wood id",
+        }, 200
 
 
-# @impact_blp.route("/impact/<int:impact_id>")
+@impact_blp.route("/impact/<int:impact_id>")
 class ImpactByID(MethodView):
-    pass
+
+    @impact_blp.response(200, ImpactSchema)
+    def get(self, impact_id: int) -> Union[ImpactModel, None]:
+        """Get the impact model using the impact id
+
+        Args:
+            impact_id (int): The impact id 
+
+        Returns:
+            Union[ImpactModel, None]: The impact model once successful, otherwise None.
+        """
+        impact = ImpactModel.query.get_or_404(impact_id)
+        return impact
+
+    @jwt_required()
+    @impact_blp.arguments(ImpactSchema)
+    @impact_blp.response(200, ImpactSchema)
+    def patch(self, parsed_data: Dict, impact_id: int) -> Union[ImpactModel, None]:
+        """Update the impact model using the impact id
+
+        Args:
+            parsed_data (Dict): Parsed arguments from the JSON payload as dictionary.
+            impact_id (int): Impact id.
+
+        Returns:
+            Union[ImpactModel, None]: The impact model once successful, otherwise None.
+        """
+        impact = ImpactModel.get_or_404(impact_id)
+
+        if impact:
+            impact.carbon_footprint = parsed_data.get("carbon", "")
+            impact.codename = parsed_data.get("code", "")
+            impact.eco_costs = parsed_data.get("eco-costs", "")
+            impact.eco_toxicity = parsed_data.get("exo-tocicity", "")
+            impact.process = parsed_data.get("process", "")
+            impact.human_health = parsed_data.get("human_health", "")
+            impact.material = parsed_data.get("material", "")
+            impact.resource_depletion = parsed_data.get("resource", "")
+            impact.footprint = parsed_data.get("footprint", "")
+        try:
+            db.session.add(impact)
+            db.session.commit()
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            abort(500, message=str(err))
+
+    @jwt_required()
+    def delete(self, impact_id: int) -> Dict:
+        """Delete the impact model using the impact id
+
+        Args:
+            impact_id (int): Impact id
+
+        Returns:
+            Dict: The dictionary as the message
+        """
+        impact = ImpactModel.get_or_404(impact_id)
+
+        db.session.delete(impact)
+        db.session.commit()
+
+        return {
+            "message": "successfully deleted impact model"
+        }, 200
