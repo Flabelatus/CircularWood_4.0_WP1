@@ -7,7 +7,6 @@ class DesignRequirementsModelFromClient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     part_index = db.Column(db.Integer)
 
-    # {length, width, height, ifc}
     features = db.Column(db.String)
 
     tag = db.Column(db.String(80))
@@ -17,3 +16,4 @@ class DesignRequirementsModelFromClient(db.Model):
     wood_id = db.Column(db.Integer)
 
     woods = db.relationship("WoodModel", back_populates='requirements', secondary='woods_requirements')
+    sub_wood = db.relationship("SubWoodModel", back_populates='requirements', lazy="dynamic")

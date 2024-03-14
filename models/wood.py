@@ -82,3 +82,6 @@ class WoodModel(db.Model):
         "PointCloudModel", back_populates="wood", lazy="dynamic")
     impact = db.relationship(
         "ImpactModel", back_populates="wood", lazy="dynamic")
+    sub_wood = db.relationship(
+        "SubWoodModel", back_populates="wood", lazy="dynamic"
+    )

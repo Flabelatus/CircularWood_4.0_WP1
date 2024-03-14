@@ -44,7 +44,6 @@ class WoodSchema(Schema):
     is_straight = fields.Bool()
     is_planed = fields.Bool()
     storage_location = fields.Str()
-
     history = fields.List(fields.Nested(HistorySchema(), load_instance=True))
 
 
@@ -126,3 +125,26 @@ class ImpactSchema(Schema):
     human_health = fields.Str()
     material = fields.Str()
     wood_id = fields.Int()
+
+
+class PlainSubWoodSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    length = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    density = fields.Float()
+    color = fields.Str()
+    deleted = fields.Bool()
+    deleted_by = fields.Str()
+    deleted_at = fields.Str()
+    project_label = fields.Str()
+    source = fields.Str()
+    info = fields.Str()
+    type = fields.Str()
+    wood_id = fields.Int()
+    design_id = fields.Int()
+
+
+class SubWoodSchema(PlainSubWoodSchema):
+    design = fields.Nested(PlainDesignRequirementSchema(), load_instance=True)

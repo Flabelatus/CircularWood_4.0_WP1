@@ -24,7 +24,7 @@ class ImpactList(MethodView):
     @impact_blp.response(201, ImpactSchema)
     def post(self, parsed_data: Dict) -> Union[ImpactModel, None]:
         """Adds new impact model to the database. This method would be used only in occasions where
-            the data is entered mannually. 
+            the data is entered manually.
 
         Args:
             parsed_data (Dict): The parsed data from the schema
@@ -40,6 +40,7 @@ class ImpactList(MethodView):
         except SQLAlchemyError as error:
             db.session.rollback()
             abort(500, message=str(error))
+        return impact
 
     @impact_blp.response(200, ImpactSchema(many=True))
     def get(self) -> List[ImpactModel]:
@@ -107,11 +108,11 @@ class ImpactByWoodID(MethodView):
         return impact
 
     @jwt_required()
-    def delete(self, wood_id: int) -> Dict:
+    def delete(self, wood_id: int) -> tuple[dict[str, str], int]:
         """Delete the impact model using the wood id of the wood model related to the impact model
 
         Args:
-            wood_id (int): Id of the wood that is related to the impact model
+            wood_id (int): ID of the wood that is related to the impact model
 
         Returns:
             Union[Dict, None]: The dictionary as the message
@@ -175,9 +176,10 @@ class ImpactByID(MethodView):
         except SQLAlchemyError as err:
             db.session.rollback()
             abort(500, message=str(err))
+        return impact
 
     @jwt_required()
-    def delete(self, impact_id: int) -> Dict:
+    def delete(self, impact_id: int) -> tuple[dict[str, str], int]:
         """Delete the impact model using the impact id
 
         Args:

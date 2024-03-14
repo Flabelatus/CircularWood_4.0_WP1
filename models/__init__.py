@@ -8,3 +8,4 @@ from models.production import ProductionModel
 from models.history import HistoryModel
 from models.point_cloud import PointCloudModel
 from models.impact import ImpactModel
+from models.sub_wood import SubWoodModel
