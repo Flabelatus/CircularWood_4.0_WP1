@@ -1,7 +1,9 @@
 import os
+import datetime
 
+from datetime import timedelta, timezone
 from flask import Flask, jsonify, request, Response
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, set_access_cookies, create_access_token
 from flask_migrate import Migrate
 from flask_smorest import Api
 from flask_cors import CORS
@@ -22,6 +24,49 @@ from blocklist import BLOCKLIST
 def create_app(db_url=None):
     app = Flask(__name__)
 
+    load_dotenv()
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    app.config['PROPAGATE_EXCEPTIONS'] = True
+    app.config['API_TITLE'] = "Wood Database REST API"
+    app.config['API_VERSION'] = "v1.1"
+    app.config['OPENAPI_VERSION'] = '3.0.3'
+    app.config["OPENAPI_URL_PREFIX"] = "/"
+    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
+    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+
+    app.config["JWT_COOKIE_SECURE"] = False
+    app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+    app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config["JWT_CSRF_IN_COOKIES"] = True
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
+        "DATABASE_URL", "sqlite:///instance/data.db"
+    )
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)
+    migrate = Migrate(app, db)
+    api = Api(app)
+
+    app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
+    jwt = JWTManager(app)
+
+    @app.after_request
+    def refresh_expiring_jwts(response):
+        try:
+            exp_timestamp = get_jwt()["exp"]
+            now = datetime.datetime.now(timezone.utc)
+            target_timestamp = datetime.datetime.timestamp(
+                now + timedelta(minutes=10))
+            if target_timestamp > exp_timestamp:
+                access_token = create_access_token(identity=get_jwt_identity())
+                set_access_cookies(response, access_token)
+            return response
+        except (RuntimeError, KeyError):
+            # Case where there is not a valid JWT. Just return the original response
+            return response
+
     cors = CORS(
         app,
         # origins=["https://robotlab-db-gui.onrender.com",
@@ -37,37 +82,11 @@ def create_app(db_url=None):
         response.headers['Access-Control-Allow-Credentials'] = 'true'
         return response
 
-    load_dotenv()
-    app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config['PROPAGATE_EXCEPTIONS'] = True
-    app.config['API_TITLE'] = "Wood Database REST API"
-    app.config['API_VERSION'] = "v1"
-    app.config['OPENAPI_VERSION'] = '3.0.3'
-    app.config["OPENAPI_URL_PREFIX"] = "/"
-    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
-    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
-        "DATABASE_URL", "sqlite:///instance/data.db")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
-    migrate = Migrate(app, db)
-    api = Api(app)
-
-    app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
-    jwt = JWTManager(app)
-
     @app.before_request
     def handle_preflight():
         if request.method == "OPTIONS":
             res = Response()
-            res.headers['Access-Control-Allow-Origin'] = 'https://robotlab-db-gui.onrender.com'
-            res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-            res.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-            res.headers['Access-Control-Allow-Headers'] = 'Accept, Content-Type, X-Auth-Email, X-Auth-Key,' \
-                                                          ' X-CSRF-Token, Origin, X-Requested-With, Authorization'
-            res.headers['Access-Control-Allow-Credentials'] = 'true'  # Allow credentials
+            res.headers['X-Content-Type-Options'] = '*'
             return res
 
     @jwt.needs_fresh_token_loader
@@ -104,7 +123,7 @@ def create_app(db_url=None):
 
     @jwt.additional_claims_loader
     def add_claims_to_jwt(identity):
-        # Not the best way, but for now it works, later user modes need to be create as well.
+        # Not the best way I know, but for now it works, later user modes need to be create as well.
         if identity == 1:
             return {"is_admin": True}
         return {"is_admin": False}
