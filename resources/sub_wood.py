@@ -34,6 +34,7 @@ class SubWoodList(MethodView):
         except SQLAlchemyError as err:
             db.session.rollback()
             abort(500, message=str(err))
+        return subwood
 
 
 @sub_wood_blp.route("/subwood/<int:subwood_id>")
@@ -137,7 +138,7 @@ class SubWoodByWoodID(MethodView):
         }, 200
 
 
-@sub_wood_blp.route("subwood/design/<int:design_id>")
+@sub_wood_blp.route("/subwood/design/<int:design_id>")
 class SubWoodByDesignID(MethodView):
 
     @sub_wood_blp.response(200, SubWoodSchema)

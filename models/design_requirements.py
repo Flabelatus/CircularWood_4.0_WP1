@@ -15,5 +15,7 @@ class DesignRequirementsModelFromClient(db.Model):
     project_id = db.Column(db.String)
     wood_id = db.Column(db.Integer)
 
-    woods = db.relationship("WoodModel", back_populates='requirements', secondary='woods_requirements')
-    sub_wood = db.relationship("SubWoodModel", back_populates='requirements', lazy="dynamic")
+    woods = db.relationship(
+        "WoodModel", back_populates='requirements', secondary='woods_requirements')
+    sub_wood = db.relationship(
+        "SubWoodModel", back_populates='requirements', lazy="dynamic")

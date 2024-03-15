@@ -31,4 +31,5 @@ class SubWoodModel(db.Model):
     wood = db.relationship("WoodModel", back_populates="sub_wood")
 
     design_id = db.Column(db.Integer, db.ForeignKey('requirements.id'))
-    design = db.relationship("DesignRequirementsModelFromClient", back_populates="sub_wood")
+    requirements = db.relationship(
+        "DesignRequirementsModelFromClient", back_populates="sub_wood")

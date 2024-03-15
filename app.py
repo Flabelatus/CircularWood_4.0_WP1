@@ -18,6 +18,7 @@ from resources.user import user_blp
 from resources.history import history_blp
 from resources.point_cloud import pointcloud_blp
 from resources.impact import impact_blp
+from resources.sub_wood import sub_wood_blp
 from blocklist import BLOCKLIST
 
 
@@ -173,5 +174,6 @@ def create_app(db_url=None):
     api.register_blueprint(history_blp)
     api.register_blueprint(pointcloud_blp)
     api.register_blueprint(impact_blp)
+    api.register_blueprint(sub_wood_blp)
 
     return app
