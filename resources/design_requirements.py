@@ -10,9 +10,9 @@ from models import DesignRequirementsModelFromClient, WoodModel
 from schema import PlainDesignRequirementSchema, DesignRequirementsAndWoodsSchema
 
 design_blp = Blueprint(
-    'Design Requirements',
-    'requirements',
-    description='Operations on the requirements generated'
+    'Design Elements/Requirements',
+    'design requirements',
+    description='Operations on the design requirements generated'
 )
 
 
