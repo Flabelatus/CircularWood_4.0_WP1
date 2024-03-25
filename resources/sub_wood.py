@@ -6,9 +6,8 @@ from flask.views import MethodView
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import and_
 from models import SubWoodModel, UserModel
-from schema import SubWoodSchema
+from schema import SubWoodSchema, PlainSubWoodSchema
 
 sub_wood_blp = Blueprint(
     "Sub Wood Model",
@@ -24,8 +23,8 @@ class SubWoodList(MethodView):
     def get(self) -> List[SubWoodModel]:
         return SubWoodModel.query.all()
 
-    @sub_wood_blp.arguments(SubWoodSchema)
-    @sub_wood_blp.response(201, SubWoodSchema)
+    @sub_wood_blp.arguments(PlainSubWoodSchema)
+    @sub_wood_blp.response(201, PlainSubWoodSchema)
     def post(self, parsed_data: Dict):
         subwood = SubWoodModel(**parsed_data)
         try:
@@ -46,8 +45,8 @@ class SubWoodByID(MethodView):
         return subwood
 
     @jwt_required()
-    @sub_wood_blp.arguments(SubWoodSchema)
-    @sub_wood_blp.response(200, SubWoodSchema)
+    @sub_wood_blp.arguments(PlainSubWoodSchema)
+    @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, subwood_id: int):
         subwood = SubWoodModel.query.get_or_404(subwood_id)
         if subwood:
@@ -71,7 +70,7 @@ class SubWoodByID(MethodView):
         user = UserModel.query.get_or_404(get_jwt_identity())
         if subwood:
             subwood.deleted = True
-            subwood.deleted_at = datetime.datetime.strftime(
+            subwood.deleted_at = datetime.datetime.now().strftime(
                 "%Y-%m-$d %H:%M:%S"
             )
             subwood.deleted_by = user.username
@@ -94,8 +93,8 @@ class SubWoodByWoodID(MethodView):
         return subwood
 
     @jwt_required()
-    @sub_wood_blp.arguments(SubWoodSchema)
-    @sub_wood_blp.response(200, SubWoodSchema)
+    @sub_wood_blp.arguments(PlainSubWoodSchema)
+    @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, wood_id: int):
         subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
         if not subwood:
@@ -126,7 +125,7 @@ class SubWoodByWoodID(MethodView):
 
         if subwood:
             subwood.deleted = True
-            subwood.deleted_at = datetime.datetime.strftime(
+            subwood.deleted_at = datetime.datetime.now().strftime(
                 "%Y-%m-$d %H:%M:%S"
             )
             subwood.deleted_by = user.username
@@ -149,8 +148,8 @@ class SubWoodByDesignID(MethodView):
         return subwood
 
     @jwt_required()
-    @sub_wood_blp.arguments(SubWoodSchema)
-    @sub_wood_blp.response(200, SubWoodSchema)
+    @sub_wood_blp.arguments(PlainSubWoodSchema)
+    @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, design_id: int):
         subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
         if not subwood:
@@ -180,7 +179,7 @@ class SubWoodByDesignID(MethodView):
 
         if subwood:
             subwood.deleted = True
-            subwood.deleted_at = datetime.datetime.strftime(
+            subwood.deleted_at = datetime.datetime.now().strftime(
                 "%Y-%m-$d %H:%M:%S"
             )
             subwood.deleted_by = user.username
