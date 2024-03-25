@@ -21,7 +21,9 @@ class SubWoodList(MethodView):
 
     @sub_wood_blp.response(200, SubWoodSchema(many=True))
     def get(self) -> List[SubWoodModel]:
-        return SubWoodModel.query.all()
+        subwoods = SubWoodModel.query.filter(
+            SubWoodModel.deleted == False).all()
+        return subwoods
 
     @sub_wood_blp.arguments(PlainSubWoodSchema)
     @sub_wood_blp.response(201, PlainSubWoodSchema)
@@ -42,6 +44,8 @@ class SubWoodByID(MethodView):
     @sub_wood_blp.response(200, SubWoodSchema)
     def get(self, subwood_id: int):
         subwood = SubWoodModel.query.get_or_404(subwood_id)
+        if subwood.deleted is True:
+            abort(404, message="subwood with this id not found")
         return subwood
 
     @jwt_required()
@@ -49,6 +53,9 @@ class SubWoodByID(MethodView):
     @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, subwood_id: int):
         subwood = SubWoodModel.query.get_or_404(subwood_id)
+        if subwood.deleted is True:
+            abort(404, message="subwood with this id not found")
+
         if subwood:
             subwood.name = parsed_data.get("name", "")
             subwood.length = parsed_data.get("length", 0)
@@ -68,6 +75,9 @@ class SubWoodByID(MethodView):
     def delete(self, subwood_id: int):
         subwood = SubWoodModel.query.get_or_404(subwood_id)
         user = UserModel.query.get_or_404(get_jwt_identity())
+        if subwood.deleted is True:
+            abort(404, message="subwood with this id not found")
+
         if subwood:
             subwood.deleted = True
             subwood.deleted_at = datetime.datetime.now().strftime(
@@ -88,7 +98,8 @@ class SubWoodByWoodID(MethodView):
     @sub_wood_blp.response(200, SubWoodSchema)
     def get(self, wood_id: int) -> Union[SubWoodModel, None]:
         subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
-        if not subwood:
+
+        if not subwood or subwood.deleted is True:
             abort(404, message="subwood not found with this wood id")
         return subwood
 
@@ -97,7 +108,8 @@ class SubWoodByWoodID(MethodView):
     @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, wood_id: int):
         subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
-        if not subwood:
+
+        if not subwood or subwood.deleted is True:
             abort(404, message="subwood not found with this wood id")
 
         if subwood:
@@ -120,8 +132,8 @@ class SubWoodByWoodID(MethodView):
         subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
         user = UserModel.query.get_or_404(get_jwt_identity())
 
-        if not subwood:
-            abort(404, message="subwood not found with this wood id")
+        if subwood.deleted is True:
+            abort(404, message="subwood with this id not found")
 
         if subwood:
             subwood.deleted = True
@@ -143,7 +155,8 @@ class SubWoodByDesignID(MethodView):
     @sub_wood_blp.response(200, SubWoodSchema)
     def get(self, design_id: int) -> Union[SubWoodModel, None]:
         subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
-        if not subwood:
+
+        if not subwood or subwood.deleted is True:
             abort(404, message="subwood not found with this design id")
         return subwood
 
@@ -152,7 +165,7 @@ class SubWoodByDesignID(MethodView):
     @sub_wood_blp.response(200, PlainSubWoodSchema)
     def patch(self, parsed_data: Dict, design_id: int):
         subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
-        if not subwood:
+        if not subwood or subwood.deleted is True:
             abort(404, message="subwood not found with this design id")
         if subwood:
             subwood.name = parsed_data.get("name", "")
@@ -174,7 +187,7 @@ class SubWoodByDesignID(MethodView):
         subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
         user = UserModel.query.get_or_404(get_jwt_identity())
 
-        if not subwood:
+        if not subwood or subwood.deleted is True:
             abort(404, message="subwood not found with this wood id")
 
         if subwood:
