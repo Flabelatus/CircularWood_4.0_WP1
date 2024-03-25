@@ -85,8 +85,8 @@ class AdminWoodByID(MethodView):
 
         wood = WoodModel.query.get_or_404(wood_id)
         if wood:
-            wood.current_id = parsed_data.get('current_id', wood_id)
-            wood.subsequent_id = parsed_data.get('subsequent_id', None)
+            # wood.current_id = parsed_data.get('current_id', wood_id)
+            # wood.subsequent_id = parsed_data.get('subsequent_id', None)
             wood.name = parsed_data.get('name', "")
             wood.reserved = parsed_data.get('reserved', 0)
             wood.reservation_name = parsed_data.get('reservation_name', "")
@@ -96,7 +96,7 @@ class AdminWoodByID(MethodView):
             wood.height = parsed_data.get('height', 0)
             wood.color = parsed_data.get('color', "")
             wood.source = parsed_data.get('source', "")
-            wood.price = parsed_data.get('price', 0.0)
+            # wood.price = parsed_data.get('price', 0.0)
             wood.info = parsed_data.get('info', "")
             wood.type = parsed_data.get('type', "")
             wood.has_metal = parsed_data.get('has_metal', 0)
@@ -105,9 +105,9 @@ class AdminWoodByID(MethodView):
             wood.density = parsed_data.get('density', 0.0)
             wood.image = parsed_data.get('image', '/path/to/image.jpg')
             wood.intake_id = parsed_data.get("intake_id", 1)
-            wood.project_label = parsed_data.get('label', "")
+            # wood.project_label = parsed_data.get('label', "")
             wood.paint = parsed_data.get('paint', "")
-            wood.project_type = parsed_data.get('project_type', "")
+            # wood.project_type = parsed_data.get('project_type', "")
             wood.is_fire_treated = parsed_data.get('is_fire_treated', 0)
             wood.is_straight = parsed_data.get('is_straight', 1)
             wood.is_planed = parsed_data.get('is_planed', 1)
@@ -373,7 +373,7 @@ class WoodByID(MethodView):
             wood.height = parsed_data.get('height', 0)
             wood.color = parsed_data.get('color', "")
             wood.source = parsed_data.get('source', "")
-            wood.price = parsed_data.get('price', 0.0)
+            # wood.price = parsed_data.get('price', 0.0)
             wood.info = parsed_data.get('info', "")
             wood.type = parsed_data.get('type', "")
             wood.has_metal = parsed_data.get('has_metal', 0)
@@ -381,9 +381,9 @@ class WoodByID(MethodView):
             wood.weight = parsed_data.get('weight', 0)
             wood.density = parsed_data.get('density', 0.0)
             wood.image = parsed_data.get('image', '/path/to/image.jpg')
-            wood.project_label = parsed_data.get('label', "")
+            # wood.project_label = parsed_data.get('label', "")
             wood.paint = parsed_data.get('paint', "")
-            wood.project_type = parsed_data.get('project_type', "")
+            # wood.project_type = parsed_data.get('project_type', "")
             wood.is_fire_treated = parsed_data.get('is_fire_treated', 0)
             wood.is_straight = parsed_data.get('is_straight', 1)
             wood.is_planed = parsed_data.get('is_planed', 1)
@@ -419,7 +419,7 @@ class SetWoodToUsedByID(MethodView):
         if wood.reserved and wood.reservation_name != user.username:
             abort(
                 400, message="wood is reserved by another user, you can not make changes to it")
-        if wood.used == True:
+        if wood.used is True:
             abort(400, message="wood is already set to used")
 
         wood.used = True
