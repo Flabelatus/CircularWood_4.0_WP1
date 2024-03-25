@@ -5,10 +5,10 @@ class WoodModel(db.Model):
     __tablename__ = 'wood'
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)  # 1
-    current_id = db.Column(db.Integer)
+    # current_id = db.Column(db.Integer)
 
     # Sub id following the current id 1-1 or 1-2 or ...
-    subsequent_id = db.Column(db.String)
+    # subsequent_id = db.Column(db.String)
 
     # Name of wood species such as Red oak
     name = db.Column(db.String(80))
@@ -33,7 +33,7 @@ class WoodModel(db.Model):
     deleted_at = db.Column(db.String)
 
     source = db.Column(db.String(256))
-    price = db.Column(db.Float(precision=2))
+    # price = db.Column(db.Float(precision=2))
     info = db.Column(db.String(256))
 
     # Wood type such as hardwood or softwood
@@ -43,8 +43,8 @@ class WoodModel(db.Model):
     image = db.Column(db.String)
 
     # Only in case of Derako wood
-    project_label = db.Column(db.String)
-    project_type = db.Column(db.String)
+    # project_label = db.Column(db.String)
+    # project_type = db.Column(db.String)
 
     # In case of waste wood
     paint = db.Column(db.String)
