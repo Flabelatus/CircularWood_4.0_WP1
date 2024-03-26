@@ -1,9 +1,9 @@
 import os
-import datetime
+# import datetime
 
-from datetime import timedelta, timezone
+# from datetime import timedelta, timezone
 from flask import Flask, jsonify, request, Response
-from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, set_access_cookies, create_access_token
+from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_smorest import Api
 from flask_cors import CORS
@@ -35,11 +35,11 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
-    app.config["JWT_COOKIE_SECURE"] = False
-    app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
-    app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-    app.config["JWT_CSRF_IN_COOKIES"] = True
+    # app.config["JWT_COOKIE_SECURE"] = False
+    # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+    # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
+    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    # app.config["JWT_CSRF_IN_COOKIES"] = True
 
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
         "DATABASE_URL", "sqlite:///instance/data.db"
@@ -52,26 +52,26 @@ def create_app(db_url=None):
 
     app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
     jwt = JWTManager(app)
-
-    @app.after_request
-    def refresh_expiring_jwts(response):
-        try:
-            exp_timestamp = get_jwt()["exp"]
-            now = datetime.datetime.now(timezone.utc)
-            target_timestamp = datetime.datetime.timestamp(
-                now + timedelta(minutes=10))
-            if target_timestamp > exp_timestamp:
-                access_token = create_access_token(identity=get_jwt_identity())
-                set_access_cookies(response, access_token)
-            return response
-        except (RuntimeError, KeyError):
-            # Case where there is not a valid JWT. Just return the original response
-            return response
+    #
+    # @app.after_request
+    # def refresh_expiring_jwts(response):
+    #     try:
+    #         exp_timestamp = get_jwt()["exp"]
+    #         now = datetime.datetime.now(timezone.utc)
+    #         target_timestamp = datetime.datetime.timestamp(
+    #             now + timedelta(minutes=10))
+    #         if target_timestamp > exp_timestamp:
+    #             access_token = create_access_token(identity=get_jwt_identity())
+    #             # set_access_cookies(response, access_token)
+    #         return response
+    #     except (RuntimeError, KeyError):
+    #         # Case where there is not a valid JWT. Just return the original response
+    #         return response
 
     cors = CORS(
         app,
-        # origins=["https://robotlab-db-gui.onrender.com",
-        #          "http://localhost:3000"],
+        origins=["https://robotlab-db-gui.onrender.com",
+                 "http://localhost:3000"],
         allow_headers=[
             "Accept", "Content-Type", "X-Auth-Email", "X-Auth-Key", "X-CSRF-Token", "Origin", "X-Requested-With",
             "Authorization"

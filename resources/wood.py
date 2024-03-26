@@ -214,7 +214,7 @@ class WoodList(MethodView):
 
         # Calculate density upfront
         wood.density = wood.weight / \
-            (wood.length * wood.height * wood.width) * 1000000
+                       (wood.length * wood.height * wood.width) * 1000000
 
         try:
             db.session.add(wood)
@@ -290,7 +290,7 @@ class WoodByID(MethodView):
                 like to retrieve the info about it, you can login and use this endpoint instead: /logged_in/wood/<int:wood_id>")
 
         if wood.deleted is True:
-            abort(400, message="this wood is deleted from the database")
+            abort(404, message="this wood is deleted from the database")
 
         return wood
 
@@ -327,15 +327,15 @@ class WoodByID(MethodView):
                         wood.reservation_time = ""
                     else:
                         abort(
-                            400, message="this wood is currently reserved by another user")
+                            404, message="this wood is currently reserved by another user")
             else:
-                abort(400, message="this wood is already deleted from the database")
+                abort(404, message="this wood is already deleted from the database")
         db.session.add(wood)
         db.session.commit()
 
         return {
-            "message": f"wood deleted from database by {user.username} at {deleted_at}",
-        }, 200
+                   "message": f"wood deleted from database by {user.username} at {deleted_at}",
+               }, 200
 
     @jwt_required()
     @blp.arguments(WoodSchema)
@@ -364,7 +364,8 @@ class WoodByID(MethodView):
                 abort(400, message="this wood is deleted from the database")
             if wood.reserved and wood.reservation_name != user.username:
                 abort(
-                    400, message="this wood is reserved by another user, you do not have permission to make changes to it")
+                    400,
+                    message="this wood is reserved by another user, you do not have permission to make changes to it")
             # wood.current_id = parsed_data.get('current_id', wood_id)
             # wood.subsequent_id = parsed_data.get('subsequent_id', None)
             wood.name = parsed_data.get('name', "")
@@ -415,12 +416,12 @@ class SetWoodToUsedByID(MethodView):
         user = UserModel.query.get_or_404(get_jwt_identity())
 
         if wood.deleted is True:
-            abort(400, message="the wood is deleted from the database")
+            abort(404, message="the wood is deleted from the database")
         if wood.reserved and wood.reservation_name != user.username:
             abort(
                 400, message="wood is reserved by another user, you can not make changes to it")
         if wood.used is True:
-            abort(400, message="wood is already set to used")
+            abort(404, message="wood is already set to used")
 
         wood.used = True
         wood.used_by = user.username

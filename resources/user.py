@@ -3,7 +3,7 @@ from flask import make_response
 from flask_smorest import Blueprint, abort
 from passlib.hash import pbkdf2_sha256
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from flask_jwt_extended import create_refresh_token, get_jwt_identity, set_access_cookies, unset_jwt_cookies
+from flask_jwt_extended import create_refresh_token, get_jwt_identity
 
 from db import db
 from models import UserModel
@@ -23,12 +23,12 @@ class UserLogin(MethodView):
         if user and pbkdf2_sha256.verify(parsed_data['password'], user.password):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(identity=user.id)
-            response = make_response(
-                {"access_token": access_token, "refresh_token": refresh_token})
-
-            set_access_cookies(
-                response, access_token)
-
+            # response = make_response(
+            #     {"access_token": access_token, "refresh_token": refresh_token})
+            #
+            # set_access_cookies(
+            #     response, access_token)
+            response = {"access_token": access_token, "refresh_token": refresh_token}
             return response
         abort(401, message='Invalid credentials.')
 
@@ -54,7 +54,7 @@ class UserLogout(MethodView):
         jti = get_jwt()['jti']
         BLOCKLIST.add(jti)
         response = make_response({"message": "Successfully logged out."})
-        unset_jwt_cookies(response)
+        # unset_jwt_cookies(response)
         return response
 
 
