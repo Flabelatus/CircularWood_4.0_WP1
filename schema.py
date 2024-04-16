@@ -104,6 +104,8 @@ class ProductionSchema(Schema):
     timestamp = fields.Int()
     status = fields.Str()
     wood_id = fields.Int()
+    sub_wood_id = fields.Int()
+    offset = fields.Float()
     # wood = fields.Nested(WoodSchema(), load_instance=False)
 
 

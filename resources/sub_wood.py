@@ -95,110 +95,52 @@ class SubWoodByID(MethodView):
 @sub_wood_blp.route("/subwood/wood/<int:wood_id>")
 class SubWoodByWoodID(MethodView):
 
-    @sub_wood_blp.response(200, SubWoodSchema)
+    @sub_wood_blp.response(200, SubWoodSchema(many=True))
     def get(self, wood_id: int) -> Union[SubWoodModel, None]:
-        subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
-
-        if not subwood or subwood.deleted is True:
-            abort(404, message="subwood not found with this wood id")
-        return subwood
-
-    @jwt_required()
-    @sub_wood_blp.arguments(PlainSubWoodSchema)
-    @sub_wood_blp.response(200, PlainSubWoodSchema)
-    def patch(self, parsed_data: Dict, wood_id: int):
-        subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
-
-        if not subwood or subwood.deleted is True:
-            abort(404, message="subwood not found with this wood id")
-
-        if subwood:
-            subwood.name = parsed_data.get("name", "")
-            subwood.length = parsed_data.get("length", 0)
-            subwood.width = parsed_data.get("width", 0)
-            subwood.height = parsed_data.get("height", 0)
-            subwood.density = parsed_data.get("density", 0)
-            subwood.color = parsed_data.get("color", "")
-            subwood.source = parsed_data.get("source", "")
-            subwood.info = parsed_data.get("info", "")
-            subwood.type = parsed_data.get("type", "")
-        db.session.add(subwood)
-        db.session.commit()
-
+        subwood = SubWoodModel.query.filter_by(wood_id=wood_id, deleted=False).all()
         return subwood
 
     @jwt_required()
     def delete(self, wood_id: int):
-        subwood = SubWoodModel.query.filter_by(wood_id=wood_id).first()
+        subwoods = SubWoodModel.query.filter_by(wood_id=wood_id, deleted=False).all()
         user = UserModel.query.get_or_404(get_jwt_identity())
 
-        if subwood.deleted is True:
-            abort(404, message="subwood with this id not found")
-
-        if subwood:
+        for subwood in subwoods:
             subwood.deleted = True
-            subwood.deleted_at = datetime.datetime.now().strftime(
-                "%Y-%m-$d %H:%M:%S"
-            )
+            subwood.deleted_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             subwood.deleted_by = user.username
-        db.session.add(subwood)
-        db.session.commit()
+            db.session.add(subwood)
 
-        return {
-            "message": "successfully deleted the subwood "
-        }, 200
+        try:
+            db.session.commit()
+            return {"message": "Subwoods deleted successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"message": "An error occurred while deleting subwoods", "error": str(e)}, 500
 
 
 @sub_wood_blp.route("/subwood/design/<int:design_id>")
 class SubWoodByDesignID(MethodView):
 
-    @sub_wood_blp.response(200, SubWoodSchema)
-    def get(self, design_id: int) -> Union[SubWoodModel, None]:
-        subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
-
-        if not subwood or subwood.deleted is True:
-            abort(404, message="subwood not found with this design id")
-        return subwood
-
-    @jwt_required()
-    @sub_wood_blp.arguments(PlainSubWoodSchema)
-    @sub_wood_blp.response(200, PlainSubWoodSchema)
-    def patch(self, parsed_data: Dict, design_id: int):
-        subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
-        if not subwood or subwood.deleted is True:
-            abort(404, message="subwood not found with this design id")
-        if subwood:
-            subwood.name = parsed_data.get("name", "")
-            subwood.length = parsed_data.get("length", 0)
-            subwood.width = parsed_data.get("width", 0)
-            subwood.height = parsed_data.get("height", 0)
-            subwood.density = parsed_data.get("density", 0)
-            subwood.color = parsed_data.get("color", "")
-            subwood.source = parsed_data.get("source", "")
-            subwood.info = parsed_data.get("info", "")
-            subwood.type = parsed_data.get("type", "")
-        db.session.add(subwood)
-        db.session.commit()
-
+    @sub_wood_blp.response(200, SubWoodSchema(many=True))
+    def get(self, design_id: int) -> Union[List[SubWoodModel], None]:
+        subwood = SubWoodModel.query.filter_by(design_id=design_id, deleted=False).all()
         return subwood
 
     @jwt_required()
     def delete(self, design_id: int):
-        subwood = SubWoodModel.query.filter_by(design_id=design_id).first()
+        subwoods = SubWoodModel.query.filter_by(design_id=design_id, deleted=False).all()
         user = UserModel.query.get_or_404(get_jwt_identity())
 
-        if not subwood or subwood.deleted is True:
-            abort(404, message="subwood not found with this wood id")
-
-        if subwood:
+        for subwood in subwoods:
             subwood.deleted = True
-            subwood.deleted_at = datetime.datetime.now().strftime(
-                "%Y-%m-$d %H:%M:%S"
-            )
+            subwood.deleted_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             subwood.deleted_by = user.username
-        db.session.add(subwood)
-        db.session.commit()
+            db.session.add(subwood)
 
-        return {
-            "message": "successfully deleted the subwood "
-        }, 200
+        try:
+            db.session.commit()
+            return {"message": "Subwoods deleted successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"message": "An error occurred while deleting subwoods", "error": str(e)}, 500

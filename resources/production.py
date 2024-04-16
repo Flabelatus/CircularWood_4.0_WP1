@@ -15,7 +15,7 @@ production_blp = Blueprint(
     description='Operations on the production planning resource'
 )
 
-
+# TODO: Add the subwood field in the production as well
 @production_blp.route("/production")
 class Productions(MethodView):
 
@@ -64,6 +64,9 @@ class ProductionByID(MethodView):
     def patch(self, parsed_data: dict, production_id: int) -> ProductionModel:
         prod = ProductionModel.query.get_or_404(production_id)
         if prod:
+            prod.sub_wood_id = parsed_data.get("sub_wood_id", 0)
+            prod.offset = parsed_data.get("offset", 0)
+            prod.wood_id = parsed_data.get("wood_id", 0)
             prod.operation = parsed_data.get("operation", "")
             prod.instruction = parsed_data.get("instruction", "")
             prod.instruction_type = parsed_data.get("instruction_type", "")

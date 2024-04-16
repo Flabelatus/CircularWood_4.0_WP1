@@ -19,5 +19,11 @@ class ProductionModel(db.Model):
     # pending, done , failed
     status = db.Column(db.String)
 
+    # sawing offset
+    offset = db.Column(db.Float)
+
     wood = db.relationship("WoodModel", back_populates='production')
     wood_id = db.Column(db.Integer, db.ForeignKey('wood.id'))
+
+    sub_wood = db.relationship("SubWoodModel", back_populates='production')
+    sub_wood_id = db.Column(db.Integer, db.ForeignKey('sub_wood.id'))
