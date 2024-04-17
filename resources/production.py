@@ -15,7 +15,7 @@ production_blp = Blueprint(
     description='Operations on the production planning resource'
 )
 
-# TODO: Add the subwood field in the production as well
+
 @production_blp.route("/production")
 class Productions(MethodView):
 
