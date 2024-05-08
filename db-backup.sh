@@ -1,7 +1,6 @@
 #!/bin/sh
 
 echo "Connecting to the server ..."
-echo ""
 echo "This may take several seconds"
 
 local_file="data.db"
