@@ -19,7 +19,7 @@ class ImageUpload(MethodView):
         if 'image' in request.files:
             try:
                 image_data = image_schema.load(request.files)
-                folder = "static/img"
+                folder = "wood_intake"
                 filename = f'{wood_id}.png'
                 image_path = save_image(image_data["image"], folder=folder, name=filename)
                 basename = get_basename(image_path)
@@ -40,7 +40,7 @@ class ImageByWoodID(MethodView):
 
     @image_blueprint.response(200)
     def get(self, wood_id):
-        folder = "static/img"
+        folder = "wood_intake"
         filename = f'{str(wood_id)}.png'
 
         if not is_filename_safe(filename):
@@ -54,7 +54,7 @@ class ImageByWoodID(MethodView):
 
     @jwt_required()
     def delete(self, wood_id):
-        folder = "static/img"
+        folder = "wood_intake"
         filename = f'{str(wood_id)}.png'
 
         if not is_filename_safe(filename):
