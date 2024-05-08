@@ -1,7 +1,9 @@
 import os
+import traceback
 
-from flask import request, send_file
+from flask import request, send_file, jsonify
 from flask_smorest import abort, Blueprint
+from flask_jwt_extended import jwt_required
 from flask.views import MethodView
 from schema import ImageSchema
 from utils.image_helpers import save_image, get_basename, is_filename_safe, get_path
@@ -50,3 +52,21 @@ class ImageByWoodID(MethodView):
         except FileNotFoundError as e:
             abort(404, message='image not found')
 
+    @jwt_required()
+    def delete(self, wood_id):
+        folder = "static/img"
+        filename = f'{str(wood_id)}.png'
+
+        if not is_filename_safe(filename):
+            abort(400, message="image illegal file name")
+        
+        try:
+            os.remove(get_path(filename=filename, folder=folder))
+            return jsonify({
+                "message": "image successfully removed"
+            }), 200
+        except FileNotFoundError as e:
+            abort(404, message='image not found')
+        except:
+            traceback.print_exc()
+            abort(500, message="something went wrong while deleting the image - contact support")
