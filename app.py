@@ -1,13 +1,13 @@
 import os
-# import datetime
 
-# from datetime import timedelta, timezone
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, flash
+from flask.views import MethodView
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_smorest import Api
+from flask_smorest import Api, Blueprint, abort
 from flask_cors import CORS
 from load_dotenv import load_dotenv
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 from db import db
 from resources.production import production_blp
@@ -19,13 +19,20 @@ from resources.history import history_blp
 from resources.point_cloud import pointcloud_blp
 from resources.impact import impact_blp
 from resources.sub_wood import sub_wood_blp
+from resources.image import image_blueprint
 from blocklist import BLOCKLIST
+from utils.image_helpers import IMAGE_SET
 
 
 def create_app(db_url=None):
+    load_dotenv()
+
+    # ================ Creation of the Application ================
     app = Flask(__name__)
 
-    load_dotenv()
+    # ================ Application configurations ================
+
+    app.config["SECRET_KEY"] = os.urandom(24)
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['PROPAGATE_EXCEPTIONS'] = True
     app.config['API_TITLE'] = "Wood Database REST API"
@@ -34,25 +41,25 @@ def create_app(db_url=None):
     app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-
     # app.config["JWT_COOKIE_SECURE"] = False
     # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
     # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
     # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     # app.config["JWT_CSRF_IN_COOKIES"] = True
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
-        "DATABASE_URL", "sqlite:///instance/data.db"
-    )
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
-    migrate = Migrate(app, db)
-    api = Api(app)
-
     app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
-    jwt = JWTManager(app)
-    #
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv("DATABASE_URL", "sqlite:///instance/data.db")
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['UPLOADED_IMAGES_DEST'] = os.path.join("static", "img")
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 # restrict max upload image size to 5MB
+
+    # ================ Initialization of the App ================
+
+    configure_uploads(app, IMAGE_SET)   # image upload config
+    db.init_app(app)                    # database init
+    migrate = Migrate(app, db)          # flask alembic init for database migrations
+    api = Api(app)                      # API init
+    jwt = JWTManager(app)               # JWT init
+
     # @app.after_request
     # def refresh_expiring_jwts(response):
     #     try:
@@ -67,6 +74,8 @@ def create_app(db_url=None):
     #     except (RuntimeError, KeyError):
     #         # Case where there is not a valid JWT. Just return the original response
     #         return response
+
+    # ================ CORS Middleware setup ================
 
     cors = CORS(
         app,
@@ -89,6 +98,8 @@ def create_app(db_url=None):
             res = Response()
             res.headers['X-Content-Type-Options'] = '*'
             return res
+
+    # ================ JWT Claims ================
 
     @jwt.needs_fresh_token_loader
     def token_not_fresh_callback(jwt_header, jwt_payload):
@@ -162,9 +173,13 @@ def create_app(db_url=None):
             ), 401
         )
 
+    # ================ Initialization of the Database tables ================
+
     @app.before_first_request
     def create_tables():
         db.create_all()
+
+    # ================ Registration of the API's resource blueprints ================
 
     api.register_blueprint(wood_blueprint)
     api.register_blueprint(tags_blueprint)
@@ -175,5 +190,6 @@ def create_app(db_url=None):
     api.register_blueprint(pointcloud_blp)
     api.register_blueprint(impact_blp)
     api.register_blueprint(sub_wood_blp)
+    api.register_blueprint(image_blueprint)
 
     return app

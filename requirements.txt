@@ -1,7 +1,7 @@
 Flask==2.1.2
 Flask-Migrate==4.0.0
 flask-smorest==0.40.0
-flask-uploads
+Flask-Reuploaded==1.4.0
 Flask-SQLAlchemy==2.5.1
 flask-jwt-extended
 flask-cors

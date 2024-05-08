@@ -169,4 +169,4 @@ class SubWoodSchema(PlainSubWoodSchema):
 
 
 class ImageSchema(Schema):
-    image = FileStorageField(required=True)
+    image = FileStorageField()
