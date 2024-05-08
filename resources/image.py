@@ -1,8 +1,10 @@
-from flask import request
+import os
+
+from flask import request, send_file
 from flask_smorest import abort, Blueprint
 from flask.views import MethodView
 from schema import ImageSchema
-from utils.image_helpers import save_image, get_basename
+from utils.image_helpers import save_image, get_basename, is_filename_safe, get_path
 
 image_blueprint = Blueprint("Image Upload", 'images', description="Operations on image upload endpoint")
 image_schema = ImageSchema()
@@ -29,4 +31,22 @@ class ImageUpload(MethodView):
                 abort(400, message=str(e))
         else:
             abort(400, message="no file selected")
+
+
+@image_blueprint.route("/image/<int:wood_id>")
+class ImageByWoodID(MethodView):
+
+    @image_blueprint.response(200)
+    def get(self, wood_id):
+        folder = "static/img"
+        filename = f'{str(wood_id)}.png'
+
+        if not is_filename_safe(filename):
+            abort(400, message="image illegal file name")
+        
+        try:
+            return send_file(get_path(filename=filename, folder=folder))
+        
+        except FileNotFoundError as e:
+            abort(404, message='image not found')
 
