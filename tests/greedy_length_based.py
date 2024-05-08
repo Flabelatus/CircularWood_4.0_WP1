@@ -1,3 +1,13 @@
+"""
+___Match making script___
+
+The script used in Grasshopper within a GhPython component to match the wood with the available
+wood in the database. This is a sort of greedy algorithm working on the length parameter of the
+design element and the wood in the database.
+
+"""
+
+
 import copy
 import json
 import requests

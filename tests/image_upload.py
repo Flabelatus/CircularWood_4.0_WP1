@@ -2,18 +2,17 @@ import os
 import requests
 
 
-def upload(filename):
+def upload(filepath, wood_id):
     try:
-        print(f"Using filename: {filename}")  # Debugging check
 
         # Check if file exists
-        if not os.path.exists(filename):
-            raise FileNotFoundError(f"File not found: {filename}")
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"File not found: {filepath}")
 
-        with open(filename, 'rb') as f:
+        with open(filepath, 'rb') as f:
                     
-            files = {'image': (filename, f)}
-            url = "http://localhost:5050/image/upload"
+            files = {'image': (filepath, f)}
+            url = f"http://localhost:5050/image/upload/{str(wood_id)}"
             response = requests.post(url, files=files)
             return response.json()
 
@@ -24,5 +23,5 @@ def upload(filename):
 
 if __name__ == "__main__":
     fp = "C:\\Users\\jjooshe\\Desktop\\1.jpg"
-    r = upload(fp)
+    r = upload(fp, input("Enter the wood ID: "))
     print(r)
