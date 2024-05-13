@@ -1,12 +1,30 @@
 import os
 import requests
 
-# Make a choice depending on your case
-FOLDERS = ["wood_intake", "depth_png", "metal_region", "pcd"]
+"""
+    To use the image upload endpoint you need to specify the ID of the wood
+    as the file name, also you need to set the 'dir' parameter in the request url which indicates what directory the image will be saved in.
+
+    For the directory to save the image in make a choice from the folders depending on your application. The options are:
+
+        1. wood_intake: creates a folder for the images taken from the wood by the  camera (RGB images)
+
+        2. depth_png: creates a folder for the PNG images from Triscpector
+        
+        3. metal_region: creates a folder for the visualization from the metal induction gate
+"""
+
+FOLDERS = ["wood_intake", "depth_png", "metal_region"]
 DESTINATION = FOLDERS[0]
 
 
 def upload(filepath, wood_id):
+    
+    try:
+        assert DESTINATION in FOLDERS
+    except AssertionError as err:
+        print(err)
+
     try:
 
         # Check if file exists
@@ -14,7 +32,7 @@ def upload(filepath, wood_id):
             raise FileNotFoundError(f"File not found: {filepath}")
 
         with open(filepath, 'rb') as f:
-
+            
             files = {'image': (filepath, f)}
             url = f"http://localhost:5050/image/upload/{str(wood_id)}?dir={DESTINATION}"
             response = requests.post(url, files=files)
@@ -49,12 +67,19 @@ def delete_image(wood_id, username, password):
 
 
 if __name__ == "__main__":
-    fp = "/Users/javid/Desktop/1.png"
 
-    # r = upload(fp, input("Enter wood ID: "))
+    # Add your own file path here for testing
+    fp = "C:\\Users\\jjooshe\\Desktop\\1.jpg"
 
-    r = delete_image(
-        input("Enter the wood ID: "),
-        input("Username: "),
-        input("Password: ")
-    )
+    try:
+
+        r = upload(fp, input("Enter wood ID: "))
+
+        # r = delete_image(
+        #     input("Enter the wood ID: "),
+        #     input("Username: "),
+        #     input("Password: ")
+        # )
+
+    except KeyboardInterrupt:
+        print('\nProgram aborted')

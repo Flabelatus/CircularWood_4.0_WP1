@@ -47,6 +47,23 @@ COPY . .
 CMD ["/bin/bash", "docker-entrypoint.sh"]
 ```
 
+
+### Database
+
+The database is created using SQLAlchemy.
+You can find the initiation of the database models in the ```./models/wood.py``` for the wood database
+and ```./models/tags.py``` for the created tags that relates to the wood.
+
+The ```./models/wood_tags.py``` is the database table for the many-to-many relationship between tags and wood elements
+in
+the database. As each wood can have several tags. And each tag can be associated with several woods from the database.
+
+### Schema and Data validation
+
+For the data validation, Marshmallow library is used to create the schemas that would be used.
+Each of the API methods check for these schemas.
+
+
 ## Testing the API
 
 To test the endpoints, Insomnia is used. Here is the download link: https://insomnia.rest/download
