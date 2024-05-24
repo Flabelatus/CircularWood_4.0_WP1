@@ -34,7 +34,7 @@ def upload(filepath, wood_id):
         with open(filepath, 'rb') as f:
             
             files = {'image': (filepath, f)}
-            url = f"http://localhost:5050/image/upload/{str(wood_id)}?dir={DESTINATION}"
+            url = f"https://robotlab-residualwood.onrender.com/image/upload/{str(wood_id)}?dir={DESTINATION}"
             response = requests.post(url, files=files)
             return response.json()
 
@@ -52,12 +52,12 @@ def delete_image(wood_id, username, password):
     }
 
     login_response = requests.post(
-        "http://localhost:5050/login", json=credentials)
+        "https://robotlab-residualwood.onrender.com/login", json=credentials)
 
     login_response_json = login_response.json()
     token = login_response_json["access_token"]
 
-    url = f"http://localhost:5050/image/{str(wood_id)}?dir={DESTINATION}"
+    url = f"https://robotlab-residualwood.onrender.com/image/{str(wood_id)}?dir={DESTINATION}"
     response = requests.delete(url=url, headers={
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
@@ -69,11 +69,21 @@ def delete_image(wood_id, username, password):
 if __name__ == "__main__":
 
     # Add your own file path here for testing
-    fp = "C:\\Users\\jjooshe\\Desktop\\1.jpg"
-
+    base_fp = "C:\\Users\\jjooshe\\Desktop\\wood images"
+    base_filenames = []
     try:
+        filenames = []
+        for file in os.listdir(base_fp):
+            
+            filenames.append(os.path.join(base_fp, file))
+            base_filenames.append(file)
+        print(filenames)
+        
+        # for i in range(len(base_filenames)):
+        #     r = upload(filenames[i], base_filenames[i].split(".")[0])
+        #     print(r)
 
-        r = upload(fp, input("Enter wood ID: "))
+        # r = upload(fp, input("Enter wood ID: "))
 
         # r = delete_image(
         #     input("Enter the wood ID: "),
