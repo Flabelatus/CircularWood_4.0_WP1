@@ -68,8 +68,7 @@ def delete_image(wood_id, username, password):
 
 if __name__ == "__main__":
 
-    # Add your own file path here for testing
-    base_fp = "C:\\Users\\jjooshe\\Desktop\\wood images"
+    base_fp = os.path.join(os.path.pardir, "static", "img", DESTINATION)
     base_filenames = []
     try:
         filenames = []
@@ -77,19 +76,10 @@ if __name__ == "__main__":
             
             filenames.append(os.path.join(base_fp, file))
             base_filenames.append(file)
-        print(filenames)
         
         for i in range(len(base_filenames)):
             r = upload(filenames[i], base_filenames[i].split(".")[0])
             print(r)
-
-        # r = upload(fp, input("Enter wood ID: "))
-
-        # r = delete_image(
-        #     input("Enter the wood ID: "),
-        #     input("Username: "),
-        #     input("Password: ")
-        # )
 
     except KeyboardInterrupt:
         print('\nProgram aborted')
