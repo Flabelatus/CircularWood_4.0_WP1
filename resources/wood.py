@@ -191,8 +191,7 @@ class WoodList(MethodView):
             List[WoodModel]: List of wood objects in the database.
         """
 
-        wood = WoodModel.query.filter(
-            and_(WoodModel.reserved == False, WoodModel.deleted == False)).all()
+        wood = WoodModel.query.filter_by(deleted=False).all()
         return wood
 
     @blp.arguments(WoodSchema)
@@ -283,11 +282,11 @@ class WoodByID(MethodView):
             WoodModel: The unreserved wood object with the specified ID.
         """
         wood = WoodModel.query.get_or_404(wood_id)
-        if wood.reserved is True:
-            abort(
-                400,
-                message="the wood is currently reserved, if you made the reservation on this item and would \
-                like to retrieve the info about it, you can login and use this endpoint instead: /logged_in/wood/<int:wood_id>")
+        # if wood.reserved is True:
+        #     abort(
+        #         400,
+        #         message="the wood is currently reserved, if you made the reservation on this item and would \
+        #         like to retrieve the info about it, you can login and use this endpoint instead: /logged_in/wood/<int:wood_id>")
 
         if wood.deleted is True:
             abort(404, message="this wood is deleted from the database")
