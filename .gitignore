@@ -4,7 +4,7 @@
 /__pycache__
 *.3dm
 /venv
-/static/img
+/static
 *.DS_Store
 /env
 test.py
