@@ -13,3 +13,4 @@ passlib
 psycopg2
 gunicorn
 pandas
+APScheduler==3.10.4

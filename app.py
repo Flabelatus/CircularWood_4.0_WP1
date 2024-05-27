@@ -1,4 +1,7 @@
 import os
+import datetime
+
+from datetime import timedelta
 
 from flask import Flask, jsonify, request, Response, flash
 from flask.views import MethodView
@@ -8,8 +11,10 @@ from flask_smorest import Api, Blueprint, abort
 from flask_cors import CORS
 from load_dotenv import load_dotenv
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from db import db
+from models import WoodModel
 from resources.production import production_blp
 from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
@@ -178,6 +183,45 @@ def create_app(db_url=None):
     @app.before_first_request
     def create_tables():
         db.create_all()
+
+    # ================ Initialize the cron job for checking reservations ================
+
+    def _get_expired_reservations():
+        EXPIRY_TIME = 7  # 7 days for reservation
+        now = datetime.now()
+        woods = WoodModel.query.filter_by(reserved=True).all()
+        expired_reservations = []
+
+        for wood in woods:
+            reservation_date = wood.reserved_at
+            
+            if isinstance(reservation_date, str):
+                reservation_date = datetime.strptime(reservation_date, "%Y-%m-%d")
+
+            expiry_date = reservation_date + timedelta(days=EXPIRY_TIME)
+
+            if now > expiry_date:
+                expired_reservations.append(wood)
+
+        return expired_reservations
+
+    
+    def check_and_update_reservations():
+        with app.app_context():
+            expired_woods = _get_expired_reservations()
+            for wood in expired_woods:
+                wood.reserved = False
+                wood.reserved_at = ""
+                wood.reserved_by = ""
+
+                db.session.add(wood)
+
+            db.session.commit()
+
+    
+    cron_job = BackgroundScheduler()
+    cron_job.add_job(func=check_and_update_reservations, trigger="interval", hours=1)
+    cron_job.start()
 
     # ================ Registration of the API's resource blueprints ================
 
