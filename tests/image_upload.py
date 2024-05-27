@@ -79,9 +79,9 @@ if __name__ == "__main__":
             base_filenames.append(file)
         print(filenames)
         
-        # for i in range(len(base_filenames)):
-        #     r = upload(filenames[i], base_filenames[i].split(".")[0])
-        #     print(r)
+        for i in range(len(base_filenames)):
+            r = upload(filenames[i], base_filenames[i].split(".")[0])
+            print(r)
 
         # r = upload(fp, input("Enter wood ID: "))
 
