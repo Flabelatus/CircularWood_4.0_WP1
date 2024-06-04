@@ -188,12 +188,12 @@ def create_app(db_url=None):
 
     def _get_expired_reservations():
         EXPIRY_TIME = 7  # 7 days for reservation
-        now = datetime.now()
+        now = datetime.datetime.now()
         woods = WoodModel.query.filter_by(reserved=True).all()
         expired_reservations = []
 
         for wood in woods:
-            reservation_date = wood.reserved_at
+            reservation_date = wood.reservation_time
             
             if isinstance(reservation_date, str):
                 reservation_date = datetime.strptime(reservation_date, "%Y-%m-%d")
