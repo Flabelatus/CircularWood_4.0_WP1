@@ -196,7 +196,7 @@ def create_app(db_url=None):
             reservation_date = wood.reservation_time
             
             if isinstance(reservation_date, str):
-                reservation_date = datetime.strptime(reservation_date, "%Y-%m-%d")
+                reservation_date = datetime.datetime.strptime(reservation_date, "%Y-%m-%d")
 
             expiry_date = reservation_date + timedelta(days=EXPIRY_TIME)
 
