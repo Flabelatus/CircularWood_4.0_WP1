@@ -47,6 +47,46 @@ COPY . .
 CMD ["/bin/bash", "docker-entrypoint.sh"]
 ```
 
+### Making a commit
+To maintain a clean and readable git history, we follow the Conventional Commits format. Please use the following structure for your commit messages:
+
+#### Format
+
+`<type>(<scope>): <subject>`
+type: Indicates the type of change. Use one of the following:
+
+feat: New feature
+fix: Bug fix
+docs: Documentation changes
+style: Code style changes (formatting, etc.)
+refactor: Code changes without fixing bugs or adding features
+test: Adding or updating tests
+chore: Other changes that don't modify src or test files
+scope: (Optional) The area of the code affected (e.g., parser, api).
+
+subject: A brief description of the change in imperative, present tense (e.g., "add feature", "fix bug").
+
+#### Examples
+
+feat(parser): add ability to parse arrays
+fix(api): handle null response correctly
+docs(readme): update installation instructions
+References
+If your commit closes an issue, include it in the message footer:
+
+`Closes #123`
+
+Following these guidelines helps us keep a consistent and useful commit history. Thank you for your contributions!
+
+Example: `git commit -m "feat(parser): add ability to parse arrays" -m "The parser can now handle arrays. This change allows us to process data correctly from our API." -m "Closes #345"
+`
+
+### Before pushing the commit
+The database application is hosted on a web service provided by render.com. To make sure we dont lose the data on this server, the data.db file inside the ./instance directory is 
+also tracked by git. And we should save a backup of the database on the render.com to the repository directory before pushing the commits. Reason being, that we dont have super user access to the render server and the service also implements a CI/CD pipeline that makes it convenient to backup the database this way. There is a shell script inside the applications root directory `db-backup.sh` to execute before pushing the commit. 
+
+If you look into the backup script, you will see that it not only copies the data.db contents but also the images from the static directory from the render to your local repository. This is not a reliable way of handling this challenge but until an alternative solution is in place, we follow this proceadure. 
+
 
 ### Database
 
