@@ -28,6 +28,8 @@ from resources.image import image_blueprint
 from blocklist import BLOCKLIST
 from utils.image_helpers import IMAGE_SET
 
+from clients.modify_wood_rows import get_modifiable_fields
+
 
 def create_app(db_url=None):
     load_dotenv()
@@ -51,7 +53,7 @@ def create_app(db_url=None):
     # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
     # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     # app.config["JWT_CSRF_IN_COOKIES"] = True
-    app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", "ROBOT-LAB_118944794548470618589981863246285508728")
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv("DATABASE_URL", "sqlite:///instance/data.db")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['UPLOADED_IMAGES_DEST'] = os.path.join("static", "img")
@@ -103,6 +105,16 @@ def create_app(db_url=None):
             res = Response()
             res.headers['X-Content-Type-Options'] = '*'
             return res
+        
+        
+    # ================ Get some configuration parameters from the Application ================
+
+    @app.route('/wood/modifiable-fields')
+    def get_wood_model_modifiable_fields():
+        
+        modifiable_fields = get_modifiable_fields(WoodModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+
 
     # ================ JWT Claims ================
 

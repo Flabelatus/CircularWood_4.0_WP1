@@ -15,3 +15,4 @@ gunicorn
 pandas
 APScheduler==3.10.4
 sqlalchemy-data-model-visualizer
+coloredlogs==15.0.1
