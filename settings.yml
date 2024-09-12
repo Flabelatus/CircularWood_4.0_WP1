@@ -1,7 +1,7 @@
 api:
-  name: Robotlab Database API
+  title: Robotlab Database API
   version: 1.0.0
-  description: "REST API for wood database"
+  description: "Wood Database REST API"
   
   configs:
     secret_key: 4e5508fd-979d-47ad-a56b-e9a604d02f1f
@@ -24,12 +24,12 @@ api:
         - Authorization
         
       allowed_origins:
-      - http://localhost:3000
-      - http://localhost:5050
-      - https://robotlab-residualwood.onrender.com
+        - http://localhost:3000
+        - http://localhost:5050
+        - https://robotlab-residualwood.onrender.com
 
     max_content_length: 10485760 # restrict max upload content size to 10MB
-    upload_destination: "./static"
+    upload_image_destination: "./static/img"
 
   database:
     server: sqlite
@@ -58,7 +58,7 @@ api:
     port: 5050
     host: 0.0.0.0
     environment:
-        mode: dev
+        mode: development
         url: http://localhost:5050
         logging: DEBUG
 

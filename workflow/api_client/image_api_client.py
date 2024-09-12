@@ -30,15 +30,11 @@ class ImageApiClient:
             if development is True
             else self.params.dir[self.destination]
         )
-        self.base_url = (
-            self.params.base_url["dev"]
-            if development is True
-            else self.params.base_url["prod"]
-        )
+        self.base_url = self.params.base_url
 
     def upload(self, filepath, wood_id):
-        auth_endpoint = "login"
-        endpoint = "image/upload/"
+        auth_endpoint = "/login"
+        endpoint = "/image/upload/"
 
         login_response = requests.post(
             f"{self.base_url}{auth_endpoint}", json=self.params.credentials
@@ -72,8 +68,8 @@ class ImageApiClient:
             return {"error": True, "message": str(e)}
 
     def delete_image(self, wood_id):
-        auth_endpoint = "login"
-        image_endpoint = "image/"
+        auth_endpoint = "/login"
+        image_endpoint = "/image/"
 
         login_response = requests.post(
             f"{self.base_url}{auth_endpoint}", json=self.params.credentials
