@@ -24,11 +24,11 @@ def batch_upload(base_fp, client):
 
     except KeyboardInterrupt:
         logger.info("\nProgram aborted")
-
-
+        
+        
 if __name__ == "__main__":
 
     client = image_api_client.ImageApiClient()
-
-    base_fp = os.path.join(client.params.static_path, client.params.dir[0])
+    
+    base_fp = input("Paste here the path directory of images: ")
     batch_upload(base_fp=base_fp, client=client)

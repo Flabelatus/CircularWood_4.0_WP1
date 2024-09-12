@@ -49,19 +49,21 @@ DATABASE_DB=$($YQ e '.api.database.dbname // "null"' $SETTINGS_FILE)
 ALLOWED_ORIGINS=$($YQ e '.api.configs.cors.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
 
 # Extract JWT settings
-JWT_SECRET=$($YQ e '.api.security.jwt.secret' $SETTINGS_FILE)
-JWT_EXPIRATION_TIME=$($YQ e '.api.security.jwt.expirationTime' $SETTINGS_FILE)
+# JWT_SECRET=$($YQ e '.api.security.jwt.secret' $SETTINGS_FILE)
+# JWT_EXPIRATION_TIME=$($YQ e '.api.security.jwt.expirationTime' $SETTINGS_FILE)
 JWT_ISSUER=$($YQ e '.api.security.jwt.issuer' $SETTINGS_FILE)
 JWT_AUDIENCE=$($YQ e '.api.security.jwt.audience' $SETTINGS_FILE)
 
-# Extract other environment variables from the settings
 URL=$($YQ e '.api.server.environment.url // "http://localhost:5050"' $SETTINGS_FILE)
-API_LOG_LEVEL=$($YQ e '.api.server.environment.logging // "DEBUG"' $SETTINGS_FILE)
+
+API_LOG_LEVEL_DEBUG=$($YQ e '.api.server.environment.modes.development.logging' $SETTINGS_FILE)
+API_LOG_LEVEL_INFO=$($YQ e '.api.server.environment.modes.production.logging' $SETTINGS_FILE)
 
 # Generate the .env file
 cat > .env <<EOL
 URL=$URL
-API_LOG_LEVEL=$API_LOG_LEVEL
+API_LOG_LEVEL_INFO=$API_LOG_LEVEL_INFO
+API_LOG_LEVEL_DEBUG=$API_LOG_LEVEL_DEBUG
 DATABASE_URL=$DATABASE_URL
 DATABASE_HOST=$DATABASE_HOST
 DATABASE_USER=$DATABASE_USER
@@ -69,8 +71,6 @@ DATABASE_PASSWORD=$DATABASE_PASSWORD
 DATABASE_DB=$DATABASE_DB
 CONFIG_FILE=./settings.yml
 ALLOWED_ORIGINS=$ALLOWED_ORIGINS
-JWT_SECRET=$JWT_SECRET
-JWT_EXPIRATION_TIME=$JWT_EXPIRATION_TIME
 JWT_ISSUER=$JWT_ISSUER
 JWT_AUDIENCE=$JWT_AUDIENCE
 EOL

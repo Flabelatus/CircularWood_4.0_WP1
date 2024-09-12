@@ -31,7 +31,22 @@ class ApiConfig:
             "version": self.settings['version'],
             "description": self.settings['description']
         }
+        
+    @property
+    def external(self):
+        return self.settings['external']
+        
+    @property
+    def environment(self):
+        return self.settings['server']['environment']['selected_mode']
 
+    @property
+    def backend_env(self):
+        if self.environment == 'development':
+            return self.settings['server']['environment']['modes']['development']
+        else:
+            return  self.settings['server']['environment']['modes']['production']
+        
     @property
     def api_configs(self):
         return self.settings['configs']
@@ -96,7 +111,7 @@ class AppLogger:
     def is_production(self) -> bool:
         """Determine if the environment is set to production."""
         if self.settings:
-            return self.settings.server_configs['environment']['mode'].lower() == 'production'
+            return self.settings.server_configs['environment']['selected_mode'].lower() == 'production'
         else:
             return False
 
@@ -144,12 +159,12 @@ class AppLogger:
 
 # Instantiate `app_settings`
 app_settings = ApiConfig()
-
 # Instantiate logger
 api_logging = AppLogger(app_settings)
 
 logger = logging.getLogger('wood-api')
 
+logger.info(app_settings.server_configs)
 
 if __name__ == "__main__":
     logger.info("API Config settings:", app_settings.settings)
