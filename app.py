@@ -14,7 +14,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from db import db
 from workflow.api_client.modify_wood_rows import get_modifiable_fields
-from settings import app_settings
+from settings import app_settings, logger
 from models import WoodModel
 from blocklist import BLOCKLIST
 from utils.image_helpers import IMAGE_SET
@@ -62,6 +62,17 @@ def create_app(db_url=None):
         app.config['UPLOADED_IMAGES_DEST'] = app_settings.api_configs['upload_image_destination']
         app.config['MAX_CONTENT_LENGTH'] = app_settings.api_configs['max_content_length']
         app.config['CORS_HEADERS'] = app_settings.api_configs['cors']['allow_headers']
+
+        logger.getChild("app")
+        
+        logger.debug("\n")
+        logger.info(f"API_TITLE: {app_settings.api_info['title']}")
+        logger.info(f"API_VERSION: {app_settings.api_info['version']}")
+        logger.info(f"ENVIRONMENT: {app_settings.environment}")    
+        logger.info(f"BACKEND_URL: {app_settings.backend_env['url']}")   
+        logger.info(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+        logger.info(f"OPENAPI_VERSION: {app_settings.doc_configs['service']['openapi_version']}")  
+        logger.info(f"MAX_CONTENT_LENGTH: {app_settings.api_configs['max_content_length']} Bytes\n")  
 
     # ================ Initialization of the App ================
 

@@ -99,7 +99,8 @@ class AppLogger:
     @staticmethod
     def is_color_terminal() -> bool:
         """Check if terminal supports color output."""
-        return sys.stdout.isatty() and os.getenv('TERM') not in ('dumb', 'unknown')
+        print(sys.stdout.isatty() and os.getenv('TERM') not in ('dumb', 'unknown'))
+        return True
 
     def configure_logging(self) -> None:
         """Configure logging based on the environment setting."""
@@ -122,7 +123,7 @@ class AppLogger:
         except ImportError:
             coloredlogs = None
 
-        log_level = os.getenv('API_LOG_LEVEL', 'DEBUG').upper()
+        log_level = os.getenv('API_LOG_LEVEL_DEBUG', 'DEBUG').upper()
         if coloredlogs and self.is_color_terminal():
             level_styles = {
                 'spam': {'color': 'green', 'faint': True},
@@ -146,7 +147,9 @@ class AppLogger:
                 level=log_level,
                 level_styles=level_styles,
                 field_styles=field_styles,
-                fmt=self.LOG_FORMAT_DEBUG
+                fmt=self.LOG_FORMAT_DEBUG,
+                isatty=True  # Force colored output
+
             )
         else:
             logging.basicConfig(level=log_level, format=self.LOG_FORMAT_DEBUG)
@@ -164,7 +167,6 @@ api_logging = AppLogger(app_settings)
 
 logger = logging.getLogger('wood-api')
 
-logger.info(app_settings.server_configs)
 
 if __name__ == "__main__":
     logger.info("API Config settings:", app_settings.settings)
