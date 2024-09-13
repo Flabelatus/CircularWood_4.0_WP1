@@ -65,7 +65,7 @@ def create_app(db_url=None):
 
         logger.getChild("app")
         
-        logger.debug("\n")
+        # logger.debug("\n")
         logger.info(f"API_TITLE: {app_settings.api_info['title']}")
         logger.info(f"API_VERSION: {app_settings.api_info['version']}")
 
@@ -81,7 +81,7 @@ def create_app(db_url=None):
             logger.info(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
 
         logger.info(f"OPENAPI_VERSION: {app_settings.doc_configs['service']['openapi_version']}")  
-        logger.info(f"MAX_CONTENT_LENGTH: {app_settings.api_configs['max_content_length']} Bytes\n")  
+        logger.info(f"MAX_CONTENT_LENGTH: {app_settings.api_configs['max_content_length']} (Bytes)")  
 
     # ================ Initialization of the App ================
 

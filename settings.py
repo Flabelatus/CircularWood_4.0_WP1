@@ -215,7 +215,7 @@ app_settings = ApiConfig()
 # Instantiate logger
 api_logging = AppLogger(app_settings)
 
-package_names = ['urllib3', 'tzlocal']
+package_names = ['urllib3', 'tzlocal', 'passlib']
 api_logging.disable_external_package_logging(package_names)
 logger = logging.getLogger('wood-api')
 
