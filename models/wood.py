@@ -4,6 +4,51 @@ from db import db
 
 
 class WoodModel(db.Model):
+    """
+    Represents a wood entry in the system, including its physical properties and related data.
+
+    :Attributes:
+        :id (int): The primary key representing a unique wood entry.
+        :name (str): The name of the wood species (e.g., Red oak).
+        :length (float): The length of the wood in millimeters.
+        :width (float): The width of the wood in millimeters.
+        :height (float): The height of the wood in millimeters.
+        :weight (float): The weight of the wood in grams.
+        :density (float): The density of the wood in grams per cubic centimeter.
+        :color (str): The RGB color of the wood (formatted as "255, 255, 255").
+        :source (str): Information about the source of the wood.
+        :info (str): Additional information about the wood.
+        :type (str): The type of wood (e.g., hardwood or softwood).
+        :image (str): The path to the image of the wood.
+        :paint (str): The paint type on the wood, if applicable.
+        :is_fire_treated (bool): A flag indicating whether the wood is fire treated.
+        :is_straight (bool): A flag indicating whether the wood is straight.
+        :is_planed (bool): A flag indicating whether the wood is planed.
+        :has_metal (bool): A flag indicating whether the wood contains metal.
+        :intake_id (int): The ID representing the wood intake.
+        :storage_location (str): The location where the wood is stored.
+        :metal_bbox_coords (str): The bounding box coordinates for any metal detected in the wood.
+        :timestamp (str): The timestamp when the wood was created.
+        :updated_at (str): The timestamp when the wood was last updated.
+        :reserved (bool): A flag indicating whether the wood is reserved.
+        :reservation_name (str): The name of the person or entity that reserved the wood.
+        :reservation_time (str): The time when the wood was reserved.
+        :used (bool): A flag indicating whether the wood has been used.
+        :used_by (str): The name of the person or entity that used the wood.
+        :deleted (bool): A flag indicating whether the wood has been deleted.
+        :deleted_by (str): The name of the person or entity that marked the wood as deleted.
+        :deleted_at (str): The timestamp when the wood was deleted.
+
+        :tags (relationship): A many-to-many relationship linking to the `TagModel` table through the `woods_tags` table.
+        :requirements (relationship): A many-to-many relationship linking to the `DesignRequirementsModelFromClient` table 
+            through the `woods_requirements` table.
+        :production (relationship): A one-to-many relationship linking to the `ProductionModel` table.
+        :history (relationship): A dynamic one-to-many relationship linking to the `HistoryModel` table.
+        :pointcloud (relationship): A dynamic one-to-many relationship linking to the `PointCloudModel` table.
+        :impact (relationship): A one-to-many relationship linking to the `ImpactModel` table.
+        :sub_wood (relationship): A dynamic one-to-many relationship linking to the `SubWoodModel` table.
+    """
+        
     __tablename__ = "wood"
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)

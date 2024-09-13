@@ -1,3 +1,7 @@
+"""_summary_
+
+"""
+
 import os
 import traceback
 
@@ -16,13 +20,23 @@ image_schema = ImageSchema()
 
 @image_blueprint.route("/image/upload/<int:wood_id>")
 class ImageUpload(MethodView):
+    """
+    Upload an image associated with a specific wood item.
+    """
+
     @image_blueprint.response(201)
-    def post(self, wood_id):
+    def post(self, wood_id: int):
+        """
+        Upload an image for the specified wood ID. The image is saved to the specified folder
+        with the name formatted as '{wood_id}.png'.
+
+        :param wood_id: ID of the wood item.
+        :return: A message indicating whether the image upload was successful.
+        """
         folder = request.args.get('dir')
         if 'image' in request.files:
             try:
                 image_data = image_schema.load(request.files)
-                # folder = "wood_intake"
                 filename = f'{wood_id}.png'
                 image_path = save_image(
                     image_data["image"], folder=folder, name=filename)
@@ -41,10 +55,18 @@ class ImageUpload(MethodView):
 
 @image_blueprint.route("/image/<int:wood_id>")
 class ImageByWoodID(MethodView):
+    """
+    Handle image operations for a specific wood item by its ID.
+    """
 
     @image_blueprint.response(200)
-    def get(self, wood_id):
+    def get(self, wood_id: int):
+        """
+        Retrieve an image associated with a specific wood item by its ID.
 
+        :param wood_id: ID of the wood item.
+        :return: The image file if it exists.
+        """
         folder = request.args.get("dir")
         filename = f'{str(wood_id)}.png'
 
@@ -53,12 +75,17 @@ class ImageByWoodID(MethodView):
 
         try:
             return send_file(get_path(filename=filename, folder=folder))
-
         except FileNotFoundError as e:
             abort(404, message='image not found')
 
     @jwt_required()
-    def delete(self, wood_id):
+    def delete(self, wood_id: int):
+        """
+        Delete an image associated with a specific wood item by its ID.
+
+        :param wood_id: ID of the wood item.
+        :return: A message confirming the deletion of the image or an error message if not found.
+        """
         folder = request.args.get("dir")
         filename = f'{str(wood_id)}.png'
 
@@ -74,6 +101,4 @@ class ImageByWoodID(MethodView):
             abort(404, message='image not found')
         except:
             traceback.print_exc()
-            abort(
-                500, message="something went wrong while deleting the image - contact support"
-            )
+            abort(500, message="something went wrong while deleting the image - contact support")
