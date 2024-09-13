@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>utils package &#8212; CircularWood_4.0 Database API 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/themes.css?v=e6c2201c" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scripts package" href="scripts.html" />
+    <link rel="prev" title="workflow.api_client package" href="workflow.api_client.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Link to this heading">¶</a></h1>
+<section id="module-utils.image_helpers">
+<span id="utils-image-helpers"></span><h2>utils.image_helpers<a class="headerlink" href="#module-utils.image_helpers" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.find_image_any_format">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">find_image_any_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#utils.image_helpers.find_image_any_format" title="Link to this definition">¶</a></dt>
+<dd><p>Given a format-less filename, try to find the file by appending each of the allowed formats to the given
+filename and check if the file exists
+:param filename: formatless filename
+:param folder: the relative folder in which to search
+:return: the path of the image if exists, otherwise None</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.get_basename">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">get_basename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">FileStorage</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#utils.image_helpers.get_basename" title="Link to this definition">¶</a></dt>
+<dd><p>Return file’s basename, for example
+get_basename(‘some/folder/image.jpg’) returns ‘image.jpg’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.get_extension">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">get_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">FileStorage</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#utils.image_helpers.get_extension" title="Link to this definition">¶</a></dt>
+<dd><p>Return file’s extension, for example
+get_extension(‘image.jpg’) returns ‘.jpg’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.get_path">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#utils.image_helpers.get_path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.is_filename_safe">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">is_filename_safe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">FileStorage</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#utils.image_helpers.is_filename_safe" title="Link to this definition">¶</a></dt>
+<dd><p>Check if a filename is secure according to our definition
+- starts with a-z A-Z 0-9 at least one time
+- only contains a-z A-Z 0-9 and _().-
+- followed by a dot (.) and a allowed_format at the end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.image_helpers.save_image">
+<span class="sig-prename descclassname"><span class="pre">utils.image_helpers.</span></span><span class="sig-name descname"><span class="pre">save_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FileStorage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#utils.image_helpers.save_image" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="utils-json-to-csv">
+<h2>utils.json_to_csv<a class="headerlink" href="#utils-json-to-csv" title="Link to this heading">¶</a></h2>
+<hr class="docutils" />
+<span class="target" id="module-utils"></span></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CircularWood_4.0 Database API</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">workflow package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-utils.image_helpers">utils.image_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utils-json-to-csv">utils.json_to_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="workflow.api_client.html" title="previous chapter">workflow.api_client package</a></li>
+      <li>Next: <a href="scripts.html" title="next chapter">scripts package</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Javid Jooshesh.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

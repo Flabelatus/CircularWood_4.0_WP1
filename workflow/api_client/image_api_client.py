@@ -1,3 +1,7 @@
+"""ImageApiClient summary ...
+
+"""
+
 import os
 import requests
 from collections import namedtuple
