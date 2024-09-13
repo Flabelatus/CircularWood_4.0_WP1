@@ -3,18 +3,23 @@ import datetime
 
 from datetime import timedelta
 
-from flask import Flask, jsonify, request, Response, flash
-from flask.views import MethodView
+from flask import Flask, jsonify, request, Response
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_smorest import Api, Blueprint, abort
+from flask_smorest import Api
 from flask_cors import CORS
 from load_dotenv import load_dotenv
-from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask_uploads import configure_uploads
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from db import db
+from workflow.api_client.modify_wood_rows import get_modifiable_fields
+from settings import app_settings, logger
 from models import WoodModel
+from blocklist import BLOCKLIST
+from utils.image_helpers import IMAGE_SET
+
+# Api resources
 from resources.production import production_blp
 from resources.wood import blp as wood_blueprint
 from resources.tagslist import blp as tags_blueprint
@@ -25,8 +30,6 @@ from resources.point_cloud import pointcloud_blp
 from resources.impact import impact_blp
 from resources.sub_wood import sub_wood_blp
 from resources.image import image_blueprint
-from blocklist import BLOCKLIST
-from utils.image_helpers import IMAGE_SET
 
 
 def create_app(db_url=None):
@@ -37,33 +40,70 @@ def create_app(db_url=None):
 
     # ================ Application configurations ================
 
-    app.config["SECRET_KEY"] = os.urandom(24)
-    app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config['PROPAGATE_EXCEPTIONS'] = True
-    app.config['API_TITLE'] = "Wood Database REST API"
-    app.config['API_VERSION'] = "v1"
-    app.config['OPENAPI_VERSION'] = '3.0.3'
-    app.config["OPENAPI_URL_PREFIX"] = "/"
-    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-docs"
-    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    # app.config["JWT_COOKIE_SECURE"] = False
-    # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
-    # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
-    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-    # app.config["JWT_CSRF_IN_COOKIES"] = True
-    app.config["JWT_SECRET_KEY"] = "ROBOT-LAB_118944794548470618589981863246285508728"
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv("DATABASE_URL", "sqlite:///instance/data.db")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['UPLOADED_IMAGES_DEST'] = os.path.join("static", "img")
-    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 # restrict max upload image size to 5MB
+    if app_settings is not None:
+
+        app.config['API_TITLE'] = app_settings.api_info['title']
+        app.config['API_VERSION'] = app_settings.api_info['version']
+        app.config["SECRET_KEY"] = os.urandom(24)
+        app.config['PROPAGATE_EXCEPTIONS'] = app_settings.api_configs['propogate_exceptions']
+        app.config['OPENAPI_VERSION'] = app_settings.doc_configs['service']['openapi_version']
+        app.config["OPENAPI_URL_PREFIX"] = app_settings.doc_configs['service']['openapi_url_prefix']
+        app.config["OPENAPI_SWAGGER_UI_PATH"] = app_settings.doc_configs['service']['openapi_swagger_ui_path']
+        app.config["OPENAPI_SWAGGER_UI_URL"] = app_settings.doc_configs['service']['openapi_swagger_ui_url']
+        # app.config["JWT_COOKIE_SECURE"] = False
+        # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+        # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
+        # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+        app.config["JWT_CSRF_IN_COOKIES"] = app_settings.security_configs['cookie_settings']['csrf_in_cookies']
+        app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", os.urandom(24))
+        app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
+            "DATABASE_URL", "sqlite:///instance/data.db")
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = app_settings.db_configs['track_modifications']
+        app.config['UPLOADED_IMAGES_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'img')
+        app.config['MAX_CONTENT_LENGTH'] = app_settings.api_configs['max_content_length']
+        app.config['CORS_HEADERS'] = app_settings.api_configs['cors']['allow_headers']
+
+        logger.getChild("app")
+        
+        # logger.debug("\n")
+        logger.info(f"API_TITLE: {app_settings.api_info['title']}")
+        logger.info(f"API_VERSION: {app_settings.api_info['version']}")
+
+        if app_settings.environment == 'development':
+            logger.debug(f"JWT issuer: {app_settings.backend_env['url']}")
+            logger.debug(f"ENVIRONMENT: {app_settings.environment}")    
+            logger.debug(f"BACKEND_URL: {app_settings.backend_env['url']}")   
+            logger.debug(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+        else:
+            logger.info(f"JWT issuer: {app_settings.backend_env['url']}")
+            logger.info(f"ENVIRONMENT: {app_settings.environment}")    
+            logger.info(f"BACKEND_URL: {app_settings.backend_env['url']}")   
+            logger.info(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+
+        logger.info(f"OPENAPI_VERSION: {app_settings.doc_configs['service']['openapi_version']}")  
+        logger.info(f"MAX_CONTENT_LENGTH: {app_settings.api_configs['max_content_length']} (Bytes)")  
 
     # ================ Initialization of the App ================
 
     configure_uploads(app, IMAGE_SET)   # image upload config
     db.init_app(app)                    # database init
-    migrate = Migrate(app, db)          # flask alembic init for database migrations
+    # flask alembic init for database migrations
+    migrate = Migrate(app, db)
     api = Api(app)                      # API init
+
+    logger.info("Application initialized")  
+
     jwt = JWTManager(app)               # JWT init
+
+    logger.info("JWT manager initialized")
+    if app_settings.environment == 'development':
+        logger.debug(f"JWT issuer: {app_settings.backend_env['url']}")
+    else:
+        logger.info(f"JWT issuer: {app_settings.backend_env['url']}")
+    if not app_settings.security_configs['cookie_settings']['csrf_in_cookies']:
+        logger.warning(f"JWT_CSRF_IN_COOKIES: {app_settings.security_configs['cookie_settings']['csrf_in_cookies']}")
+    else:
+        logger.info(f"JWT_CSRF_IN_COOKIES: {app_settings.security_configs['cookie_settings']['csrf_in_cookies']}")
 
     # @app.after_request
     # def refresh_expiring_jwts(response):
@@ -84,13 +124,15 @@ def create_app(db_url=None):
 
     cors = CORS(
         app,
-        origins=["https://robotlab-db-gui.onrender.com",
-                 "http://localhost:3000"],
-        allow_headers=[
-            "Accept", "Content-Type", "X-Auth-Email", "X-Auth-Key", "X-CSRF-Token", "Origin", "X-Requested-With",
-            "Authorization"
-        ]
+        origins=app_settings.api_configs['cors']['allowed_origins'],
+        allow_headers=app_settings.api_configs['cors']['allow_headers']
     )
+
+    if not app_settings.api_configs['cors']['access_control_allow_credentials']:
+        logger.warning(f"CORS enabled: {app_settings.api_configs['cors']['access_control_allow_credentials']}\n")
+    else:
+        logger.info(f"CORS enabled: {True}\n")
+
 
     @app.after_request
     def creds(response):
@@ -101,8 +143,17 @@ def create_app(db_url=None):
     def handle_preflight():
         if request.method == "OPTIONS":
             res = Response()
+            # Sends while card
             res.headers['X-Content-Type-Options'] = '*'
             return res
+
+    # ================ Get some configuration parameters from the Application ================
+
+    @app.route('/wood/modifiable-fields')
+    def get_wood_model_modifiable_fields():
+
+        modifiable_fields = get_modifiable_fields(WoodModel)
+        return jsonify(modifiable_fields=modifiable_fields)
 
     # ================ JWT Claims ================
 
@@ -194,9 +245,10 @@ def create_app(db_url=None):
 
         for wood in woods:
             reservation_date = wood.reservation_time
-            
+
             if isinstance(reservation_date, str):
-                reservation_date = datetime.datetime.strptime(reservation_date, "%Y-%m-%d")
+                reservation_date = datetime.datetime.strptime(
+                    reservation_date, "%Y-%m-%d")
 
             expiry_date = reservation_date + timedelta(days=EXPIRY_TIME)
 
@@ -205,7 +257,6 @@ def create_app(db_url=None):
 
         return expired_reservations
 
-    
     def check_and_update_reservations():
         with app.app_context():
             expired_woods = _get_expired_reservations()
@@ -218,9 +269,9 @@ def create_app(db_url=None):
 
             db.session.commit()
 
-    
     cron_job = BackgroundScheduler()
-    cron_job.add_job(func=check_and_update_reservations, trigger="interval", hours=1)
+    cron_job.add_job(func=check_and_update_reservations,
+                     trigger="interval", hours=1)
     cron_job.start()
 
     # ================ Registration of the API's resource blueprints ================

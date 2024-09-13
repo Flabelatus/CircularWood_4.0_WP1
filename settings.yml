@@ -1,0 +1,111 @@
+# Feel free to adjust the settings as you see them fit
+
+api:
+  title: Robotlab Database API
+  version: 1.0.0
+  description: "Wood Database REST API"
+  external:
+    apis:
+      url:
+        # Potentially to be an external authentication service API (WIP)
+        - &dev_auth_api_url http://localhost:1993
+      
+      api_keys: []
+
+    tools:
+      idemat:
+        # Internal path to the idemat json file containing environmental data of wood
+        path: idemat/idenmat_2023_wood_simplified.json
+
+    frontend_apps:
+      url:  
+        # This can be any frontend app being tested
+        - http://localhost:3000
+
+        # Already hosted on render.com 
+        - https://robotlab-db-gui.onrender.com
+
+  server:
+    port: 5050
+    host: 0.0.0.0
+    environment:
+        selected_mode: "development"
+        modes: 
+          development:
+            url: http://localhost:5050
+            logging: DEBUG
+          production:
+            url: https://robotlab-residualwood.onrender.com
+            logging: INFO
+  
+  configs:
+    secret_key: 4e5508fd-979d-47ad-a56b-e9a604d02f1f
+    propogate_exceptions: true
+    rate_limiting:
+      requests_per_minute: 100
+      burst: 50
+    cors:
+      access_control_allow_credentials: true
+      allow_headers:
+        - Accept
+        - Content-Type
+        - X-Auth-Email
+        - X-Auth-Key
+        - X-CSRF-Token
+        - Origin
+        - X-Requested-With
+        - Authorization
+      allowed_origins:
+        - http://localhost:3000
+        - https://robotlab-db-gui.onrender.com
+        - http://localhost:5050
+        - https://robotlab-residualwood.onrender.com
+
+    max_content_length: 10485760 # restrict max upload content size to 10MB
+
+  database:
+    server: sqlite
+    host: localhost
+    port: null
+    user: null
+    password: null
+    dbname: null
+    sslmode: disable
+    timezone: UTC
+    connect_timeout: 5
+    middleware: SQLALCHEMY
+    uri: sqlite:///instance/data.db
+    track_modifications: false
+
+  documentation:
+    endpoint: api-docs
+    service:
+      title: openapi
+      openapi_version: "3.0.3"
+      openapi_url_prefix: "/"
+      openapi_swagger_ui_path: "/api-docs"
+      openapi_swagger_ui_url: "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+
+  security:
+    cookie_settings:
+      same_site: 'Strict'
+      token_location: "cookies"
+      cookie_secure: false
+      csrf_in_cookies: false
+      http_only: true
+      
+    jwt:
+      secret: "ROBOT-LAB_118944794548470618589981863246285508728"
+      issuer: https://robotlab-residualwood.onrender.com
+      audience: https://robotlab-residualwood.onrender.com
+      expiration_time: 3600
+
+  logging:
+    format: json
+    output: stdout
+
+  cache:
+    redis:
+      host: localhost
+      port: 6379
+      expiration_time: 86400

@@ -5,7 +5,7 @@ from werkzeug.datastructures import FileStorage
 
 from flask_uploads import UploadSet, IMAGES
 
-IMAGE_SET = UploadSet("images", IMAGES)  # set name and allowed extensions
+IMAGE_SET = UploadSet("images", IMAGES)
 
 
 def save_image(image: FileStorage, folder: str = None, name: str = None) -> str:
