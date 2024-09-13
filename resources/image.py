@@ -5,6 +5,7 @@ from flask import request, send_file, jsonify
 from flask_smorest import abort, Blueprint
 from flask_jwt_extended import jwt_required
 from flask.views import MethodView
+from flask_uploads import UploadNotAllowed
 from schema import ImageSchema
 from utils.image_helpers import save_image, get_basename, is_filename_safe, get_path
 

@@ -42,7 +42,8 @@ def get_default_params():
         root_dir=app_directoty,
         static_path=os.path.join(
             app_directoty,
-            *app_settings.api_configs['upload_image_destination']
+            'static',
+            'img'
         ),
         credentials={
             'username': input('Username: '),

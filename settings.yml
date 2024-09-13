@@ -62,9 +62,6 @@ api:
         - https://robotlab-residualwood.onrender.com
 
     max_content_length: 10485760 # restrict max upload content size to 10MB
-    upload_image_destination:
-      - static
-      - img
 
   database:
     server: sqlite
@@ -94,7 +91,7 @@ api:
       same_site: 'Strict'
       token_location: "cookies"
       cookie_secure: false
-      csrf_in_cookies: true
+      csrf_in_cookies: false
       http_only: true
       
     jwt:

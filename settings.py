@@ -1,6 +1,7 @@
 import sys
 import os
 import logging
+import textwrap
 
 from load_dotenv import load_dotenv
 from ruamel.yaml import YAML
@@ -11,6 +12,57 @@ except ImportError:
     coloredlogs = None
 
 load_dotenv()
+
+# Text Reset
+RESET = "\033[0m"
+
+# Text Styles
+BOLD = "\033[1m"
+DIM = "\033[2m"
+ITALIC = "\033[3m"
+UNDERLINE = "\033[4m"
+BLINK = "\033[5m"
+INVERT = "\033[7m" 
+
+# Foreground Colors
+BLACK = "\033[30m"
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+CYAN = "\033[36m"
+WHITE = "\033[37m"
+
+# Bright Foreground Colors
+BRIGHT_BLACK = "\033[90m"
+BRIGHT_RED = "\033[91m"
+BRIGHT_GREEN = "\033[92m"
+BRIGHT_YELLOW = "\033[93m"
+BRIGHT_BLUE = "\033[94m"
+BRIGHT_MAGENTA = "\033[95m"
+BRIGHT_CYAN = "\033[96m"
+BRIGHT_WHITE = "\033[97m"
+
+# Background Colors
+BG_BLACK = "\033[40m"
+BG_RED = "\033[41m"
+BG_GREEN = "\033[42m"
+BG_YELLOW = "\033[43m"
+BG_BLUE = "\033[44m"
+BG_MAGENTA = "\033[45m"
+BG_CYAN = "\033[46m"
+BG_WHITE = "\033[47m"
+
+# Bright Background Colors
+BG_BRIGHT_BLACK = "\033[100m"
+BG_BRIGHT_RED = "\033[101m"
+BG_BRIGHT_GREEN = "\033[102m"
+BG_BRIGHT_YELLOW = "\033[103m"
+BG_BRIGHT_BLUE = "\033[104m"
+BG_BRIGHT_MAGENTA = "\033[105m"
+BG_BRIGHT_CYAN = "\033[106m"
+BG_BRIGHT_WHITE = "\033[107m"
 
 
 class ApiConfig:
@@ -84,17 +136,71 @@ class ApiConfig:
         return self.settings['cache']
 
 
-class AppLogger:
+class CustomLogFormatter(logging.Formatter):
+    
+    def format(self, record):
+        """Manually replace log parts and color them based on log level."""
+        
+        # Adjust the format dynamically based on log level
+        if record.levelname == "DEBUG":
+            log_format = f'{DIM}%(asctime)-5s{RESET} {DIM}-{RESET} {BOLD}{DIM}%(levelname)-12s{RESET}' \
+                 f' | {DIM}%(name)-5s{RESET}.%(filename)-5s {RESET} {MAGENTA}::{RESET} {WHITE}%(message)s{RESET}'
 
-    # Debug and Production log formats
-    LOG_FORMAT_DEBUG = '%(levelname)-8s: %(name)-5s.%(filename)-30s %(message)s'
+        elif record.levelname == "ERROR":
+            log_format = f'{RED}%(asctime)-5s{RESET} {RED}**{RESET} {BOLD}{BRIGHT_RED}%(levelname)-10s{RESET}' \
+            f' | {DIM}%(name)-5s{RESET}.%(filename)-5s {RESET} {RED}::{RESET} {BRIGHT_RED}%(message)s{RESET}'
+
+        elif record.levelname == "WARNING":
+            log_format = f'{YELLOW}%(asctime)-5s{RESET} {YELLOW}!!{RESET} {BOLD}{BRIGHT_YELLOW}%(levelname)-11s{RESET}' \
+                 f' | {DIM}%(name)-5s{RESET}.%(filename)-5s {RESET} {YELLOW}::{RESET} {BRIGHT_YELLOW}%(message)s{RESET}'
+        
+        elif record.levelname == "INFO":
+            log_format = f'{CYAN}%(asctime)-5s{RESET} {CYAN}|__{RESET} {BOLD}{BRIGHT_CYAN}%(levelname)-10s{RESET}' \
+                 f' | {DIM}%(name)-5s{RESET}.%(filename)-5s {RESET} {MAGENTA}::{RESET} {BRIGHT_CYAN}%(message)s{RESET}'
+        
+        else:
+            log_format = '%(asctime)-5s : %(levelname)-8s | %(name)-5s.%(filename)-5s ___ %(message)s'
+
+        self._style._fmt = log_format
+
+        return super().format(record)
+    
+
+class AppLogger:
+    LOG_FORMAT_DEBUG = '%(asctime)-5s : %(levelname)-8s | %(name)-5s.%(filename)-5s :: %(message)s'
     LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
     LOG_LEVEL_PROD = logging.WARNING
 
     def __init__(self, settings) -> None:
         """Initialize logging configuration based on the environment."""
         self.settings = settings
-        self.configure_logging()
+        self.console_handler = logging.StreamHandler()
+        self.date_format = "%Y-%m-%d %H:%M:%S"
+
+        werkzeug_logger = logging.getLogger('werkzeug')
+        werkzeug_logger.setLevel(logging.INFO)
+
+        # Remove all existing handlers
+        if werkzeug_logger.hasHandlers():
+            werkzeug_logger.handlers.clear()
+
+        if self.is_production():
+            formatter = logging.Formatter(self.LOG_FORMAT_PROD, datefmt=self.date_format)
+            self.console_handler.setFormatter(formatter)
+            logging.basicConfig(level=self.LOG_LEVEL_PROD, handlers=[self.console_handler])
+        else:
+            formatter = CustomLogFormatter(self.LOG_FORMAT_DEBUG, datefmt=self.date_format)
+            self.console_handler.setFormatter(formatter)
+            logging.basicConfig(level=logging.DEBUG, handlers=[self.console_handler])
+
+    def is_production(self) -> bool:
+        """Determine if the environment is set to production."""
+        return self.settings.server_configs['environment']['selected_mode'].lower() == 'production'
+    
+    @staticmethod
+    def disable_external_package_logging(package_names):
+        for name in package_names:
+            logging.getLogger(name).setLevel(logging.WARNING)
 
     @staticmethod
     def is_color_terminal() -> bool:
@@ -102,69 +208,15 @@ class AppLogger:
         print(sys.stdout.isatty() and os.getenv('TERM') not in ('dumb', 'unknown'))
         return True
 
-    def configure_logging(self) -> None:
-        """Configure logging based on the environment setting."""
-        if self.is_production():
-            self.logging_config_production()
-        else:
-            self.logging_config_debug()
-
-    def is_production(self) -> bool:
-        """Determine if the environment is set to production."""
-        if self.settings:
-            return self.settings.server_configs['environment']['selected_mode'].lower() == 'production'
-        else:
-            return False
-
-    def logging_config_debug(self) -> None:
-        """Configure logging for the debug environment with optional color support."""
-        try:
-            import coloredlogs
-        except ImportError:
-            coloredlogs = None
-
-        log_level = os.getenv('API_LOG_LEVEL_DEBUG', 'DEBUG').upper()
-        if coloredlogs and self.is_color_terminal():
-            level_styles = {
-                'spam': {'color': 'green', 'faint': True},
-                'debug': {},
-                'notice': {'color': 'magenta'},
-                'success': {'bold': True, 'color': 'green'},
-                'info': {'bold': True, 'color': 'cyan'},
-                'warning': {'color': 'yellow'},
-                'error': {'color': 'red'},
-                'critical': {'bold': True, 'color': 'red'},
-            }
-            field_styles = {
-                'asctime': {'color': 'green'},
-                'hostname': {'color': 'magenta'},
-                'levelname': {'color': 8},
-                'name': {'color': 8},
-                'programname': {'color': 'cyan'},
-                'username': {'color': 'yellow'},
-            }
-            coloredlogs.install(
-                level=log_level,
-                level_styles=level_styles,
-                field_styles=field_styles,
-                fmt=self.LOG_FORMAT_DEBUG,
-                isatty=True  # Force colored output
-
-            )
-        else:
-            logging.basicConfig(level=log_level, format=self.LOG_FORMAT_DEBUG)
-
-    def logging_config_production(self) -> None:
-        """Configure logging for the production environment."""
-        logging.basicConfig(level=self.LOG_LEVEL_PROD,
-                            format=self.LOG_FORMAT_PROD)
-
 
 # Instantiate `app_settings`
 app_settings = ApiConfig()
+
 # Instantiate logger
 api_logging = AppLogger(app_settings)
 
+package_names = ['urllib3', 'tzlocal']
+api_logging.disable_external_package_logging(package_names)
 logger = logging.getLogger('wood-api')
 
 

@@ -31,12 +31,10 @@ class ImageApiClient:
             else self.params.dir[self.destination]
         )
         self.base_url = self.params.base_url['url']
-        logger.info(self.params.idemat)
 
     def upload(self, filepath, wood_id):
         auth_endpoint = "/login"
         endpoint = "/image/upload/"
-        print(f"{self.base_url}{auth_endpoint}")
         login_response = requests.post(
             f"{self.base_url}{auth_endpoint}", json=self.params.credentials
         )

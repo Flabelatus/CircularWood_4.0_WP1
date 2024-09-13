@@ -54,12 +54,12 @@ def create_app(db_url=None):
         # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
         # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
         # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-        # app.config["JWT_CSRF_IN_COOKIES"] = True
+        app.config["JWT_CSRF_IN_COOKIES"] = app_settings.security_configs['cookie_settings']['csrf_in_cookies']
         app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", os.urandom(24))
         app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
             "DATABASE_URL", "sqlite:///instance/data.db")
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = app_settings.db_configs['track_modifications']
-        app.config['UPLOADED_IMAGES_DEST'] = app_settings.api_configs['upload_image_destination']
+        app.config['UPLOADED_IMAGES_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'img')
         app.config['MAX_CONTENT_LENGTH'] = app_settings.api_configs['max_content_length']
         app.config['CORS_HEADERS'] = app_settings.api_configs['cors']['allow_headers']
 
@@ -68,9 +68,18 @@ def create_app(db_url=None):
         logger.debug("\n")
         logger.info(f"API_TITLE: {app_settings.api_info['title']}")
         logger.info(f"API_VERSION: {app_settings.api_info['version']}")
-        logger.info(f"ENVIRONMENT: {app_settings.environment}")    
-        logger.info(f"BACKEND_URL: {app_settings.backend_env['url']}")   
-        logger.info(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+
+        if app_settings.environment == 'development':
+            logger.debug(f"JWT issuer: {app_settings.backend_env['url']}")
+            logger.debug(f"ENVIRONMENT: {app_settings.environment}")    
+            logger.debug(f"BACKEND_URL: {app_settings.backend_env['url']}")   
+            logger.debug(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+        else:
+            logger.info(f"JWT issuer: {app_settings.backend_env['url']}")
+            logger.info(f"ENVIRONMENT: {app_settings.environment}")    
+            logger.info(f"BACKEND_URL: {app_settings.backend_env['url']}")   
+            logger.info(f"PROPAGATE_EXCEPTIONS: {app_settings.api_configs['propogate_exceptions']}")  
+
         logger.info(f"OPENAPI_VERSION: {app_settings.doc_configs['service']['openapi_version']}")  
         logger.info(f"MAX_CONTENT_LENGTH: {app_settings.api_configs['max_content_length']} Bytes\n")  
 
@@ -81,7 +90,20 @@ def create_app(db_url=None):
     # flask alembic init for database migrations
     migrate = Migrate(app, db)
     api = Api(app)                      # API init
+
+    logger.info("Application initialized")  
+
     jwt = JWTManager(app)               # JWT init
+
+    logger.info("JWT manager initialized")
+    if app_settings.environment == 'development':
+        logger.debug(f"JWT issuer: {app_settings.backend_env['url']}")
+    else:
+        logger.info(f"JWT issuer: {app_settings.backend_env['url']}")
+    if not app_settings.security_configs['cookie_settings']['csrf_in_cookies']:
+        logger.warning(f"JWT_CSRF_IN_COOKIES: {app_settings.security_configs['cookie_settings']['csrf_in_cookies']}")
+    else:
+        logger.info(f"JWT_CSRF_IN_COOKIES: {app_settings.security_configs['cookie_settings']['csrf_in_cookies']}")
 
     # @app.after_request
     # def refresh_expiring_jwts(response):
@@ -105,6 +127,12 @@ def create_app(db_url=None):
         origins=app_settings.api_configs['cors']['allowed_origins'],
         allow_headers=app_settings.api_configs['cors']['allow_headers']
     )
+
+    if not app_settings.api_configs['cors']['access_control_allow_credentials']:
+        logger.warning(f"CORS enabled: {app_settings.api_configs['cors']['access_control_allow_credentials']}\n")
+    else:
+        logger.info(f"CORS enabled: {True}\n")
+
 
     @app.after_request
     def creds(response):
