@@ -143,16 +143,16 @@ class CustomLogFormatter(logging.Formatter):
         
         # Adjust the format dynamically based on log level
         if record.levelname == "DEBUG":
-            log_format = f'{DIM}%(asctime)-5s{RESET} {DIM}-{RESET} {BOLD}{DIM}%(levelname)-10s{RESET}' \
+            log_format = f'{DIM}%(asctime)-5s{RESET} {DIM}-{RESET} {BOLD}{WHITE}{DIM}%(levelname)-10s{RESET}' \
                  f' | {DIM}%(name)-5s{RESET}.%(filename)-5s {RESET} {MAGENTA}::{RESET} {WHITE}%(message)s{RESET}'
 
         elif record.levelname == "ERROR":
             log_format = f'{RED}%(asctime)-5s{RESET} {RED}**{RESET} {BOLD}{BRIGHT_RED}%(levelname)-9s{RESET}' \
-            f' | {DIM}%(name)-5s{RESET}.{RED}%(filename)-5s{RESET}  {RED}::{RESET} {RED}%(message)s{RESET}'
+            f' | {DIM}%(name)-5s{RESET}.{BRIGHT_RED}%(filename)-5s{RESET}  {BRIGHT_RED}::{RESET} {BRIGHT_RED}%(message)s{RESET}'
 
         elif record.levelname == "WARNING":
             log_format = f'{YELLOW}%(asctime)-5s{RESET} {YELLOW}!!{RESET} {BOLD}{BRIGHT_YELLOW}%(levelname)-9s{RESET}' \
-                 f' | {DIM}%(name)-5s{RESET}.{YELLOW}%(filename)-5s{RESET}  {YELLOW}::{RESET} {YELLOW}%(message)s{RESET}'
+                 f' | {DIM}%(name)-5s{RESET}.{BRIGHT_YELLOW}%(filename)-5s{RESET}  {BRIGHT_YELLOW}::{RESET} {BRIGHT_YELLOW}%(message)s{RESET}'
         
         elif record.levelname == "INFO":
             log_format = f'{CYAN}%(asctime)-5s{RESET} {CYAN}|__{RESET} {BOLD}{BRIGHT_CYAN}%(levelname)-8s{RESET}' \
