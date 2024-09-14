@@ -151,7 +151,7 @@ def create_app(db_url=None):
 
     @app.route('/wood/modifiable-fields')
     def get_wood_model_modifiable_fields():
-
+        
         modifiable_fields = get_modifiable_fields(WoodModel)
         return jsonify(modifiable_fields=modifiable_fields)
 
@@ -159,6 +159,7 @@ def create_app(db_url=None):
 
     @jwt.needs_fresh_token_loader
     def token_not_fresh_callback(jwt_header, jwt_payload):
+        logger.error("the token is not fresh")
         return (
             jsonify(
                 {
@@ -180,6 +181,7 @@ def create_app(db_url=None):
 
     @jwt.revoked_token_loader
     def revoked_token_callback(jwt_header, jwt_payload):
+        logger.error("the token has been revoked.")
         return (
             jsonify(
                 {
@@ -198,6 +200,7 @@ def create_app(db_url=None):
 
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
+        logger.error("the token has expired.")
         return (
             jsonify(
                 {
@@ -209,6 +212,7 @@ def create_app(db_url=None):
 
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
+        logger.error("signature verification failed.")
         return (
             jsonify(
                 {
@@ -220,6 +224,7 @@ def create_app(db_url=None):
 
     @jwt.unauthorized_loader
     def missing_token_callback(error):
+        logger.error("request does not contain a valid access token.")
         return (
             jsonify(
                 {
@@ -233,6 +238,7 @@ def create_app(db_url=None):
 
     @app.before_first_request
     def create_tables():
+        logger.info("Database created since no tables existed before")
         db.create_all()
 
     # ================ Initialize the cron job for checking reservations ================
@@ -254,7 +260,9 @@ def create_app(db_url=None):
 
             if now > expiry_date:
                 expired_reservations.append(wood)
-
+        
+        logger.info(f"Retreived {len(expired_reservations)} expired wood reservations")
+        
         return expired_reservations
 
     def check_and_update_reservations():
@@ -265,9 +273,12 @@ def create_app(db_url=None):
                 wood.reserved_at = ""
                 wood.reserved_by = ""
 
+                logger.info(f"Wood with ID: {wood.id}, came out of reservation")
+                
                 db.session.add(wood)
 
             db.session.commit()
+
 
     cron_job = BackgroundScheduler()
     cron_job.add_job(func=check_and_update_reservations,

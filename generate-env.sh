@@ -54,7 +54,15 @@ ALLOWED_ORIGINS=$($YQ e '.api.configs.cors.allowed_origins[]' $SETTINGS_FILE | p
 JWT_ISSUER=$($YQ e '.api.security.jwt.issuer' $SETTINGS_FILE)
 JWT_AUDIENCE=$($YQ e '.api.security.jwt.audience' $SETTINGS_FILE)
 
-URL=$($YQ e '.api.server.environment.url // "http://localhost:5050"' $SETTINGS_FILE)
+
+URL=""
+ENVIRONMENT=$($YQ e '.api.server.environment.selected_mode' $SETTINGS_FILE)
+
+if [[ "$ENVIRONMENT" == "development" ]]; then
+    URL="$($YQ e '.api.server.environment.modes.development.url' $SETTINGS_FILE)${ENDPOINT}"
+else
+    URL="$($YQ e '.api.server.environment.modes.production.url' $SETTINGS_FILE)${ENDPOINT}"
+fi
 
 API_LOG_LEVEL_DEBUG=$($YQ e '.api.server.environment.modes.development.logging' $SETTINGS_FILE)
 API_LOG_LEVEL_INFO=$($YQ e '.api.server.environment.modes.production.logging' $SETTINGS_FILE)
@@ -62,6 +70,7 @@ API_LOG_LEVEL_INFO=$($YQ e '.api.server.environment.modes.production.logging' $S
 # Generate the .env file
 cat > .env <<EOL
 URL=$URL
+ENVIRONMENT=$ENVIRONMENT
 API_LOG_LEVEL_INFO=$API_LOG_LEVEL_INFO
 API_LOG_LEVEL_DEBUG=$API_LOG_LEVEL_DEBUG
 DATABASE_URL=$DATABASE_URL
