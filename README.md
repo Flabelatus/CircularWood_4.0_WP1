@@ -7,18 +7,6 @@ Javid Jooshesh - Researcher in Robot Lab
 
 ## Project Overview
 
-The **CircularWood_4.0 API** supports a traceable, intelligent design-to-production workflow that minimizes material waste and optimizes manufacturing processes. The system allows for:
-
-- Managing **wood inventory**, including type, dimensions, and availability.
-- Storing **designs** created by users, where each design element is uniquely matched to materials in the inventory.
-- Linking **designs to materials**, ensuring full traceability of which materials are used for which design and by which user.
-- Storing **production** codes created from the nested designs to the materrials and linking that to the ID of the material
-- Storing records of **production logs** linked to each design and material
-- Traceability of the **environmental impact** of production from the circular wood usage
-
----
-## Purpose of the API
-
 The primary purpose of the API is to provide a database infrastructure that integrates **design creation**, **material management**, and **production automation**. Here's how the process works:
     <br>
 1. **Design and Material Matching**:
