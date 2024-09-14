@@ -1,6 +1,8 @@
+![Project Logo](./static/img/public/logo.png)
+
 # CircularWood_4.0 Database API
 
-This repository contains the **CircularWood_4.0 Database API**, developed as part of the Circular Wood 4.0 project at the **Robot Lab - Digital Production Research Group - Amsterdam University of Applied Science**.
+This repository contains the **CircularWood_4.0 Database API**, developed as part of the Circular Wood 4.0 project at the Robot Lab - Digital Production Research Group - Amsterdam University of Applied Science.
 
 Contact: j.jooshesh@hva.nl
 Javid Jooshesh - Researcher in Robot Lab 
@@ -31,9 +33,9 @@ The primary purpose of the API is to provide a database infrastructure that inte
     - The environmental impact data is calculated in an **Environmental KPI** tool developed in the lab and is stored in the database.
 
 ---
-### Developer information
+## Developer information
 
-#### Requirements
+### Requirements
 
 - **Docker**: Ensure Docker is installed on your machine. You can download it from [here](https://www.docker.com/products/docker-desktop).
 - **docker-compose**: Use docker-compose to manage and run the api inside a container as service.
@@ -41,7 +43,7 @@ The primary purpose of the API is to provide a database infrastructure that inte
 
 ---
 
-#### Installation
+### Installation
 
 1. **Clone the repository**:
 
@@ -62,7 +64,7 @@ The primary purpose of the API is to provide a database infrastructure that inte
 
 ---
 
-#### Documentation
+### Documentation
 
 For the **API documentation** execute the following script in the terminal:
 
@@ -78,7 +80,7 @@ $ ./developer-docs.sh
 
 ---
 
-#### Configurations
+### Configurations
 
 This section provides an overview of the settings available for configuring the CircularWood_4.0 Database API. These configurations allow for easy customization and adaptation to different environments, external services, and security needs.
     <br>
@@ -178,3 +180,7 @@ This section provides an overview of the settings available for configuring the 
     ```
     <br>
 
+
+### Contributing
+
+Before starting with any contribution, please read the CONTRIBUTING document in the respository
