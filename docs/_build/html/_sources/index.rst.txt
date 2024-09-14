@@ -4,8 +4,6 @@ CircularWood_4.0 Database API documentation
 This repository contains the **CircularWood_4.0 Database API**, developed as part of the Circular Wood 4.0 project at the **Robot Lab - Digital Production Research Group - Amsterdam University of Applied Science**.
 
 Contact: j.jooshesh@hva.nl
-Javid Jooshesh - Researcher in Robot Lab 
-
 
 The **CircularWood_4.0 API** supports a traceable, intelligent design-to-production workflow that minimizes material waste and optimizes manufacturing processes. The system allows for:
 
@@ -16,8 +14,7 @@ The **CircularWood_4.0 API** supports a traceable, intelligent design-to-product
 - Storing records of **production logs** linked to each design and material
 - Traceability of the **environmental impact** of production from the circular wood usage
 
----
-Contents:
+
 
 .. toctree::
    :maxdepth: 2
