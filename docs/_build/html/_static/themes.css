@@ -1,5 +1,19 @@
 @import url("pocoo.css");
 
+@font-face {
+    font-family: 'Envy Code B 10pt';
+    src: url('/fonts/Envy Code B 10pt.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Classic Console Neue';
+    src: url('/fonts/clacon2.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 a,
 a.reference,
 a.footnote-reference {
@@ -153,7 +167,8 @@ div.rst-example {
 }
 
 div.rst-example>p.admonition-title {
-    font-family: Sans Serif;
+    /* font-family: Sans Serif; */
+    font-family: 'Envy Code B 10pt';
     font-style: italic;
     font-size: 0.8em;
     display: block;
@@ -198,7 +213,8 @@ tbody tr:nth-child(even) {
 }
 
 caption {
-    font-family: Sans Serif;
+    /* font-family: Sans Serif; */
+    font-family: 'Envy Code B 10pt';
     padding: 0.5em;
     margin: 0.5em 0 0.5em 0;
     caption-side: top;
@@ -212,8 +228,9 @@ div.sphinx-tabs {
 /* -- page layout ----------------------------------------------------------- */
 
 body {
-    font-family: Georgia, serif;
-    font-size: 16px;
+    /* font-family: Georgia, serif; */
+    font-family: 'Envy Code B 10pt';
+    font-size: 15px;
     background-color: #fff;
     color: #000;
     margin: 0;
@@ -301,7 +318,7 @@ div.sphinxsidebar {
 }
 
 div.sphinxsidebar a {
-    color: #444;
+    color: #7bfff4;
     text-decoration: none;
     border-bottom: 1px dotted #999;
 }
@@ -324,6 +341,7 @@ div.sphinxsidebarwrapper h1.logo {
     margin-top: -10px;
     font-size: x-large;
     text-align: center;
+    font-family: 'Classic Console Neue';
     margin-bottom: 5px;
     text-align: left;
 }
@@ -339,8 +357,9 @@ div.sphinxsidebarwrapper p.blurb {
 
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: Georgia, serif;
-    color: #444;
+    /* font-family: Georgia, serif; */
+    font-family: 'Envy Code B 10pt';
+    color: #ffffff;
     font-size: 24px;
     font-weight: normal;
     margin: 0 0 5px 0;
@@ -352,7 +371,7 @@ div.sphinxsidebar h4 {
 }
 
 div.sphinxsidebar h3 a {
-    color: #444;
+    color: #ffffff;
 }
 
 div.sphinxsidebar p.logo a,
@@ -360,6 +379,7 @@ div.sphinxsidebar h3 a,
 div.sphinxsidebar p.logo a:hover,
 div.sphinxsidebar h3 a:hover {
     border: none;
+    color: #fff;
 }
 
 div.sphinxsidebar p {
@@ -370,7 +390,7 @@ div.sphinxsidebar p {
 div.sphinxsidebar ul {
     margin: 10px 0;
     padding: 0;
-    color: #000;
+    color: #dddddd;
 }
 
 div.sphinxsidebar ul li.toctree-l1>a {
@@ -384,6 +404,7 @@ div.sphinxsidebar ul li.toctree-l2>a {
 div.sphinxsidebar input {
     border: 1px solid #CCC;
     font-family: Georgia, serif;
+    /* font-family: 'Envy Code B 10pt'; */
     font-size: 1em;
 }
 
@@ -437,7 +458,8 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: Georgia, serif;
+    /* font-family: Georgia, serif; */
+    font-family: 'Classic Console Neue';
     font-weight: normal;
     margin: 30px 0px 10px 0px;
     padding: 0;
@@ -502,7 +524,8 @@ div.admonition a tt {
 }
 
 div.admonition p.admonition-title {
-    font-family: Georgia, serif;
+    /* font-family: Georgia, serif; */
+    font-family: 'Envy Code B 10pt';
     font-weight: normal;
     font-size: 24px;
     margin: 0 0 10px 0;
@@ -591,6 +614,7 @@ pre,
 tt,
 code {
     font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    /* font-family: 'Envy Code B 10pt'; */
     font-size: 0.9em;
 }
 
@@ -993,10 +1017,12 @@ div.sphinxsidebarwrapper {
 
 div.sphinxsidebar {
     float: left;
-    background-color: #e1e5ff;
+    /* background-color: #e1e5ff; */
+    background-color: #3300ff;
     width: 300px;
     margin-left: -100%;
     font-size: 90%;
+    color: #fff;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -1022,7 +1048,8 @@ div.sphinxsidebar form {
 
 div.sphinxsidebar input {
     border: 1px solid #98dbcc;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
+    font-family: 'Envy Code B 10pt';
     font-size: 1em;
 }
 
@@ -1467,6 +1494,7 @@ table.hlist td {
 
 .sig {
     font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    /* font-family: 'Envy Code B 10pt'; */
 }
 
 .sig-name,
@@ -1705,7 +1733,8 @@ dl.glossary dt {
 
 .guilabel,
 .menuselection {
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
+    font-family: 'Envy Code B 10pt';
 }
 
 .accelerator {
@@ -1864,7 +1893,8 @@ h6 code {
 
 .viewcode-back {
     float: right;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
+    font-family: 'Envy Code B 10pt';
 }
 
 div.viewcode-block:target {
