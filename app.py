@@ -238,7 +238,6 @@ def create_app(db_url=None):
 
     @app.before_first_request
     def create_tables():
-        logger.info("Database created since no tables existed before")
         db.create_all()
 
     # ================ Initialize the cron job for checking reservations ================
