@@ -13,7 +13,7 @@ from flask_uploads import configure_uploads
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from db import db
-from workflow.api_client.modify_wood_rows import get_modifiable_fields
+from workflow.api_client.modify_record import get_modifiable_fields
 from settings import app_settings, logger
 from models import WoodModel
 from blocklist import BLOCKLIST
