@@ -13,14 +13,9 @@ from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy import inspect
 from marshmallow import Schema, fields
 
-from workflow.api_client import modify_record
 from models.wood import WoodModel
 from schema import WoodSchema
 from settings import logger
-
-# current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-# parent_dir = os.path.dirname(os.path.dirname(current_dir))
-# sys.path.insert(0, parent_dir)
 
 load_dotenv()
 
@@ -211,6 +206,21 @@ class WoodModifier(ModelModifier):
                 continue
 
 
+class SubWoodModifier(ModelModifier): ...
+
+
+class DesignMetaDataModifier(ModelModifier): ...
+
+
+class ProductionModifier(ModelModifier): ...
+
+
+class UserModifier(ModelModifier): ...
+
+
+class TagsModifier(ModelModifier): ...
+
+
 def get_modifiable_fields(model):
     """
     Identifies modifiable fields in a SQLAlchemy model that are not part of specified
@@ -242,8 +252,3 @@ def get_modifiable_fields(model):
     ]
 
     return modifiable_fields
-
-
-# if __name__ == "__main__":
-
-#     # modify_row(input("Enter wood ID: "), bool(input("Has metal: ")), input("Metal coords: "))
