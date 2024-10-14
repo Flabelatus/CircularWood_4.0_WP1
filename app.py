@@ -13,7 +13,7 @@ from flask_uploads import configure_uploads
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from db import db
-from workflow.api_client.modify_wood_rows import get_modifiable_fields
+from workflow.api_client.modify_record import get_modifiable_fields
 from settings import app_settings, logger
 from models import WoodModel
 from blocklist import BLOCKLIST
@@ -238,7 +238,6 @@ def create_app(db_url=None):
 
     @app.before_first_request
     def create_tables():
-        logger.info("Database created since no tables existed before")
         db.create_all()
 
     # ================ Initialize the cron job for checking reservations ================

@@ -420,7 +420,7 @@ class SetWoodToUsedByID(MethodView):
             abort(
                 400, message="wood is reserved by another user, you can not make changes to it")
         if wood.used is True:
-            abort(404, message="wood is already set to used")
+            abort(400, message="wood is already set to used")
 
         wood.used = True
         wood.used_by = user.username

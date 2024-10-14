@@ -1,5 +1,5 @@
 from sqlalchemy.orm import RelationshipProperty
-
+from settings import logger
 from db import db
 
 
@@ -128,12 +128,12 @@ class WoodModel(db.Model):
                 continue
             if attr_name == 'metadata':
                 continue
-            attr_value = getattr(self, attr_name)
             if isinstance(
-                self.__mapper__.get_property(attr_name),
+                getattr(self, attr_name),
                 RelationshipProperty,
             ):
                 relationship_fields.append(attr_name)
+        logger.info(relationship_fields)
         return relationship_fields
 
     def wood_partials(self):
@@ -152,7 +152,7 @@ class WoodModel(db.Model):
                 "deleted",
             ],
         )
-        return self._get_status_fields(partials)
+        return self._get_status_fields(partials[0])
 
     def _get_status_fields(self, status_fields):
         return {
