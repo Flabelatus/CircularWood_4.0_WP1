@@ -6,9 +6,8 @@ from typing import Callable
 
 
 class Scripts:
-    def __init__(self, script_file):
-        self.script_file = script_file
-        print(self.__str__())
+    def __init__(self, module):
+        self.module = module
 
     def __str__(self):
         return dir(self.script_file)
