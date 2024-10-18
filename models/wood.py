@@ -1,9 +1,9 @@
-from sqlalchemy.orm import RelationshipProperty
-from settings import logger
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class WoodModel(db.Model):
+
+class WoodModel(db.Model, DataModelInterface):
     """
     Represents a wood entry in the system, including its physical properties and related data.
 
@@ -117,26 +117,8 @@ class WoodModel(db.Model):
     impact = db.relationship("ImpactModel", back_populates="wood", lazy="dynamic")
     sub_wood = db.relationship("SubWoodModel", back_populates="wood", lazy="dynamic")
 
-    def relationship_fields(self):
-        """
-        Collects all relationship fields of the model and returns them as a list called 'partials'.
-        """
-        relationship_fields = []
-        attr_names = dir(self)
-        for attr_name in attr_names:
-            if attr_name.startswith("_") or attr_name.endswith("_"):
-                continue
-            if attr_name == 'metadata':
-                continue
-            if isinstance(
-                getattr(self, attr_name),
-                RelationshipProperty,
-            ):
-                relationship_fields.append(attr_name)
-        logger.info(relationship_fields)
-        return relationship_fields
-
-    def wood_partials(self):
+    @property
+    def partials(self):
         partials = (
             [
                 "id",
@@ -153,10 +135,3 @@ class WoodModel(db.Model):
             ],
         )
         return self._get_status_fields(partials[0])
-
-    def _get_status_fields(self, status_fields):
-        return {
-            field: getattr(self, field)
-            for field in status_fields
-            if hasattr(self, field)
-        }
