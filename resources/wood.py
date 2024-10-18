@@ -522,12 +522,11 @@ class WoodUnreservation(MethodView):
         return wood
 
 
-wood_resources = Resources().__routes__["wood"]
-wood_endpoints = wood_resources["endpoints"]
-
+wood_endpoints = Resources().endpoints_by_field("wood")
 view_func_routes_mapping = list(zip(blp._endpoints, wood_endpoints))
 
 for view_func in view_func_routes_mapping:
     blp.add_url_rule(rule="/", endpoint=view_func[1], view_func=view_func[0])
 
 wood_endpoints = [endpoint for endpoint in blp._endpoints if endpoint.startswith("/")]
+logger.getChild("resources").debug("wood endpoints added to the resource")
