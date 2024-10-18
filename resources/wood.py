@@ -1,5 +1,9 @@
-import datetime
 import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import datetime
 import json
 
 from typing import Union, List
@@ -11,6 +15,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import and_
 from models import WoodModel, UserModel, ImpactModel
 from schema import WoodSchema
+from settings import logger
+from resources.routes import Resources
+
 
 blp = Blueprint('Wood Data Table', 'wood',
                 description='Operations on the wood resource')
@@ -513,3 +520,14 @@ class WoodUnreservation(MethodView):
         db.session.commit()
 
         return wood
+
+
+wood_resources = Resources().__routes__["wood"]
+wood_endpoints = wood_resources["endpoints"]
+
+view_func_routes_mapping = list(zip(blp._endpoints, wood_endpoints))
+
+for view_func in view_func_routes_mapping:
+    blp.add_url_rule(rule="/", endpoint=view_func[1], view_func=view_func[0])
+
+wood_endpoints = [endpoint for endpoint in blp._endpoints if endpoint.startswith("/")]
