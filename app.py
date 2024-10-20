@@ -1,12 +1,14 @@
 import os
 import datetime
+import inspect
 
 from datetime import timedelta
 
 from flask import Flask, jsonify, request, Response
+from flask.views import MethodView
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_smorest import Api
+from flask_smorest import Api, Blueprint
 from flask_cors import CORS
 from load_dotenv import load_dotenv
 from flask_uploads import configure_uploads
@@ -16,20 +18,21 @@ from db import db
 from workflow.api_client.modify_record import get_modifiable_fields
 from settings import app_settings, logger
 from models import WoodModel
+from models import SubWoodModel
 from blocklist import BLOCKLIST
 from utils.image_helpers import IMAGE_SET
 
 # Api resources
-from resources.production import production_blp
-from resources.wood import blp as wood_blueprint
-from resources.tagslist import blp as tags_blueprint
-from resources.design_requirements import design_blp
-from resources.user import user_blp
-from resources.history import history_blp
-from resources.point_cloud import pointcloud_blp
-from resources.impact import impact_blp
-from resources.sub_wood import sub_wood_blp
-from resources.image import image_blueprint
+from resources import production_blp
+from resources import wood_blueprint
+from resources import tags_blueprint
+from resources import design_blp
+from resources import user_blp
+from resources import history_blp
+from resources import pointcloud_blp
+from resources import impact_blp
+from resources import sub_wood_blp
+from resources import image_blueprint
 
 
 def create_app(db_url=None):
@@ -151,8 +154,13 @@ def create_app(db_url=None):
 
     @app.route('/wood/modifiable-fields')
     def get_wood_model_modifiable_fields():
-        
         modifiable_fields = get_modifiable_fields(WoodModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+
+
+    @app.route('/subwood/modifiable-fields')
+    def get_subwood_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(SubWoodModel)
         return jsonify(modifiable_fields=modifiable_fields)
 
     # ================ JWT Claims ================
