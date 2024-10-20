@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class SubWoodModel(db.Model):
+
+class SubWoodModel(db.Model, DataModelInterface):
     """
     Represents the sub-wood components linked to the main wood entries.
 
@@ -62,4 +64,18 @@ class SubWoodModel(db.Model):
         "DesignRequirementsModelFromClient", back_populates="sub_wood")
 
     production = db.relationship("ProductionModel", back_populates="sub_wood")
-    
+
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+                "timestamp",
+                "updated_at",
+                "deleted_by",
+                "deleted_at",
+                "deleted",
+            ],
+        )
+
+        return self._get_status_fields(partials[0])
