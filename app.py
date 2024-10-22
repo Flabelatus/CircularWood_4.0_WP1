@@ -1,30 +1,33 @@
 import os
 import datetime
-import inspect
 
 from datetime import timedelta
 
 from flask import Flask, jsonify, request, Response
-from flask.views import MethodView
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_smorest import Api, Blueprint
+from flask_smorest import Api
 from flask_cors import CORS
-from load_dotenv import load_dotenv
 from flask_uploads import configure_uploads
+
+from load_dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 
+# Custom modules 
 from db import db
+from blocklist import BLOCKLIST
 from workflow.api_client.modify_record import get_modifiable_fields
 from settings import app_settings, logger
+from utils.image_helpers import IMAGE_SET
+
+# Data models
 from models import WoodModel
 from models import SubWoodModel
 from models import ProductionModel
 from models import UserModel
 from models import DesignRequirementsModelFromClient
 from models import TagModel
-from blocklist import BLOCKLIST
-from utils.image_helpers import IMAGE_SET
+
 
 # Api resources
 from resources import production_blp
