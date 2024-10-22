@@ -129,7 +129,7 @@ class Resources:
             "tablename": None
         },
 
-        "impact":  {
+        "idemat":  {
             "general": {
                 "endpoints": [
                     "/impact",
@@ -230,9 +230,9 @@ class Resources:
             endpoints.append(values["endpoints"])
         return endpoints
     
-    def endpoints_by_field(self, field):
+    def endpoints_by_field(self, field, scope='general'):
         assert field in self.__routes__, "The specified field is not among the resources"
-        return self.__routes__[field]["endpoints"]
+        return self.__routes__[field][scope]['endpoints']
     
     def tablename_by_field(self, field):
         assert field in self.__routes__, "The specified field is not among the resources"
