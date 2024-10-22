@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class DesignRequirementsModelFromClient(db.Model):
+
+class DesignRequirementsModelFromClient(db.Model, DataModelInterface):
     """
     Represents the design requirements submitted by a client for a specific wood project.
 

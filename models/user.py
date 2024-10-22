@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class UserModel(db.Model):
+
+class UserModel(db.Model, DataModelInterface):
     """
     Represents a user in the system.
 
@@ -16,3 +18,12 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+            ],
+        )
+        return self._get_status_fields(partials[0])

@@ -1,6 +1,9 @@
 from db import db
 
-class ProductionModel(db.Model):
+from models.interface_model import DataModelInterface
+
+
+class ProductionModel(db.Model, DataModelInterface):
     """
     Represents the production information for a wood or sub-wood item, including operations and instructions.
 
@@ -33,3 +36,13 @@ class ProductionModel(db.Model):
     sub_wood = db.relationship("SubWoodModel", back_populates='production')
     sub_wood_id = db.Column(db.Integer, db.ForeignKey('sub_wood.id'))
     
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+                "timestamp",
+                
+            ],
+        )
+        return self._get_status_fields(partials[0])

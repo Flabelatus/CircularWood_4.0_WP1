@@ -1,9 +1,9 @@
-import json
-from os import path
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class ImpactModel(db.Model):
+
+class ImpactModel(db.Model, DataModelInterface):
     """
     Represents the environmental impact information for specific wood entries.
 
@@ -36,3 +36,12 @@ class ImpactModel(db.Model):
 
     wood = db.relationship("WoodModel", back_populates='impact')
     wood_id = db.Column(db.Integer, db.ForeignKey('wood.id'))
+
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+            ],
+        )
+        return self._get_status_fields(partials[0])

@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class PointCloudModel(db.Model):
+
+class PointCloudModel(db.Model, DataModelInterface):
     """
     Represents the point cloud data associated with a specific wood entry.
 
@@ -18,3 +20,12 @@ class PointCloudModel(db.Model):
 
     wood = db.relationship("WoodModel", back_populates='pointcloud')
     wood_id = db.Column(db.Integer, db.ForeignKey('wood.id'))
+    
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+            ],
+        )
+        return self._get_status_fields(partials[0])

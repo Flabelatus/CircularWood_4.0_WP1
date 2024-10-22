@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class HistoryModel(db.Model):
+
+class HistoryModel(db.Model, DataModelInterface):
     """
     Represents the history of changes or events associated with a specific wood entry.
 
@@ -21,3 +23,12 @@ class HistoryModel(db.Model):
     wood = db.relationship("WoodModel", back_populates="history")
     wood_id = db.Column(db.Integer, db.ForeignKey('wood.id'))
 
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+                "created_at"
+            ],
+        )
+        return self._get_status_fields(partials[0])

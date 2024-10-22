@@ -1,7 +1,9 @@
 from db import db
 
+from models.interface_model import DataModelInterface
 
-class TagModel(db.Model):
+
+class TagModel(db.Model, DataModelInterface):
     """
     Represents a tag that can be associated with one or more wood entries.
 
@@ -19,3 +21,12 @@ class TagModel(db.Model):
     name = db.Column(db.String(80), nullable=False, unique=True)
 
     woods = db.relationship("WoodModel", back_populates='tags', secondary="woods_tags")
+
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+            ],
+        )
+        return self._get_status_fields(partials[0])
