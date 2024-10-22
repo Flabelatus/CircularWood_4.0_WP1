@@ -19,6 +19,10 @@ from workflow.api_client.modify_record import get_modifiable_fields
 from settings import app_settings, logger
 from models import WoodModel
 from models import SubWoodModel
+from models import ProductionModel
+from models import UserModel
+from models import DesignRequirementsModelFromClient
+from models import TagModel
 from blocklist import BLOCKLIST
 from utils.image_helpers import IMAGE_SET
 
@@ -158,11 +162,35 @@ def create_app(db_url=None):
         return jsonify(modifiable_fields=modifiable_fields)
 
 
-    @app.route('/subwood/modifiable-fields')
+    @app.route('/sub_wood/modifiable-fields')
     def get_subwood_model_modifiable_fields():
         modifiable_fields = get_modifiable_fields(SubWoodModel)
         return jsonify(modifiable_fields=modifiable_fields)
+    
 
+    @app.route('/production/modifiable-fields')
+    def get_production_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(ProductionModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
+
+    @app.route('/users/modifiable-fields')
+    def get_user_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(UserModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
+    
+    @app.route('/taglist/modifiable-fields')
+    def get_taglist_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(TagModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
+
+    @app.route('/requirements/modifiable-fields')
+    def get_requirements_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(DesignRequirementsModelFromClient)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
     # ================ JWT Claims ================
 
     @jwt.needs_fresh_token_loader

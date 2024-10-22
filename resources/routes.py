@@ -74,7 +74,7 @@ class Resources:
             "tablename": ProductionModel.__tablename__
         },
         
-        "design_requirements": {
+        "requirements": {
             "general": {
                 "endpoints": [
                     "/design/client",
@@ -143,6 +143,7 @@ class Resources:
             },
             "tablename": ImpactModel.__tablename__
         },
+        
         "point_cloud":  {
             "general": {
                 "endpoints": [
@@ -182,7 +183,7 @@ class Resources:
             "tablename": TagModel.__tablename__
         },
 
-        "user":  {
+        "users":  {
             "general": {
                 "endpoints": [
                     "/user/<int:user_id>"
