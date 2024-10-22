@@ -4,7 +4,8 @@
 
 import os
 import sys
-import inspect
+from inspect import getmembers, isclass
+from collections import defaultdict
 
 import requests
 
@@ -14,27 +15,43 @@ from sqlalchemy import inspect
 from marshmallow import Schema, fields
 
 from models.wood import WoodModel
-from schema import WoodSchema
+from models.sub_wood import SubWoodModel
+from models.production import ProductionModel
+from models.tags import TagModel
+from models.design_requirements import DesignRequirementsModelFromClient
+from models.user import UserModel
+
+from resources.routes import Resources
+
+from schema import WoodSchema, SubWoodSchema, ProductionSchema, UserSchema, DesignRequirementSchema, TagSchema
 from settings import logger
 
 load_dotenv()
 
+__models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
 
-class Endpoints:
+resources = Resources()
+data_endpts = [resources.endpoints_by_field(model)[0] for model in __models__]
+tablenames = [resources.tablename_by_field(model) for model in __models__]
 
-    def __init__(self, fields_endpoint, data_endpoint, tabelname) -> None:
-        self.fields_endpoint = fields_endpoint
-        self.data_endpoint = data_endpoint
-        self.tablename = tabelname
+__params__ = {
+    __models__[i]: { 
+        "field_endpoints": f"/{__models__[i]}/modifiable-fields",
+        "data_endpoint": data_endpts[i],
+        "tablename": tablenames[i]
+    } for i in range(len(__models__))
+}
 
 
 class ModelModifier:
 
     def __init__(self) -> None:
         self.url = os.environ.get("URL")
-        self.params = Endpoints("/", "/", "")
-        self.schema = Schema()
 
+        self.params = defaultdict(field_endpoints="/", data_endpoint="/", tablename="")
+        
+        self.schema = Schema()
+        self.model = "base"
         self.field_type_mapping = {
             fields.Integer: int,
             fields.String: str,
@@ -115,15 +132,42 @@ class ModelModifier:
                     record[field] = 0
 
             updated_data[field] = record[field]
-    
+
+        # Get the data endpoints
+        data_endpoint = self.params["data_endpoint"]
+        if self.params["tablename"] == "users":
+            data_endpoint = "/user"
+
         # Send the API call with the new record
-        response = requests.patch(url=f"{self.url}{self.params.data_endpoint}/{record_id}", json=updated_data, headers=headers)
+        response = requests.patch(url=f"{self.url}{data_endpoint}/{record_id}", json=updated_data, headers=headers)
         if response.status_code == 200:
             logger.info(f"{len(data)} fields updated: {data}")
             # logger.debug(existing_record)
         else: 
             logger.error(response.json())
             return False
+
+    def delete(self, record_id_list):
+        access_token = self.authenticate()
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access_token
+        }
+
+        for record_id in record_id_list:
+            response = requests.delete(
+                url=f"{self.url}{self.params.data_endpoint}/{record_id}",
+                headers=headers
+            )
+            if response.status_code == 200:
+                logger.info("Record from {0} table; with ID: {1} successfully removed - 200".format(self.model, record_id))
+                logger.debug(response.json())
+            elif response.status_code == 404:
+                logger.error("Record from {0} table; with ID: {1} not found - 404: message: {2}".format(self.model, record_id, response.json()))
+                continue
+            else:
+                logger.error(response.json())
+                continue
 
 
 class WoodModifier(ModelModifier):
@@ -132,7 +176,7 @@ class WoodModifier(ModelModifier):
         super().__init__()
         self.model = WoodModel.__tablename__
         self.schema = WoodSchema()
-        self.params = Endpoints(fields_endpoint="/wood/modifiable-fields", data_endpoint="/wood", tabelname="wood")
+        self.params = __params__.get("wood")
         assert self.model == self.params.tablename, "The model is not compatible with wood modifier"
 
     def handle_reservation(self, wood_id_list: list, reserve_wood=True):
@@ -160,29 +204,6 @@ class WoodModifier(ModelModifier):
                 logger.error(response.json())
                 continue
 
-    def delete(self, wood_id_list):
-        access_token = self.authenticate()
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + access_token
-        }
-
-        for wood_id in wood_id_list:
-            response = requests.delete(
-                url=f"{self.url}{self.params.data_endpoint}/{wood_id}",
-                headers=headers
-            )
-            if response.status_code == 200:
-                logger.info("Wood with ID: {0} successfully removed - 200".format(wood_id))
-                logger.debug(response.json())
-            elif response.status_code == 404:
-
-                logger.error("Wood with ID: {0} not found - 404".format(wood_id))
-                continue
-            else:
-                logger.error(response.json())
-                continue
-
     def set_as_used(self, wood_id_list):
 
         access_token = self.authenticate()
@@ -205,20 +226,82 @@ class WoodModifier(ModelModifier):
                 logger.error(response.json())
                 continue
 
-
-class SubWoodModifier(ModelModifier): ...
-
-
-class DesignMetaDataModifier(ModelModifier): ...
+    def update(self, wood_id, data):
+        self.modify_data(record_id=wood_id, data=data)
 
 
-class ProductionModifier(ModelModifier): ...
+class SubWoodModifier(ModelModifier):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = SubWoodModel.__tablename__
+        self.schema = SubWoodSchema()
+        self.params = self.params = __params__.get("sub_wood")
+        assert self.model == self.params.tablename, "The model is not compatible with subwood modifier"
+
+    def update(self, subwood_id, data):
+        self.modify_data(record_id=subwood_id, data=data)
 
 
-class UserModifier(ModelModifier): ...
+class DesignMetaDataModifier(ModelModifier):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = DesignRequirementsModelFromClient.__tablename__
+        self.schema = DesignRequirementSchema()
+        self.params = self.params = __params__.get("requirements")
+        assert self.model == self.params.tablename, "The model is not compatible with design requirements modifier"
+
+    def update(self, requirement_id, data):
+        self.modify_data(record_id=requirement_id, data=data)
 
 
-class TagsModifier(ModelModifier): ...
+class ProductionModifier(ModelModifier):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = ProductionModel.__tablename__
+        self.schema = ProductionSchema()
+        self.params = __params__.get("production")
+        assert self.model == self.params.tablename, "The model is not compatible with production modifier"
+
+    def update(self, prod_id, data):
+        self.modify_data(record_id=prod_id, data=data)
+
+
+class UserModifier(ModelModifier):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = UserModel.__tablename__
+        self.schema = UserSchema()
+        self.params = __params__.get("users")
+        assert self.model == self.params.tablename, "The model is not compatible with users modifier"
+
+    def update(self, user_id, data):
+        self.modify_data(record_id=user_id, data=data)
+
+
+class TagsModifier(ModelModifier):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = TagModel.__tablename__
+        self.schema = TagSchema()
+        self.params = __params__.get("taglist")
+        assert self.model == self.params.tablename, "The model is not compatible with tags modifier"
+    
+    def update(self, tag_id, data):
+        self.modify_data(record_id=tag_id, data=data)
+
+
+def get_modifiers_mapping():
+    mapped = {}
+    current_module = sys.modules[__name__]
+    modifiers = [mod for mod in getmembers(current_module, isclass)]
+    for _, mod in enumerate(modifiers):
+        modifier_name, mdofier_object = mod[0], mod[1]
+
+        if modifier_name != "ModelModifier":
+            if "Modifier" in modifier_name:
+                mapped[modifier_name] = mdofier_object
+
+    return mapped
 
 
 def get_modifiable_fields(model):
@@ -239,10 +322,10 @@ def get_modifiable_fields(model):
     else:
         fk_relations = getattr(model_instance, "relationship_fields", [])
 
-    if callable(getattr(model_instance, "wood_partials", None)):
-        partials = model_instance.wood_partials()
+    if callable(getattr(model_instance, "partials", None)):
+        partials = model_instance.partials
     else:
-        partials = getattr(model_instance, "wood_partials", [])
+        partials = getattr(model_instance, "partials", [])
 
     # Identify modifiable fields by excluding relationships and partials
     modifiable_fields = [

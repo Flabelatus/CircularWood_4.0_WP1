@@ -15,8 +15,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import and_
 from models import WoodModel, UserModel, ImpactModel
 from schema import WoodSchema
-from settings import logger
-from resources.routes import Resources
 
 
 blp = Blueprint('Wood Data Table', 'wood',
@@ -520,13 +518,3 @@ class WoodUnreservation(MethodView):
         db.session.commit()
 
         return wood
-
-
-wood_endpoints = Resources().endpoints_by_field("wood")
-view_func_routes_mapping = list(zip(blp._endpoints, wood_endpoints))
-
-for view_func in view_func_routes_mapping:
-    blp.add_url_rule(rule="/", endpoint=view_func[1], view_func=view_func[0])
-
-wood_endpoints = [endpoint for endpoint in blp._endpoints if endpoint.startswith("/")]
-logger.getChild("resources").debug("wood endpoints added to the resource")
