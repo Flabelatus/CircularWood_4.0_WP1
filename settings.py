@@ -72,7 +72,13 @@ class ApiConfig:
 
     @property
     def settings(self):
-        with open(self.path, "r") as settings_yml:
+        path = self.path
+        try:
+            open(self.path)
+        except FileNotFoundError:
+            path = os.path.join("..", self.path)
+        
+        with open(path, "r") as settings_yml:
             settings = self.yaml.load(settings_yml)['api']
         return settings
 
