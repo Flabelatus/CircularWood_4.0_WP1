@@ -143,8 +143,13 @@ Inside `./models/wood.py`
 ```python
 from db import db
 
+# Import the Data Model Interface
+from models.interface_model import DataModelInterface
 
-class WoodModel(db.Model):
+
+# Each data model needs to inherit from the db.Model and the DataModelInterface 
+class WoodModel(db.Model, DataModelInterface):
+    # Choose the table name in the database
     __tablename__ = 'wood'
     
     # Create the primary key ID
@@ -154,6 +159,23 @@ class WoodModel(db.Model):
     length = db.Column(db.Float(precision=2))
     width = db.Column(db.Float(precision=2))
     height = db.Column(db.Float(precision=2))
+    created_at = db.Column(db.String)
+
+    # Add the partial fields
+    # Partial fields would be excluded from certain methods by choice for example
+    # the 'id', or 'created_at' needs to be excluded from the PATCH method when updating the the row
+    # Therefore, 'id' and 'created_at' field would be in the list of partial fields
+
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+                "created_at"
+            ],
+        )
+        return self._get_status_fields(partials[0])
+
 ```
 
 ### Adding the Schema
@@ -174,6 +196,8 @@ class WoodSchema(Schema):
     length = fields.Float()
     width = fields.Float()
     height = fields.Float()
+    created_at = fields.Str()
+
 ```
 
 ### Migrating the database
@@ -210,8 +234,11 @@ from models import WoodModel
 # import wood schema
 from schema import WoodSchema
 
+# Create the bluprint
 wood_blueprint = Blueprint('Wood Model', 'wood', description='Operations on the wood resource')
 
+
+# Add the route to the blueprint
 @wood_blueprint.route('/wood')
 class WoodList(MethodView):
     
@@ -225,6 +252,8 @@ class WoodList(MethodView):
 ### Example with Protected Route:
 
 ```python
+
+# Additionally import the jwt_required from the flask_jwt_extended
 from flask_jwt_extended import jwt_required 
 
 @wood_blueprint.route('/wood')
@@ -240,15 +269,67 @@ class WoodList(MethodView):
 ```
 For more documentations on authentication using JWT, check out https://jwt.io/
 
+After this step, add the created routes inside the `Resources` class, in the `./resources/routes.py`. There are different categories of endpoints based on its functionality. The `crud` field is for general CRUD operations. If you have other methods, feel free to add them. There is an example of `function_handler` field added in the following snippet for the reservation handling.
+
+
+```python
+
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from models import *
+
+
+class Resources:
+    
+    __routes__ = {
+        
+        # Your model name
+        "wood": {
+
+            # The endpoint topic for general CRUD
+            "crud": {
+                "endpoints": [
+                    "/wood",             
+                ]
+            },
+
+            # The endpoints for specific functionaility from API
+            "function_handler": {
+                "endpoints": [
+                    "/wood/reserve/<int:wood_id>",
+                    "/wood/unreserve/<int:wood_id>"
+                ]
+            },
+
+            # Table name from the data model
+            "tablename": WoodModel.__tablename__
+        },
+    }
+```
+
 Then you can add them to the api inside the `app.py`.
 ```python
+# Import the new created resource and data model
 from resources.wood import wood_blueprint
+from models import WoodModel
 
 
+# Inside the function where the app is created register the blueprint
 def create_app(db_url=None):
     app = Flask(__name__)
     api = Api(app)
 
+    # Ensure to add the model specific function and endpoint to fetch the modifiable fields
+    @app.route('/wood/modifiable-fields')
+    def get_wood_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(WoodModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+
+
+    # Register the blueprint
     api.register_blueprint(wood_blueprint)
 
 ```
@@ -256,3 +337,50 @@ created resources to create yours. And don't forget to add the docstrings to you
 
 After that you can immediately add the newly created endpoints and methods in Insomnia to test them. 
 
+## Document your newly created data model and resources
+
+Add the docstrings to the functions
+
+#### Generate the Documentation using Sphinx
+
+Generate the new html documentation from the newly added modules using the Sphinx library. But before running the 
+Make file to generate the documentations, check the `conf.py` file inside the `./docs` directory.
+```bash
+cd ./docs
+```
+You need to manually exclude certain fields from the model and resources you added from the documentation.
+for that you would need to add the following adjustments:
+
+```python
+
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+
+import models
+
+excluded_fields = []
+
+# Fetch attribute names for all models
+wood_attr_names = dir(models.WoodModel)
+
+# Just after the `exclude_fields` function, add the following line
+excl_wood_attr = exclude_fields(wood_attr_names)
+
+# Then add your excluded_wood_attr to the list of `excluded_fields`
+excluded_fields = (
+    excl_wood_attr + 
+)
+
+```
+
+Please note that your model is not the only one there, so you would need to take the steps carefully and 
+add your model following the same template in order to not break anything un-intentionally.
+
+After your adjusted the `conf.py` file then you can generate the docs using the Make file
+```bash
+make html
+```
+
+This would overwrite the contents of the documentations in the html and add your module as well. 

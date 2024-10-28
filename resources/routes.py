@@ -18,19 +18,14 @@ class Resources:
                     "/admin/woods/delete-all-records"
                 ]
             },
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/wood",             
                     "/wood/<int:wood_id>",      
                     "/wood/used/<int:wood_id>",
                 ]
             },
-            "logged_in": {
-                "endpoints": [
-                    "/logged_in/wood/<int:wood_id>" 
-                ]
-            },
-            "reservation": {
+            "function_handler": {
                 "endpoints": [
                     "/wood/reserve/<int:wood_id>",
                     "/wood/unreserve/<int:wood_id>"
@@ -40,19 +35,15 @@ class Resources:
         },
     
         "sub_wood": {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/subwood",
                     "/subwood/<int:subwood_id>",
                 ]
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints": [                                
                     "/subwood/wood/<int:wood_id>",
-                ]
-            },
-            "by_design_id": {
-                "endpoints": [
                     "/subwood/design/<int:design_id>"
                 ]
             },
@@ -60,13 +51,13 @@ class Resources:
         },
 
         "production": {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/production",
                     "/production/<int:production_id>",
                 ]
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints":[
                     "/production/wood/<int:wood_id>"
                 ],
@@ -75,43 +66,36 @@ class Resources:
         },
         
         "requirements": {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/design/client",
                     "/design/client/<int:requirement_id>",
                 ],
             },
-            "by_project_id": {
-                "endpoints": [
-                    "/design/client/project/<string:project_id>",
-                ],
-            },
-            "link_to_wood": {
+            "function_handler": {
                 "endpoints": [
                     "/wood/link/<int:wood_id>/design/<int:requirement_id>",
-                ],
-            },
-            "unlink_from_wood": {
-                "endpoints": [
                     "/wood/unlink/<int:wood_id>/design/<int:requirement_id>",
                 ],
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints": [
                     "/design/wood/<int:wood_id>",
+                    "/design/client/project/<string:project_id>",
+
                 ],
             },
             "tablename": DesignRequirementsModelFromClient.__tablename__
         },
 
         "history":  {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/history",
                     "/history/<int:history_id>"
                 ],
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints": [
                     "/history-by-wood-id/<int:wood_id>",
                 ],
@@ -120,7 +104,7 @@ class Resources:
         },
 
         "image":  {
-            "by_wood_id": {
+            "function_handler": {
                 "endpoints": [
                     "/image/upload/<int:wood_id>",
                     "/image/<int:wood_id>"
@@ -130,13 +114,13 @@ class Resources:
         },
 
         "idemat":  {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/impact",
                     "/impact/<int:impact_id>"
                 ],
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints": [
                     "/impact/wood/<int:wood_id>",
                 ],
@@ -145,13 +129,13 @@ class Resources:
         },
         
         "point_cloud":  {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/pointcloud",
                     "/pointcloud/<int:pcd_id>"
                 ],
             },
-            "by_wood_id": {
+            "relation": {
                 "endpoints": [
                     "/pointcloud/wood/<int:wood_id>",
                 ],
@@ -160,20 +144,20 @@ class Resources:
         },
 
         "taglist":  {
-           "general": {
+           "crud": {
                "endpoints": [
                     "/tags",
                     "/tag/<int:tag_id>",
                 ],
            },
-           "link_to_wood": {
+           "function_handler": {
                "endpoints": [
                     "/wood/<int:wood_id>/tag/<int:tag_id>",
                     "/woods_tags/<int:woods_tag_id>",
                     "/woods_tags/tag/<int:tag_id>",
                 ],
            },
-           "by_name": {
+           "relation": {
                "endpoints": [
                     "/tag/<string:tag_name>",
                     "/wood/tag/<string:tag_name>"
@@ -184,12 +168,12 @@ class Resources:
         },
 
         "users":  {
-            "general": {
+            "crud": {
                 "endpoints": [
                     "/user/<int:user_id>"
                 ],
             },
-            "authentication": {
+            "function_handler": {
                 "endpoints": [
                     "/login",
                     "/refresh",
@@ -231,7 +215,7 @@ class Resources:
             endpoints.append(values["endpoints"])
         return endpoints
     
-    def endpoints_by_field(self, field, scope='general'):
+    def endpoints_by_field(self, field, scope='crud'):
         assert field in self.__routes__, "The specified field is not among the resources"
         return self.__routes__[field][scope]['endpoints']
     
