@@ -6,7 +6,6 @@ import os
 import requests
 from collections import namedtuple
 from os.path import dirname, abspath
-import logging
 from workflow.api_client import logger, get_default_params
 
 logger.getChild("image_upload")
