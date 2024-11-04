@@ -65,13 +65,13 @@ BG_BRIGHT_CYAN = "\033[106m"
 BG_BRIGHT_WHITE = "\033[107m"
 
 
-class ApiConfig:
-    def __init__(self) -> None:
-        self.path = os.getenv("CONFIG_FILE", "./settings.yml")
+class Configurator:
+    def __init__(self):
         self.yaml = YAML()
+        self.path = os.getenv("CONFIG_FILE", "./settings.yml")
 
     @property
-    def settings(self):
+    def general_settings(self):
         path = self.path
         try:
             open(self.path)
@@ -79,8 +79,17 @@ class ApiConfig:
             path = os.path.join("..", self.path)
         
         with open(path, "r") as settings_yml:
-            settings = self.yaml.load(settings_yml)['api']
+            settings = self.yaml.load(settings_yml)
         return settings
+
+
+class ApiConfig(Configurator):
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def settings(self):
+        return self.general_settings['api']
 
     @property
     def api_info(self):
@@ -133,35 +142,6 @@ class ApiConfig:
     def cache_configs(self):
         return self.settings['cache']
     
-    @property
-    def workflow_settings(self):
-        return self.settings['workflow']
-
-    @property
-    def abb_irc5_configs(self):
-        return self.workflow_settings['file_to_factory']['abb_irc5']
-
-    @property
-    def ftp_configs(self):
-        return self.workflow_settings['ftp']
-    
-    @property
-    def mqtt_configs(self):
-        return self.workflow_settings['mqtt']
-    
-    @property
-    def label_scanner_configs(self):
-        return self.workflow_settings['label_scanner']
-    
-    @property
-    def api_http_client(self):
-        return self.workflow_settings['api_http_client']
-    
-    @api_http_client.setter
-    def set_api_http_client_configs(self, new_http_client_configs):
-        # TODO: Complete this part
-        ...
-    
     @logging_configs.setter
     def set_logging_configs(self, new_logging_configs):
         assert 'format' in new_logging_configs, "format should be specified e.g. json"
@@ -170,54 +150,14 @@ class ApiConfig:
         self.logging_configs['format'] = new_logging_configs['format']
         self.logging_configs['output'] = new_logging_configs['output']
 
-    @abb_irc5_configs.setter
-    def set_irc5_configs(self, ip: str, port: str, new_config: dict):
 
-        assert 'ip' in new_config, 'ip field must be specified'
-        assert 'port' in new_config, 'port field must be specified'
-        assert 'name' in new_config, 'name field must be specified'
-        assert 'device' in new_config, 'device field must be specified'
-
-        for ctrl_config in self.abb_irc5_configs:
-            if f"{ctrl_config['ip']}:{ctrl_config['port']}" == f"{ip}:{port}":
-                self.abb_irc5_configs['ip'] = new_config['ip']
-                self.abb_irc5_configs['port'] = new_config['port']
-                self.abb_irc5_configs['name'] = new_config['name']
-                self.abb_irc5_configs['device'] = new_config['device']
+class WorkflowManagerConfig(Configurator):
+    def __init__(self):
+        super().__init__()
     
-    @ftp_configs.setter
-    def set_ftp_configs(self, new_config):
-
-        assert 'ip' in new_config, 'ip field must be specified'
-        assert 'port' in new_config, 'port field must be specified'
-        assert 'username' in new_config, 'username field must be specified'
-        assert 'password' in new_config, 'password field must be specified'
-
-        self.ftp_configs['ip'] = new_config['ip']
-        self.ftp_configs['port'] = new_config['port']
-        self.ftp_configs['username'] = new_config['username']
-        self.ftp_configs['password'] = new_config['password']
-
-    @mqtt_configs.setter
-    def set_mqtt_configs(self, new_config):
-        assert 'ip' in new_config, 'ip field must be specified'
-        assert 'port' in new_config, 'port field must be specified'
-        assert 'topic' in new_config, 'topic field must be specified'
-
-        self.label_scanner_configs['ip'] = new_config['ip']
-        self.label_scanner_configs['port'] = new_config['port']
-        self.label_scanner_configs['topic'] = new_config['topic']
-
-    @label_scanner_configs.setter
-    def set_label_scanner_configs(self, ip: str, port: str, new_config: dict):
-
-        assert 'ip' in new_config, 'ip field must be specified'
-        assert 'port' in new_config, 'port field must be specified'
-        assert 'driver' in new_config, 'driver field must be specified'
-
-        self.label_scanner_configs['ip'] = new_config['ip']
-        self.label_scanner_configs['port'] = new_config['port']
-        self.label_scanner_configs['driver'] = new_config['driver']
+    @property
+    def settings(self):
+        return self.general_settings['workflow_manager']
 
 
 class CustomLogFormatter(logging.Formatter):
