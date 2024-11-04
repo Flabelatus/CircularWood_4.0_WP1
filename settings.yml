@@ -63,6 +63,48 @@ api:
 
     max_content_length: 10485760 # restrict max upload content size to 10MB
 
+  workflow:
+    api_http_client:
+      image:
+        public: "/static/img/public"
+
+        # Currently served inside the static folder, needs to be served via a CDN in the near future.
+        wood_intake: "/static/img/wood_intake"
+        depth_png: "/static/img/depth_png"
+        metal_region: "/static/img/metal_region"
+      
+    file_to_factory:
+      ftp:
+        # Set the correct address
+        ip: "10.0.0.60"
+        port: 21
+        username: "robotlab-admin"
+        password: "robotlab2024"
+
+      mqtt:
+        # Set the correct address
+        ip: "10.0.0.61"
+        port: 1390
+        topic: "production"
+
+      label_scanner:
+        # Set the correct address
+        driver: "SICK_LECTOR_SCANNER"
+        ip: "10.0.0.62"
+        port: 3456
+
+      abb_irc5:
+        # Set the correct address
+        - name: "Red"
+          device: "ATC"
+          ip: "10.0.0.10"
+          port: 2121
+    
+        - name: "Blue"
+          device: "GRIPPER"
+          ip: "10.0.0.11"
+          port: 2121
+
   database:
     server: sqlite
     host: localhost

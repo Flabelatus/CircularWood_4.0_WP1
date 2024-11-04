@@ -129,6 +129,39 @@ class ApiConfig:
     def logging_configs(self):
         return self.settings['logging']
 
+    @property
+    def cache_configs(self):
+        return self.settings['cache']
+    
+    @property
+    def workflow_settings(self):
+        return self.settings['workflow']
+
+    @property
+    def abb_irc5_configs(self):
+        return self.workflow_settings['file_to_factory']['abb_irc5']
+
+    @property
+    def ftp_configs(self):
+        return self.workflow_settings['ftp']
+    
+    @property
+    def mqtt_configs(self):
+        return self.workflow_settings['mqtt']
+    
+    @property
+    def label_scanner_configs(self):
+        return self.workflow_settings['label_scanner']
+    
+    @property
+    def api_http_client(self):
+        return self.workflow_settings['api_http_client']
+    
+    @api_http_client.setter
+    def set_api_http_client_configs(self, new_http_client_configs):
+        # TODO: Complete this part
+        ...
+    
     @logging_configs.setter
     def set_logging_configs(self, new_logging_configs):
         assert 'format' in new_logging_configs, "format should be specified e.g. json"
@@ -137,9 +170,54 @@ class ApiConfig:
         self.logging_configs['format'] = new_logging_configs['format']
         self.logging_configs['output'] = new_logging_configs['output']
 
-    @property
-    def cache_configs(self):
-        return self.settings['cache']
+    @abb_irc5_configs.setter
+    def set_irc5_configs(self, ip: str, port: str, new_config: dict):
+
+        assert 'ip' in new_config, 'ip field must be specified'
+        assert 'port' in new_config, 'port field must be specified'
+        assert 'name' in new_config, 'name field must be specified'
+        assert 'device' in new_config, 'device field must be specified'
+
+        for ctrl_config in self.abb_irc5_configs:
+            if f"{ctrl_config['ip']}:{ctrl_config['port']}" == f"{ip}:{port}":
+                self.abb_irc5_configs['ip'] = new_config['ip']
+                self.abb_irc5_configs['port'] = new_config['port']
+                self.abb_irc5_configs['name'] = new_config['name']
+                self.abb_irc5_configs['device'] = new_config['device']
+    
+    @ftp_configs.setter
+    def set_ftp_configs(self, new_config):
+
+        assert 'ip' in new_config, 'ip field must be specified'
+        assert 'port' in new_config, 'port field must be specified'
+        assert 'username' in new_config, 'username field must be specified'
+        assert 'password' in new_config, 'password field must be specified'
+
+        self.ftp_configs['ip'] = new_config['ip']
+        self.ftp_configs['port'] = new_config['port']
+        self.ftp_configs['username'] = new_config['username']
+        self.ftp_configs['password'] = new_config['password']
+
+    @mqtt_configs.setter
+    def set_mqtt_configs(self, new_config):
+        assert 'ip' in new_config, 'ip field must be specified'
+        assert 'port' in new_config, 'port field must be specified'
+        assert 'topic' in new_config, 'topic field must be specified'
+
+        self.label_scanner_configs['ip'] = new_config['ip']
+        self.label_scanner_configs['port'] = new_config['port']
+        self.label_scanner_configs['topic'] = new_config['topic']
+
+    @label_scanner_configs.setter
+    def set_label_scanner_configs(self, ip: str, port: str, new_config: dict):
+
+        assert 'ip' in new_config, 'ip field must be specified'
+        assert 'port' in new_config, 'port field must be specified'
+        assert 'driver' in new_config, 'driver field must be specified'
+
+        self.label_scanner_configs['ip'] = new_config['ip']
+        self.label_scanner_configs['port'] = new_config['port']
+        self.label_scanner_configs['driver'] = new_config['driver']
 
 
 class CustomLogFormatter(logging.Formatter):
