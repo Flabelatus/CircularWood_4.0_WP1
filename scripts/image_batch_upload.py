@@ -6,7 +6,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.api_client import image_api_client
+from workflow.api_http_client import image_api_client
 from settings import logger
 
 def batch_upload(base_fp, client=image_api_client.ImageApiClient()):

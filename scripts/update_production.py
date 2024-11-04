@@ -6,7 +6,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.api_client import modify_record
+from workflow.api_http_client import modify_record
 
 
 def modify_production(production_id, data):

@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from settings import logger
-from workflow.api_client import image_api_client
+from workflow.api_http_client import image_api_client
 
 if __name__ == "__main__":
 

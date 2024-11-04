@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from typing import Callable, List
 from __init__ import Scripts
 from settings import logger
-from workflow.api_client import modify_record
+from workflow.api_http_client import modify_record
 
 current_module = sys.modules[__name__]
 
