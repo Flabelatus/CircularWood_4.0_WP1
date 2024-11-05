@@ -1,7 +1,7 @@
 import sys
 import os
 import logging
-import textwrap
+import typing
 
 from load_dotenv import load_dotenv
 from ruamel.yaml import YAML
@@ -159,6 +159,137 @@ class WorkflowManagerConfig(Configurator):
     def settings(self):
         return self.general_settings['workflow_manager']
 
+    @property
+    def api_http_client_configs(self):
+        return self.settings['api_http_client']
+
+    @api_http_client_configs.setter
+    def set_api_http_client_configs(self, new_config):
+        ...
+
+    @property
+    def production_run_configs(self):
+        return self.settings['production_run']
+    
+    @property
+    def work_cell_configs(self):
+        return self.production_run_configs['work_cell']
+    
+    @property
+    def control_system_configs(self):
+        return self.production_run_configs['processor_nodes']['control_system']
+    
+    @control_system_configs.setter
+    def set_control_system_configs(self, new_config):
+        ...
+    
+    @property
+    def hardware_equipment_configs(self) -> typing.List:
+        """Get the factory hardware equipment configurations."""
+        return self.production_run_configs['processor_nodes']['hardware_equipment']
+
+    @property
+    def ftp_network_configs(self):
+        """Get the FTP network configurations."""
+        return self.production_run_configs['processor_nodes']['network_protocols']['ftp']
+    
+    @ftp_network_configs.setter
+    def set_ftp_network_configs(self, new_config):
+        ...
+        
+    @property
+    def socket_network_configs(self):
+        """Get the TCP socket network configurations."""
+        return self.production_run_configs['processor_nodes']['network_protocols']['tcp']['socket']
+
+    @socket_network_configs.setter
+    def socket_network_configs(self, client_name: str, new_configs: dict):
+        """
+        Update the network configurations for a specific client.
+
+        Args:
+            client_name (str): The name of the client to update.
+            new_configs (dict): A dictionary with the new configuration for the client.
+                                It must include 'client', 'ip', 'port', and 'response_port' keys.
+
+        Raises:
+            ValueError: If required keys are missing in new_configs or if the client is not found in the existing configuration.
+        """
+        required_keys = ['client', 'ip', 'port', 'response_port']
+        
+        missing_keys = [key for key in required_keys if key not in new_configs]
+        if missing_keys:
+            raise ValueError(f"Missing required keys in new_configs: {missing_keys}")
+
+        for soc in self.socket_network_configs:
+            if soc.get('client') == client_name:
+                soc.update(new_configs)
+                return
+
+        raise ValueError(f"Client '{client_name}' not found in socket network configurations.")
+
+    @property
+    def mqtt_network_configs(self):
+        """Get the MQTT network configurations."""
+        return self.production_run_configs['processor_nodes']['network_protocols']['mqtt']
+    
+    @mqtt_network_configs.setter
+    def mqtt_network_configs(self, new_configs: dict):
+        """
+        Update the MQTT network configurations.
+
+        Args:
+            new_configs (dict): A dictionary with new configurations. Expected keys depend on the configuration level:
+                                - For broker: 'ip', 'port'
+                                - For topics under production: 'general', 'from_robot_to_plc', 'from_plc_to_robot', 'status_flags', 'lector'
+
+        Raises:
+            ValueError: If required keys are missing in new_configs or if the section to update is not found.
+        """
+        # Top-level expected keys for 'mqtt' field
+        required_top_level_keys = ['broker', 'topic']
+        
+        missing_top_level_keys = [key for key in required_top_level_keys if key not in new_configs]
+        if missing_top_level_keys:
+            raise ValueError(f"Missing top-level keys in new_configs: {missing_top_level_keys}")
+        
+        # Handle 'broker' configuration updates
+        if 'broker' in new_configs:
+            broker_required_keys = ['ip', 'port']
+            broker_config = new_configs['broker']
+            missing_broker_keys = [key for key in broker_required_keys if key not in broker_config]
+            
+            if missing_broker_keys:
+                raise ValueError(f"Missing broker keys in new_configs['broker']: {missing_broker_keys}")
+            
+            self.mqtt_network_configs['broker'].update(broker_config)
+        
+        # Handle 'topic' configuration updates
+        if 'topic' in new_configs:
+            topic_config = new_configs['topic']
+            
+            for topic_key, subtopics in topic_config.items():
+                if topic_key not in self.mqtt_network_configs['topic']:
+                    raise ValueError(f"Topic '{topic_key}' not found in existing MQTT configuration inside the network_protocol settings")
+                
+                self.mqtt_network_configs['topic'][topic_key].update(subtopics)
+        
+    @property
+    def http_network_configs(self):
+        return self.production_run_configs['processor_nodes']['network_protocols']['http']
+    
+    @http_network_configs.setter
+    def set_http_network_configs(self, new_configs):
+        ...
+    
+    @property
+    def profinet_network_configs(self):
+        return self.production_run_configs['processor_nodes']['network_protocols']['profinet']
+    
+    @profinet_network_configs.setter
+    def set_profinet_network_configs(self, new_configs):
+        ...
+    
 
 class CustomLogFormatter(logging.Formatter):
     
