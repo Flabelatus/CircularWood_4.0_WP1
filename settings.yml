@@ -1,7 +1,7 @@
 # Feel free to adjust the settings as you see them fit
 
 api:
-  title: Circular Wood 4.0 API
+  title: "Circular Wood 4.0 API"
   version: 1.0.0
   description: "REST API to operate the database, processors and several workflows within the CW4.0 project goals"
   developer: "Javid Jooshesh"
@@ -26,24 +26,24 @@ api:
     port: 5050
     host: 0.0.0.0
     environment:
-        selected_mode: "development"
+        selected_mode: development
         modes: 
           development:
             url: http://localhost:5050
             logging: DEBUG
           production:
-            hosting_system: "WEB_HOSTING_SERVICE"
-            vendor: "render.com"
+            hosting_system: WEB_HOSTING_SERVICE
+            vendor: render.com
             url: https://robotlab-residualwood.onrender.com
             logging: INFO
   configs:
     secret_key: 4e5508fd-979d-47ad-a56b-e9a604d02f1f
-    propogate_exceptions: true
+    propogate_exceptions: "true"
     rate_limiting:
       requests_per_minute: 100
       burst: 50
     cors:
-      access_control_allow_credentials: true
+      access_control_allow_credentials: "true"
       allow_headers:
         - Accept
         - Content-Type
@@ -63,36 +63,36 @@ api:
   database:
     server: sqlite
     host: localhost
-    port: null
-    user: null
-    password: null
-    dbname: null
-    sslmode: disable
+    port: ""
+    user: ""
+    password: ""
+    dbname: ""
+    sslmode: "disable"
     timezone: UTC
     connect_timeout: 5
     middleware: SQLALCHEMY
-    uri: sqlite:///instance/data.db
-    track_modifications: false
+    uri: "sqlite:///instance/data.db"
+    track_modifications: "false"
 
   documentation:
     endpoint: api-docs
     service:
       title: openapi
-      openapi_version: "3.0.3"
+      openapi_version: 3.0.3
       openapi_url_prefix: "/"
-      openapi_swagger_ui_path: "/api-docs"
-      openapi_swagger_ui_url: "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+      openapi_swagger_ui_path: /api-docs
+      openapi_swagger_ui_url: https://cdn.jsdelivr.net/npm/swagger-ui-dist/
 
   security:
     cookie_settings:
-      same_site: 'Strict'
-      token_location: "cookies"
-      cookie_secure: false
-      csrf_in_cookies: false
-      http_only: true
+      same_site: Strict
+      token_location: cookies
+      cookie_secure: "false"
+      csrf_in_cookies: "false"
+      http_only: "true"
       
     jwt:
-      secret: "ROBOT-LAB_118944794548470618589981863246285508728"
+      secret: ROBOT-LAB_118944794548470618589981863246285508728
       issuer: https://robotlab-residualwood.onrender.com
       audience: https://robotlab-residualwood.onrender.com
       expiration_time: 3600
@@ -111,131 +111,172 @@ workflow_manager:
   api_http_client:
     image_client:
       # Currently served inside the static folder, needs to be served via a CDN in the near future.
-      public: "/static/img/public"
-      wood_intake: "/static/img/wood_intake"
-      depth_png: "/static/img/depth_png"
-      metal_region: "/static/img/metal_region"
+      public: /static/img/public
+      wood_intake: /static/img/wood_intake
+      depth_png: /static/img/depth_png
+      metal_region: /static/img/metal_region
     rapid_client: null
     step_client: null
-      
+    
   production_run:
-    title: "ProductionGateway"
+    title: PRODUCTION_GATEWAY
+    network:
+      type: LAN
+      dhcp: manual
+      ethernet:
+        interface: eth0
+        ipv4:
+          dns_gateway_ip_address: 10.0.0.1
+          dns_broadcast_ip_address: 10.0.0.255
+          subnet_mask: 255.255.255.0
     work_cell:
-      
+      title: ROBOTS_ON_TRACKS
       processor_nodes:
         control_system:
-          unit: "PLC"
-          model: "SIEMENS_SIMATIC_S7-300"
+          unit: PLC
+          model: SIEMENS_SIMATIC_S7-300
           documentation: ""
         hardware_equipment:
-          - unit: 'ARTICULATED_6AXIS_ROBOT_ARM'
-            title: 'BLUE'
-            controller_series: "IRC5"
-            model: "ABB_IRB4600-60_205"
-            device: "GRIPPER"
+          - unit: ROBOT
+            title: BLUE
+            controller_series: IRC5
+            model: ABB_IRB4600-60_205
+            device: GRIPPER
             operation_folder_path: "/"
             documentation: ""
-          - unit: 'ARTICULATED_6AXIS_ROBOT_ARM'
-            title: 'RED'
-            controller_series: "IRC5"
-            model: "ABB_IRB4600-60_205"
-            device: "ATC"
-            operation_folder_path: "/RED_MILLING"
+          - unit: ROBOT
+            title: RED
+            controller_series: IRC5
+            model: ABB_IRB4600-60_205
+            device: ATC
+            operation_folder_path: /RED_MILLING
             documentation: ""  
-          - unit: 'IMAGE_BASED_CODE_READER'
-            title: 'LECTOR'
-            model: 'SICK_Lector61X'
+          - unit: IMAGE_BASED_CODE_READER
+            title: LECTOR
+            model: SICK_Lector61X
             commands:
               command_opening: "\x02"
               command_end: "\x03"
               start_command: 21
               stop_command: 22
-            documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/Lector611%20barcode%20reader.aspx"
-          - unit: 'THERMAL_INK_JET_PRINTER'
-            title: 'LABEL_PRINTER'
-            model: 'HSA_MiniKey'
-            commands: "https://icthva.sharepoint.com/sites/ft-engineering-rola/PublishingImages/wiki/Lector611%20barcode%20reader/24_11_4%20[DOCUMENTATION]%20lector%2061x%20setup-user%20guide.pdf"
-            documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/HSA%20minikey%20-%20Industrial%20inkjet%20printhead.aspx"
-      
-      network_protocols:
-        ftp:
-          - client: "BLUE"
-            ip: 10.0.0.13
-            username: "Default User"
-            password: "robotics"
-          - client: "RED"
-            ip: 10.0.0.14
-            username: "Default User"
-            password: "robotics"
-        tcp:
-          socket:
-            - client: "LECTOR"
-              ip: 10.0.0.45
-              port: 2112
-              response_port: 1024
-            - client: "LABEL_PRINTER"
-              ip: 10.0.0.77
-              port: 3000
-              response_port: 1024                
-        mqtt:
-          broker:
-            ip: 10.0.0.9
-            port: 1883
-          topic:
-            production:
-              general:
-                wood_data: 
-                  - 'PLC_coms/Stool/WoodID'
-              from_robot_to_plc:
-                blue:
-                  request_part_data: 
-                    - 'PLC_coms/stoolReady'
-                red:
-                  fetch_rapid:
-                    - 'PLC_coms/Stool/CW_RAPID_Needed'
-                    - 'PLC_coms/Stool/CB_RAPID_Needed'
-              from_plc_to_robot:
-                blue:
-                  request_part_data: 
-                    - 'PLC_coms/Stool/NewStoolData'
-                red:
-                  fetch_rapid:
-                    - 'PLComs/RAPID_Fetched_Windw'
-                    - 'PLC_coms/RAPID_Fetched_Fence'
-              status_flags:
-                pickup:
-                  - 'Stool/Status/PU_Start'
-                  - 'Stool/Status/PU_Done'
-                centering_unit:
-                  - 'Stool/Status/CU_Drop'
-                  - 'Stool/Status/CU_Pickup'
-                sawing:
-                  - 'Stool/Status/SAW_start'
-                  - 'Stool/Status/SAW_done'
-                clamping:
-                  - 'Stool/Status/CW_PL'
-                  - 'Stool/Status/CW_PU'
-                  - 'Stool/Status/CB_PL'
-                  - 'Stool/Status/CB_PU'
-                milling:
-                  - 'PLC_coms/status/milling/RED_CW_Milling_started'
-                  - 'PLC_coms/status/milling/RED_CW_Milling_done'
-                  - 'PLC_coms/status/milling/RED_CB_Milling_started'
-                  - 'PLC_coms/status/milling/RED_CB_Milling_done'
-                  - 'PLC_coms/status/milling/CurPart'
-                drop_off:
-                  - 'Stool/Status/DropOff'
-                process_end:
-                  - 'Stool/Status/PlankDone'
-              lector:
-                #lector respose will also be published to WoodID
-                - 'PLC_coms/Stool/WoodID'
-                - 'PLC_coms/Stool/Scan/StartScan'
-          documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/Mqtt%20and%20Profinet%20communications.aspx"
-        http:
-          - client: "ProductionGateway"
-            url: ""
-        profinet:
-          - client: "StoolProduction"
-            documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/Gedeelde%20documenten/[DOCUMENTATION]%202024-2025%20sem%201%20pre-makeathon%20PLC%20communications.pdf"
+            documentation: https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/Lector611%20barcode%20reader.aspx
+          - unit: THERMAL_INK_JET_PRINTER
+            title: LABEL_PRINTER
+            model: HSA_MiniKey
+            commands: https://icthva.sharepoint.com/sites/ft-engineering-rola/PublishingImages/wiki/Lector611%20barcode%20reader/24_11_4%20[DOCUMENTATION]%20lector%2061x%20setup-user%20guide.pdf
+            documentation: https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/HSA%20minikey%20-%20Industrial%20inkjet%20printhead.aspx
+        network_protocols:
+          ftp:
+            - client: BLUE
+              ip: 10.0.0.13
+              username: "Default User"
+              password: "robotics"
+            - client: RED
+              ip: 10.0.0.14
+              username: "Default User"
+              password: "robotics"
+          tcp:
+            socket:
+              - client: LECTOR
+                ip: 10.0.0.45
+                port: 2112
+                response_port: 1024
+              - client: LABEL_PRINTER
+                ip: 10.0.0.77
+                port: 3000
+                response_port: 1024                
+          mqtt:
+            broker:
+              ip: 10.0.0.9
+              port: 1883
+            topic:
+              production:
+                general:
+                  wood_data: 
+                    - PLC_coms/Stool/WoodID
+                from_robot_to_plc:
+                  blue:
+                    request_part_data: 
+                      - PLC_coms/stoolReady
+                  red:
+                    fetch_rapid:
+                      - PLC_coms/Stool/CW_RAPID_Needed
+                      - PLC_coms/Stool/CB_RAPID_Needed
+                from_plc_to_robot:
+                  blue:
+                    request_part_data: 
+                      - PLC_coms/Stool/NewStoolData
+                  red:
+                    fetch_rapid:
+                      - PLComs/RAPID_Fetched_Windw
+                      - PLC_coms/RAPID_Fetched_Fence
+                status_flags:
+                  pickup:
+                    - Stool/Status/PU_Start
+                    - Stool/Status/PU_Done
+                  centering_unit:
+                    - Stool/Status/CU_Drop
+                    - Stool/Status/CU_Pickup
+                  sawing:
+                    - Stool/Status/SAW_start
+                    - Stool/Status/SAW_done
+                  clamping:
+                    - Stool/Status/CW_PL
+                    - Stool/Status/CW_PU
+                    - Stool/Status/CB_PL
+                    - Stool/Status/CB_PU
+                  milling:
+                    - PLC_coms/status/milling/RED_CW_Milling_started
+                    - PLC_coms/status/milling/RED_CW_Milling_done
+                    - PLC_coms/status/milling/RED_CB_Milling_started
+                    - PLC_coms/status/milling/RED_CB_Milling_done
+                    - PLC_coms/status/milling/CurPart
+                  drop_off:
+                    - Stool/Status/DropOff
+                  process_end:
+                    - Stool/Status/PlankDone
+                lector:
+                  #lector respose will also be published to WoodID
+                  - PLC_coms/Stool/WoodID
+                  - PLC_coms/Stool/Scan/StartScan
+            documentation: https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/Mqtt%20and%20Profinet%20communications.aspx
+          http:
+            - client: PRODUCTION_GATEWAY
+              base_url: https://robotlab-residualwood.onrender.com
+              documentation: https://robotlab-residualwood.onrender.com/api-docs
+              methods:
+                post:
+                  - endpoint: "/login"
+                    summary: "Authentication"
+                    auth_required: false
+                  - endpoint: "/process"
+                    summary: "Add new process event"
+                    auth_required: true
+                get:
+                  - endpoint: "/wood/{wood_id}"
+                    summary: "Get wood item by ID" 
+                    auth_required: false
+                  - endpoint: "/subwood/wood/{wood_id}"
+                    summary: "Get the list of sub wood sections by wood ID" 
+                    auth_required: false
+                  - endpoint: "/production/wood/{wood_id}"
+                    summary: "Get the list of production codes by wood ID"
+                    auth_required: false
+                  - endpoint: "/design/wood/{wood_id}"
+                    summary: "Get the list of the design parts by wood ID" 
+                    auth_required: false
+                  - endpoint: "/process/wood/{wood_id}"
+                    summary: "Get the list of the processes linked to a wood by wood ID"
+                    auth_required: true
+                patch:
+                  - endpoint: "/wood/{wood_id}"
+                    summary: "Update wood item by ID" 
+                    auth_required: true
+                  - endpoint: "/process/{process_id}"
+                    summary: "Update a process linked to a wood by wood ID"
+                    auth_required: true
+          profinet:
+            - client: StoolProduction
+              documentation: https://icthva.sharepoint.com/sites/ft-engineering-rola/Gedeelde%20documenten/[DOCUMENTATION]%202024-2025%20sem%201%20pre-makeathon%20PLC%20communications.pdf
+
 

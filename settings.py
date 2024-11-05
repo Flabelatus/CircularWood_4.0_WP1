@@ -1,3 +1,6 @@
+# TODO: "control_system_configs" check to see if the "work_cell_configs" is not 
+# returned as a list, and if so, then handle the condition
+
 import sys
 import os
 import logging
@@ -177,7 +180,7 @@ class WorkflowManagerConfig(Configurator):
     
     @property
     def control_system_configs(self):
-        return self.production_run_configs['processor_nodes']['control_system']
+        return self.work_cell_configs['processor_nodes']['control_system']
     
     @control_system_configs.setter
     def set_control_system_configs(self, new_config):
@@ -186,26 +189,48 @@ class WorkflowManagerConfig(Configurator):
     @property
     def hardware_equipment_configs(self) -> typing.List:
         """Get the factory hardware equipment configurations."""
-        return self.production_run_configs['processor_nodes']['hardware_equipment']
+        return self.work_cell_configs['processor_nodes']['hardware_equipment']
 
     @property
     def ftp_network_configs(self):
         """Get the FTP network configurations."""
-        return self.production_run_configs['processor_nodes']['network_protocols']['ftp']
+        return self.work_cell_configs['processor_nodes']['network_protocols']['ftp']
     
     @ftp_network_configs.setter
-    def set_ftp_network_configs(self, new_config):
-        ...
+    def set_ftp_network_configs(self, client_name: str,  new_configs: dict):
+        """
+        Update the FTP network configurations for a specific client.
+
+        Args:
+            client_name (str): The name of the client to update.
+            new_configs (dict): A dictionary with the new configuration for the client.
+                                It must include 'client', 'ip', 'username', and 'password' keys.
+
+        Raises:
+            ValueError: If required keys are missing in new_configs or if the client is not found in the existing configuration.
+        """
+        required_keys = ['client', 'ip', 'username', 'password']
+        
+        missing_keys = [key for key in required_keys if key not in new_configs]
+        if missing_keys:
+            raise ValueError(f"Missing required keys in new_configs: {missing_keys}")
+
+        for ftp in self.socket_network_configs:
+            if ftp.get('client') == client_name:
+                ftp.update(new_configs)
+                return
+
+        raise ValueError(f"Client '{client_name}' not found in ftp configurations inside the network_protocol settings")
         
     @property
     def socket_network_configs(self):
         """Get the TCP socket network configurations."""
-        return self.production_run_configs['processor_nodes']['network_protocols']['tcp']['socket']
+        return self.work_cell_configs['processor_nodes']['network_protocols']['tcp']['socket']
 
     @socket_network_configs.setter
     def socket_network_configs(self, client_name: str, new_configs: dict):
         """
-        Update the network configurations for a specific client.
+        Update the TCP/Socket network configurations for a specific client.
 
         Args:
             client_name (str): The name of the client to update.
@@ -226,12 +251,12 @@ class WorkflowManagerConfig(Configurator):
                 soc.update(new_configs)
                 return
 
-        raise ValueError(f"Client '{client_name}' not found in socket network configurations.")
+        raise ValueError(f"Client '{client_name}' not found in socket configurations inside the network_protocol settings")
 
     @property
     def mqtt_network_configs(self):
         """Get the MQTT network configurations."""
-        return self.production_run_configs['processor_nodes']['network_protocols']['mqtt']
+        return self.work_cell_configs['processor_nodes']['network_protocols']['mqtt']
     
     @mqtt_network_configs.setter
     def mqtt_network_configs(self, new_configs: dict):
@@ -276,7 +301,7 @@ class WorkflowManagerConfig(Configurator):
         
     @property
     def http_network_configs(self):
-        return self.production_run_configs['processor_nodes']['network_protocols']['http']
+        return self.work_cell_configs['processor_nodes']['network_protocols']['http']
     
     @http_network_configs.setter
     def set_http_network_configs(self, new_configs):
@@ -284,7 +309,7 @@ class WorkflowManagerConfig(Configurator):
     
     @property
     def profinet_network_configs(self):
-        return self.production_run_configs['processor_nodes']['network_protocols']['profinet']
+        return self.production_run_configs['processor_nodes']['network']['protocols']['profinet']
     
     @profinet_network_configs.setter
     def set_profinet_network_configs(self, new_configs):
