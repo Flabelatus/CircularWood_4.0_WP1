@@ -6,11 +6,27 @@ from ftplib import FTP
 
 class RAPID_FTP:
     def __init__(self, ip, user, passwd):
+        """
+        Initializes the FTP client with the provided IP address, username, and password.
+
+        Args:
+            ip (str): The IP address of the FTP server.
+            user (str): The username for the FTP connection.
+            passwd (str): The password for the FTP connection.
+        """
         self.ip = ip
         self.FTP_user = user
         self.FTP_password = passwd
 
     def upload_file(self,inputPath,targetDirectory, targetPath):
+        """
+        Uploads a file to the specified target path on the FTP server.
+
+        Args:
+            inputPath (str): The path to the file to upload on the local machine.
+            targetDirectory (str): The directory on the FTP server to upload the file to.
+            targetPath (str): The target path (including filename) on the FTP server for the uploaded file.
+        """
         with open(inputPath, 'r') as file:
             RAPID_code = file.read()
         instant_rapid_file_1 = io.BytesIO(bytes(RAPID_code, 'ascii'))
@@ -35,6 +51,13 @@ class RAPID_FTP:
                 print(f"File size mismatch! Local: {local_file_size}, Remote: {remote_file_size}")
 
     def write_string_to_file(self,step_data, filename):
+        """
+        Writes a string to a file.
+
+        Args:
+            step_data (str): The data to be written to the file.
+            filename (str): The name of the file to write to.
+        """
         with open(filename, 'w') as step_file:
             step_file.write(step_data)
 
@@ -53,6 +76,20 @@ class RAPID_FTP:
     #TODO endpoint and json array index stil needs to be updated to correct file
 
     def GetRAPID_Multiples(self,WoodID, partnr=1, clamp=1):
+        """
+        Fetches RAPID code from a database using a provided wood ID.
+
+        **NOTE:** This function requires further implementation to update the endpoint and
+                 handle the JSON array index correctly.
+
+        Args:
+            wood_id (str): The ID of the wood to retrieve RAPID code for.
+            PartNr (int): The part number (potentially unused).
+            ClampLocation (int): The clamp location (potentially unused).
+
+        Returns:
+            str: The RAPID code retrieved from the database (if successful).
+        """
         file = self.fetch_rapid_from_db(str(WoodID), partnr, clamp)
         self.write_string_to_file(file, "temp.modx")
         # print("instruction field = ", file)
@@ -62,6 +99,17 @@ class RAPID_FTP:
         return file
 
     def RAPID_FTP_main(self,WoodID, msg, rapid_File_Path_1, rapid_File_Path_2, Inbetween_RAPID_Marker, targetDirectory):
+        """
+        Fetches, splits, and uploads RAPID code to an FTP server.
+
+        Args:
+            WoodID (str): The ID of the wood to retrieve RAPID code for.
+            msg (Message): MQTT message object.
+            rapid_File_Path_1 (str): The target path for the first part of the RAPID code on the FTP server.
+            rapid_File_Path_2 (str): The target path for the second part of the RAPID code on the FTP server.
+            Inbetween_RAPID_Marker (str): A marker used to split the RAPID code into two parts.
+            targetDirectory (str): The target directory on the FTP server for the uploaded files.
+        """
         RAPID_string = self.GetRAPID_Multiples(WoodID=WoodID)
         print("rapid string fetched")
 
