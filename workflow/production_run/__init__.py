@@ -1,0 +1,16 @@
+# __init__.py
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+import logging
+
+from os.path import abspath, dirname
+from dotenv import load_dotenv
+from collections import namedtuple
+
+from settings import logger, app_settings
+
+
+logger = logging.getLogger('wood-api.workflows.prod-gateway')
