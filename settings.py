@@ -195,7 +195,15 @@ class WorkflowManagerConfig(Configurator):
     def ftp_network_configs(self):
         """Get the FTP network configurations."""
         return self.work_cell_configs['processor_nodes']['network_protocols']['ftp']
-    
+
+    #TODO replace this temp function with an actual implementation with an @property
+    def get_ftp_params(self):
+        return self.work_cell_configs['processor_nodes']['network_protocols']['ftp']
+
+    #TODO replace this temp function with an actual implementation with an @property
+    def get_socket_params(self):
+        return self.work_cell_configs['processor_nodes']['network_protocols']['tcp']['socket']
+
     @ftp_network_configs.setter
     def set_ftp_network_configs(self, client_name: str,  new_configs: dict):
         """

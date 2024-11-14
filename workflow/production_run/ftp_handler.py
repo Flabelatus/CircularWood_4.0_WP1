@@ -117,11 +117,11 @@ class RAPID_FTP:
         print("rapid string split")
 
         # Write the contents to two separate files
-        with open('Fetched_RAPID/Normal.mod', 'w') as part1_file:
+        with open('../../scripts/example_RAPID/Example.mod', 'w') as part1_file:
             part1_file.write(file_part1)
         print("1st saved as mod")
 
-        with open('Fetched_RAPID/Reversed.mod', 'w') as part2_file:
+        with open('../../scripts/example_RAPID/Reversed.mod', 'w') as part2_file:
             part2_file.write(file_part2)
         print("2nd saved as mod")
 
@@ -130,8 +130,8 @@ class RAPID_FTP:
             #partNr = int(msg.payload.decode()[2:])
             #print("partNr = ", partNr, "  Clamp =", msg.topic)
 
-            file_path_Normal = 'Fetched_RAPID/Normal.mod'
-            file_path_Reversed = 'Fetched_RAPID/Reversed.mod'
+            file_path_Normal = '../../scripts/example_RAPID/Example.mod'
+            file_path_Reversed = '../../scripts/example_RAPID/Reversed.mod'
 
             print("starting uploading RAPID")
             self.upload_file(file_path_Normal, targetPath=rapid_File_Path_1,targetDirectory = targetDirectory)

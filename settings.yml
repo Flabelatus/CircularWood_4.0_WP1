@@ -167,21 +167,21 @@ workflow_manager:
             documentation: https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/HSA%20minikey%20-%20Industrial%20inkjet%20printhead.aspx
         network_protocols:
           ftp:
-            - client: BLUE
+            BLUE:
               ip: 10.0.0.13
               username: "Default User"
               password: "robotics"
-            - client: RED
+            RED:
               ip: 10.0.0.14
               username: "Default User"
               password: "robotics"
           tcp:
             socket:
-              - client: LECTOR
+              LECTOR:
                 ip: 10.0.0.45
                 port: 2112
                 response_port: 1024
-              - client: LABEL_PRINTER
+              LABEL_PRINTER:
                 ip: 10.0.0.77
                 port: 3000
                 response_port: 1024                
@@ -208,7 +208,7 @@ workflow_manager:
                       - PLC_coms/Stool/NewStoolData
                   red:
                     fetch_rapid:
-                      - PLComs/RAPID_Fetched_Windw
+                      - PLComs/RAPID_Fetched_Window
                       - PLC_coms/RAPID_Fetched_Fence
                 status_flags:
                   pickup:

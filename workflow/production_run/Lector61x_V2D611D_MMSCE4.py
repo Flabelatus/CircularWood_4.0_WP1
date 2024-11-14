@@ -1,12 +1,30 @@
 import socket, time
 
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from settings import WorkflowManagerConfig
+
 class Lector_QR_Reader:
     def __init__(self):
         """
         Initializes the QR reader by creating a socket and connecting to the specified IP address and port.
         """
+        lector_socket_params = WorkflowManagerConfig().get_socket_params()
+
+        print(lector_socket_params)
+
+        self.ip = lector_socket_params['LECTOR']['ip']
+        self.port = int(lector_socket_params['LECTOR']['port'])
+        self.responseport = int(lector_socket_params['LECTOR']['response_port'])
+        print(f"ip: {self.ip}, port: {self.port}, responseport: {self.responseport}")
+
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect()
+
+
 
     def connect(self):
         """
@@ -14,7 +32,7 @@ class Lector_QR_Reader:
         Sets a 5-second timeout for the connection attempt.
         """
         self.clientsocket.settimeout(5.0)
-        self.clientsocket.connect(('10.0.0.45', 2112))
+        self.clientsocket.connect((self.ip, self.port))
         self.NoReadItem = "NoRead"
 
     def sendcommand(self, command):
@@ -29,7 +47,7 @@ class Lector_QR_Reader:
         print('sending {}'.format(payload))
         self.clientsocket.send(payload.encode())
         self.clientsocket.settimeout(8.0)
-        response = self.clientsocket.recv(1024)
+        response = self.clientsocket.recv(self.responseport)
         print('sent {} and received back {}'.format(payload, response.decode()))
         if response.decode().strip().replace('\x02', '').replace('\x03', '') == '{}'.format(command):
             print('command executed and confirmed')
@@ -66,7 +84,7 @@ class Lector_QR_Reader:
         while True:
             try:
                 self.clientsocket.settimeout(8.0)
-                response = self.clientsocket.recv(1024)
+                response = self.clientsocket.recv(self.responseport)
                 print(response)
                 response = response.decode().strip().replace('\x02', '').replace('\x03', '')
                 print('found code:{}'.format(response))
