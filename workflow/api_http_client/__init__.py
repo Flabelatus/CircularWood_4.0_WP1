@@ -13,7 +13,7 @@ from collections import namedtuple
 from settings import logger, app_settings
 
 
-logger = logging.getLogger('wood-api.workflows')
+logger = logging.getLogger('wood-api.workflows.api-client')
 
 
 def get_default_params():
