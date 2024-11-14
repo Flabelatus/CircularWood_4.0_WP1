@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from workflow.production_run import Lector61x_V2D611D_MMSCE4
-from settings import WorkflowManagerConfig
 
 if __name__ == "__main__":
     lector = Lector61x_V2D611D_MMSCE4.Lector_QR_Reader()

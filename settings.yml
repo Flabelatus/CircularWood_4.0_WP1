@@ -184,7 +184,8 @@ workflow_manager:
               LABEL_PRINTER:
                 ip: 10.0.0.77
                 port: 3000
-                response_port: 1024                
+                response_port: 1024
+                netmask: 255.255.255.0
           mqtt:
             broker:
               ip: 10.0.0.9
