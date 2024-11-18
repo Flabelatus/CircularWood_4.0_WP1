@@ -28,3 +28,12 @@ services:
       - "5050:5000"
     volumes:
       - .:/app
+
+  # production_gateway_service:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5051:5000"
+  #   volumes:
+  #     - .:/app

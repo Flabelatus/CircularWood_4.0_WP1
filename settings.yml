@@ -1,4 +1,4 @@
-api:
+data_service_api:
   title: "Circular Wood 4.0 API"
   version: 1.0.0
   description: "REST API to operate the database, processors and several workflows within the CW4.0 project goals"
@@ -77,7 +77,7 @@ api:
     uri: sqlite:///instance/data.db
     track_modifications: false
 
-  # documentation:
+  documentation:
     endpoint: api-docs
     service:
       title: openapi
@@ -168,14 +168,14 @@ workflow_manager:
           blue_robot:
             ip: 10.0.0.13
             credentials:
-              username: "<env:FTP_USER>"
-              password: "<env:FTP_PASSWORD>"
+              username: "Default User"
+              password: "robotics"
             directory: /
           red_robot:
             ip: 10.0.0.14
             credentials:
-              username: "<env:FTP_USER>"
-              password: "<env:FTP_PASSWORD>"
+              username: "Default User"
+              password: "robotics"
             directory: /RED_MILLING
       tcp:
         # For procedure calls to devices via socket connection

@@ -4,12 +4,12 @@
 
 import os
 import sys
+
 from inspect import getmembers, isclass
 from collections import defaultdict
 
 import requests
 
-from load_dotenv import load_dotenv
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy import inspect
 from marshmallow import Schema, fields
@@ -22,11 +22,10 @@ from models.design_requirements import DesignRequirementsModelFromClient
 from models.user import UserModel
 
 from resources.routes import Resources
-
+from workflow.api_http_client import logger, get_default_params
 from schema import WoodSchema, SubWoodSchema, ProductionSchema, UserSchema, DesignRequirementSchema, TagSchema
-from settings import logger
 
-load_dotenv()
+settings = get_default_params()
 
 __models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
 
@@ -46,7 +45,7 @@ __params__ = {
 class ModelModifier:
 
     def __init__(self) -> None:
-        self.url = os.environ.get("URL")
+        self.url = settings.base_url
 
         self.params = defaultdict(field_endpoints="/", data_endpoint="/", tablename="")
         
@@ -66,7 +65,7 @@ class ModelModifier:
         return self._get_fields()
     
     def _get_fields(self):
-        response = requests.get(url=f"{self.url}{self.params.fields_endpoint}")
+        response = requests.get(url=f"{self.url}{self.params.get('field_endpoints')}")
         if response.status_code == 200:
             # logger.debug(response.json())
             return response.json()['modifiable_fields']
@@ -85,8 +84,8 @@ class ModelModifier:
             return None
         
     def authenticate(self):
-        username = input("Username: ")
-        password = input("Password: ")
+        username = settings.credentials['username']
+        password = settings.credentials['password']
         auth_endpoint = f"{self.url}/login"
         payload = {
             "username": username,

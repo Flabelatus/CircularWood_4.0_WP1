@@ -10,7 +10,7 @@ from os.path import abspath, dirname
 from dotenv import load_dotenv
 from collections import namedtuple
 
-from settings import logger, app_settings
+from settings import logger, ds_api_configs
 
 
 logger = logging.getLogger('wood-api.workflows.prod-gateway')

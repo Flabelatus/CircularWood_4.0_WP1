@@ -1,6 +1,3 @@
-# TODO: "control_system_configs" check to see if the "work_cell_configs" is not 
-# returned as a list, and if so, then handle the condition
-
 import sys
 import os
 import logging
@@ -9,6 +6,7 @@ from typing import Dict, List, Any
 
 from load_dotenv import load_dotenv
 from ruamel.yaml import YAML
+from terminal_settings import *
 
 try:
     import coloredlogs
@@ -16,57 +14,6 @@ except ImportError:
     coloredlogs = None
 
 load_dotenv()
-
-# Text Reset
-RESET = "\033[0m"
-
-# Text Styles
-BOLD = "\033[1m"
-DIM = "\033[2m"
-ITALIC = "\033[3m"
-UNDERLINE = "\033[4m"
-BLINK = "\033[5m"
-INVERT = "\033[7m" 
-
-# Foreground Colors
-BLACK = "\033[30m"
-RED = "\033[31m"
-GREEN = "\033[32m"
-YELLOW = "\033[33m"
-BLUE = "\033[34m"
-MAGENTA = "\033[35m"
-CYAN = "\033[36m"
-WHITE = "\033[37m"
-
-# Bright Foreground Colors
-BRIGHT_BLACK = "\033[90m"
-BRIGHT_RED = "\033[91m"
-BRIGHT_GREEN = "\033[92m"
-BRIGHT_YELLOW = "\033[93m"
-BRIGHT_BLUE = "\033[94m"
-BRIGHT_MAGENTA = "\033[95m"
-BRIGHT_CYAN = "\033[96m"
-BRIGHT_WHITE = "\033[97m"
-
-# Background Colors
-BG_BLACK = "\033[40m"
-BG_RED = "\033[41m"
-BG_GREEN = "\033[42m"
-BG_YELLOW = "\033[43m"
-BG_BLUE = "\033[44m"
-BG_MAGENTA = "\033[45m"
-BG_CYAN = "\033[46m"
-BG_WHITE = "\033[47m"
-
-# Bright Background Colors
-BG_BRIGHT_BLACK = "\033[100m"
-BG_BRIGHT_RED = "\033[101m"
-BG_BRIGHT_GREEN = "\033[102m"
-BG_BRIGHT_YELLOW = "\033[103m"
-BG_BRIGHT_BLUE = "\033[104m"
-BG_BRIGHT_MAGENTA = "\033[105m"
-BG_BRIGHT_CYAN = "\033[106m"
-BG_BRIGHT_WHITE = "\033[107m"
 
 
 class Configurator:
@@ -87,9 +34,9 @@ class Configurator:
         return settings
 
 
-class ApiConfig(Configurator):
+class DataServiceConfigLoader(Configurator):
     def __init__(self):
-        """Initializes the ApiConfig with the base configuration from the parent class."""
+        """Initializes the DataServiceConfigLoader with the base configuration from the parent class."""
         super().__init__()
 
     @property
@@ -99,7 +46,7 @@ class ApiConfig(Configurator):
         :Returns:
             Dict[str, Any]: The configuration dictionary for the 'api' section.
         """
-        return self.general_settings['api']
+        return self.general_settings['data_service_api']
 
     @property
     def api_info(self) -> Dict[str, Any]:
@@ -224,21 +171,21 @@ class ApiConfig(Configurator):
         self.logging_configs['output'] = new_logging_configs['output']
 
 
-class WorkflowManagerConfig(Configurator):
+class WorkflowManagerConfigLoader(Configurator):
     def __init__(self):
         super().__init__()
     
     @property
-    def settings(self) -> Dict[str, Any]:
+    def workflow_settings(self) -> Dict[str, Any]:
         return self.general_settings['workflow_manager']
 
     @property
     def api_http_client_configs(self) -> List[Dict[str, Any]]:
-        return self.settings['api_http_client']['clients']
+        return self.workflow_settings['api_http_client']['clients']
 
     @property
     def production_run_configs(self) -> Dict[str, Any]:
-        return self.settings['production_run']
+        return self.workflow_settings['production_run']
 
     @property
     def network_configuration(self) -> Dict[str, Any]:
@@ -354,16 +301,19 @@ class AppLogger:
         return True
 
 
-# Instantiate `app_settings`
-app_settings = ApiConfig()
+# Instantiate data service API configurations loader
+data_service_config_loader = DataServiceConfigLoader()
+
+# Instantiate workflow config settings loader
+workflow_manager_config_loader = WorkflowManagerConfigLoader()
 
 # Instantiate logger
-api_logging = AppLogger(app_settings)
+api_logging = AppLogger(data_service_config_loader)
 
 package_names = ['urllib3', 'tzlocal', 'passlib']
 api_logging.disable_external_package_logging(package_names)
-logger = logging.getLogger('wood-api')
+logger = logging.getLogger('cw4.0-api')
 
 
 if __name__ == "__main__":
-    logger.info(f"API Config settings: {app_settings.api_configs}")
+    logger.info(f"API Config settings: {data_service_config_loader.api_configs}")

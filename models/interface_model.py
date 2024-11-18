@@ -3,12 +3,14 @@
 
 import os
 import sys
+import logging
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlalchemy.orm import RelationshipProperty
+from sqlalchemy.inspection import inspect
 
-from settings import logger
+logger = logging.getLogger('cw4.0-api.models')
 
 
 class DataModelInterface:
@@ -17,21 +19,16 @@ class DataModelInterface:
 
     def relationship_fields(self):
         """
-        Collects all relationship fields of the model and returns them as a list called 'partials'.
+        Collects all relationship fields of the model and returns them as a list.
         """
         relationship_fields = []
-        attr_names = dir(self)
-        for attr_name in attr_names:
-            if attr_name.startswith("_") or attr_name.endswith("_"):
-                continue
-            if attr_name == 'metadata':
-                continue
-            if isinstance(
-                getattr(self, attr_name),
-                RelationshipProperty,
-            ):
+        mapper = inspect(self.__class__)
+        
+        for attr_name, attr in mapper.all_orm_descriptors.items():
+            if isinstance(attr.property, RelationshipProperty):
                 relationship_fields.append(attr_name)
-        logger.info(relationship_fields)
+        
+        logger.debug(f"Relationship fields: {relationship_fields}")
         return relationship_fields
 
     def _get_status_fields(self, status_fields):

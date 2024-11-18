@@ -10,16 +10,17 @@ from os.path import abspath, dirname
 from dotenv import load_dotenv
 from collections import namedtuple
 
-from settings import logger, app_settings
+from settings import logger
+from settings import workflow_manager_config_loader as wrkflow_cfg
+from settings import data_service_config_loader as ds_api_cfg
 
-
-logger = logging.getLogger('wood-api.workflows.api-client')
+logger = logging.getLogger('cw4.0-api').getChild('workflows.api-client')
 
 
 def get_default_params():
 
     app_directoty = os.path.join(abspath(dirname(dirname(dirname(__file__)))))
-    base_url = app_settings.backend_env
+    base_url = ds_api_cfg.backend_env['url']
     
     WorkflowParameters = namedtuple(
         'WorkflowParameters',
@@ -46,11 +47,11 @@ def get_default_params():
             'img'
         ),
         credentials={
-            'username': input('Username: '),
-            'password': input('Password: ')
+            'username': wrkflow_cfg.http_network_configs['credentials']['username'],
+            'password': wrkflow_cfg.http_network_configs['credentials']['password']
         },
         base_url=base_url,
-        idemat=os.path.join(app_directoty, app_settings.external['tools']['idemat']['path'])
+        idemat=os.path.join(app_directoty, ds_api_cfg.external['tools']['idemat']['path'])
     )
 
     logger.debug("parameters loaded")
