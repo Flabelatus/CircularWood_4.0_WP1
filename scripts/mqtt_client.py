@@ -117,15 +117,20 @@ def on_message(client, userdata, msg):
         except:
             print("error in ftp")
 
+def on_disconnect(client, userdata, rc):
+    global connected_flag
+    connected_flag=False #set flag
+    print("disconnected OK")
+
 def mqttSubscribe(topic):
     mqttc.subscribe(topic, qos=2)
     print("subscribed to " + topic)
-
-if __name__ == '__main__':
+def mqttMAIN():
 
     mqttc.on_connect = on_connect
     mqttc.on_message = on_message
     mqttc.on_subscribe = on_subscribe
+    mqttc.on_disconnect = on_disconnect
 
     mqttc.connect(mqttHost, mqttPort)
 
@@ -135,3 +140,10 @@ if __name__ == '__main__':
     mqttSubscribe(mqttTopic_CB)
 
     mqttc.loop_forever()
+
+def mqttSTOP():
+    mqttc.disconnect()
+
+if __name__ == '__main__':
+    mqttMAIN()
+    
