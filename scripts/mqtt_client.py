@@ -1,4 +1,4 @@
-# The code for subscribing to the mqtt broker and parsing all the 
+# The code for subscribing to the mqtt broker and parsing all the
 # messages and flags
 
 import paho.mqtt.client as mqtt
@@ -15,6 +15,7 @@ from workflow.production_run.Call_Wood_Data_Variables_For_BLUE import Call_Wood_
 from settings import WorkflowManagerConfig
 
 mqttparams = WorkflowManagerConfig().get_mqtt_network_configs()
+
 
 #for the lector
 mqttTopic_StartScan = mqttparams['topic']['production']['lector']['scanStart']
@@ -39,8 +40,9 @@ mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
 woodID = 1
 
-def on_connect(client, userdata, flags, rc,null):
+def on_connect(client, userdata, flags, rc, null):
     print("Connected with result code " + str(rc))
+
 def on_subscribe(client, userdata, mid, reason_code_list, properties=None):
     if reason_code_list[0].is_failure:
         print(f"Broker rejected you subscription: {reason_code_list[0]}")
@@ -62,7 +64,7 @@ def on_message(client, userdata, msg):
             mqttc.publish(mqttTopic_ScanDone,QR_data, qos=2)
             #mqttc.publish("PLC_coms/Stool/WoodID",QR_data,qos=2,retain=True)
             mqttc.publish(mqttTopic_WoodID, QR_data, qos=2, retain=True)
-        except TimeoutError as e:
+        except TimeoutError:
             print("ERROR: cant connect to lector")
 
     if topic == str(mqttTopic_Data_request):
@@ -95,24 +97,25 @@ def on_message(client, userdata, msg):
             passwd = ftp_params["RED"]['password']
 
             rapid_ftp = RAPID_FTP(ip=ip, user=user, passwd=passwd)
+            #TODO
+            # put the old RED code back
             rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="MILLING_UPLOAD",
                                   targetPath="Example.mod")
             mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
+            #TODO
+            # uncomment later when correct database call implementation in ftp class is done
+            #
+            #
+            # rapid_ftp = RAPID_FTP(ip='10.0.0.14',user='Default User',passwd='robotics')
+            # rapid_ftp.RAPID_FTP_main(WoodID=woodID,
+            #                          msg=msg,
+            #                          rapid_File_Path_1="Normal__abc.mod",
+            #                          rapid_File_Path_2="Reversed__abc.mod",
+            #                          Inbetween_RAPID_Marker='\nINBETWEEN\n',
+            #                          targetDirectory='RED_Milling')
+            # mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
         except:
             print("error in ftp")
-        #TODO
-        # uncomment later when correct database call implementation in ftp class is done
-        #
-        #
-        # rapid_ftp = RAPID_FTP(ip='10.0.0.14',user='Default User',passwd='robotics')
-        # rapid_ftp.RAPID_FTP_main(WoodID=woodID,
-        #                          msg=msg,
-        #                          rapid_File_Path_1="Normal__abc.mod",
-        #                          rapid_File_Path_2="Reversed__abc.mod",
-        #                          Inbetween_RAPID_Marker='\nINBETWEEN\n',
-        #                          targetDirectory='RED_Milling')
-        # mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
-
 
 def mqttSubscribe(topic):
     mqttc.subscribe(topic, qos=2)
