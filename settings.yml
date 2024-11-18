@@ -114,6 +114,7 @@ workflow_manager:
   api_http_client:
     clients:
       - name: DESIGN_CLIENT
+        # MAYBE ADD THE STATIC PATHS HERE
   production_run:
     title: PRODUCTION_GATEWAY
     network_configuration:

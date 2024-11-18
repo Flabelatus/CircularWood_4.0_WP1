@@ -16,7 +16,7 @@ except ImportError:
 load_dotenv()
 
 
-class Configurator:
+class ConfigLoader:
     def __init__(self):
         self.yaml = YAML()
         self.path = os.getenv("CONFIG_FILE", "./settings.yml")
@@ -34,7 +34,7 @@ class Configurator:
         return settings
 
 
-class DataServiceConfigLoader(Configurator):
+class DataServiceConfigLoader(ConfigLoader):
     def __init__(self):
         """Initializes the DataServiceConfigLoader with the base configuration from the parent class."""
         super().__init__()
@@ -171,7 +171,7 @@ class DataServiceConfigLoader(Configurator):
         self.logging_configs['output'] = new_logging_configs['output']
 
 
-class WorkflowManagerConfigLoader(Configurator):
+class WorkflowManagerConfigLoader(ConfigLoader):
     def __init__(self):
         super().__init__()
     

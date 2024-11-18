@@ -6,14 +6,13 @@ import os
 import requests
 from collections import namedtuple
 from os.path import dirname, abspath
-from workflow.api_http_client import logger, get_default_params
+from workflow.api_http_client import logger
+from workflow.api_http_client import DataServiceApiHTTPClient
 
 logger.getChild("image_upload")
 
-default_params = get_default_params()
 
-
-class ImageApiClient:
+class ImageApiClient(DataServiceApiHTTPClient):
     """
     To use the image upload endpoint you need to specify the ID of the wood
     as the file name, also you need to set the 'dir' parameter in the request url which indicates what directory the image will be saved in.
@@ -25,33 +24,19 @@ class ImageApiClient:
         2. metal_region: creates a folder for the visualization from the metal induction gate
     """
 
-    def __init__(self, params=default_params, destination=0, development=False):
-        self.params = default_params
+    def __init__(self, destination=0, development=False):
+        super().__init__()
         self.destination = destination
         self.dir = (
             f"{input('Directory name: ')}-{self.params.dir[self.destination]}"
             if development is True
             else self.params.dir[self.destination]
         )
-        self.base_url = self.params.base_url['url']
+        self.base_url = self.params.base_url
 
     def upload(self, filepath, wood_id):
-        auth_endpoint = "/login"
-        endpoint = "/image/upload/"
-        login_response = requests.post(
-            f"{self.base_url}{auth_endpoint}", json=self.params.credentials
-        )
-
-        login_response_json = login_response.json()
-        token = login_response_json.get("access_token", "")
-
-        if not login_response.status_code == 200:
-            logger.error(login_response_json)
-            return {
-                "error": True,
-                "message": f"Error authenticating: {login_response.json()}",
-            }
-
+        endpoint = "/image/upload/"       
+        _ = self.authenticate()
         try:
             if not os.path.exists(filepath):
                 logger.error(f"File not found: {filepath}")
@@ -70,20 +55,8 @@ class ImageApiClient:
             return {"error": True, "message": str(e)}
 
     def delete_image(self, wood_id):
-        auth_endpoint = "/login"
         image_endpoint = "/image/"
-
-        login_response = requests.post(
-            f"{self.base_url}{auth_endpoint}", json=self.params.credentials
-        )
-
-        login_response_json = login_response.json()
-        token = login_response_json.get("access_token", "")
-
-        if not login_response.status_code == 200:
-            logger.error(login_response_json)
-
-        logger.debug(login_response_json)
+        token = self.authenticate()
 
         url = f"{self.base_url}{image_endpoint}{str(wood_id)}?dir={self.dir}"
         response = requests.delete(

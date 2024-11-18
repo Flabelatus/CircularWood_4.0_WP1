@@ -3,10 +3,10 @@ import sys
 
 import json
 
-# from __init__ import logger, get_default_params
+# from __init__ import logger, get_data_service_api_params
 
 
-# default_params = get_default_params()
+# default_params = get_data_service_api_params()
 
 idemat_path = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "idemat", "idenmat_2023_wood_simplified.json"))
 
