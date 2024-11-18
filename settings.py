@@ -265,6 +265,10 @@ class WorkflowManagerConfig(Configurator):
     def mqtt_network_configs(self):
         """Get the MQTT network configurations."""
         return self.work_cell_configs['processor_nodes']['network_protocols']['mqtt']
+
+    def get_mqtt_network_configs(self):
+        """Get the MQTT network configurations."""
+        return self.work_cell_configs['processor_nodes']['network_protocols']['mqtt']
     
     @mqtt_network_configs.setter
     def mqtt_network_configs(self, new_configs: dict):

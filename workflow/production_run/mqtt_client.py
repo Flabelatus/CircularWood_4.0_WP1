@@ -4,10 +4,20 @@
 import paho.mqtt.client as mqtt
 from time import sleep
 
+import os
+import sys
+
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+
 #TODO take care of these imports later
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# from settings import WorkflowManagerConfig
 from Lector61x_V2D611D_MMSCE4 import Lector_QR_Reader
 import Call_Wood_Data_Variables_For_BLUE
 from ftp_handler import RAPID_FTP
+#TODO
 
 #for the lector
 mqttTopic_StartScan = "PLC_coms/Stool/Scan/StartScan"
