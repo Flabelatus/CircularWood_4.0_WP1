@@ -22,16 +22,13 @@ from models.design_requirements import DesignRequirementsModelFromClient
 from models.user import UserModel
 
 from resources.routes import Resources
-from workflow.api_http_client import logger
+from workflow.api_http_client import logger, resources, __models__
 from workflow.api_http_client import DataServiceApiHTTPClient
 
 from schema import WoodSchema, SubWoodSchema
 from schema import ProductionSchema, UserSchema
 from schema import DesignRequirementSchema, TagSchema
 
-__models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
-
-resources = Resources()
 data_endpts = [resources.endpoints_by_field(model)[0] for model in __models__]
 tablenames = [resources.tablename_by_field(model) for model in __models__]
 
