@@ -13,7 +13,7 @@ from collections import namedtuple
 from typing import List, Dict
 
 import requests
-
+from requests.exceptions import ConnectionError
 from flask_smorest import Blueprint
 
 from resources import wood_blueprint, sub_wood_blp
@@ -30,40 +30,47 @@ from models.interface_model import DataModelInterface
 logger = logging.getLogger('cw4.0-api').getChild('workflows.api-client')
 
 # Global configurations loaded from settings.yml
-configs = {
+__configs__ = {
         'data_service': ds_api_cfg,
         'workflow': wrkflow_cfg
     }
 
 # Resource routes
-resources = Resources()
+__resources__ = Resources()
 
-# Data models
-__models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
+ # Dict of data model names and imported blueprints as `Dict[name: blueprint]`
+__api__ = {
+    "wood": wood_blueprint,
+    "users": user_blp,
+    "taglist": tags_blueprint,
+    "production": production_blp,
+    "requirements": design_blp,
+    "sub_wood": sub_wood_blp
+}
 
- # List of imported blueprints in respect to the data models
-__blueprints__ = [
-    wood_blueprint,
-    user_blp, 
-    tags_blueprint, 
-    production_blp, 
-    design_blp, 
-    sub_wood_blp
-]
 
 class ApiBlueprints:
     def __init__(self):
         # Map blueprints to model names
-        self.blueprints = {
-            __models__[i]: __blueprints__[i] for i, _ in enumerate(__blueprints__)
-            }
+        self.blueprints = __api__
+        
+        # Matches parameters like <int:id> or <name>
+        self.url_params_mask_pattern = re.compile(r"<(\w+:?\w*)>")
+        # Matches names in between the endpoint segments to find the relation fields
+        self.relation_mask_pattern = re.compile(r"/(\w+)/<\w+:\w+>$")
+
+        self.route_mapping = {
+            'no_params': [],
+            'params': {},
+            'relations': {}
+        }
 
     def _get_blueprint_routes(self, model_name: str) -> List[str]:
-        assert model_name in __models__, f'{model_name} not found in data models'
+        assert model_name in __api__, f'{model_name} not found in data models'
         
         blueprint = self.blueprints[model_name]
-        routes = []
 
+        routes = []
         for func in blueprint.deferred_functions:
             if hasattr(func, '__closure__') and func.__closure__:
                 for cell in func.__closure__:
@@ -73,102 +80,149 @@ class ApiBlueprints:
         return routes
 
     def _parse_and_dispatch_routes(self, routes: List[str]) -> Dict[str, Dict[str, List[str]]]:
-        route_mapping = {
-            'no_params': [],
-            'params': {},
-            'relations': {}
-        }
-
-        # Matches parameters like <int:id> or <name>
-        param_pattern = re.compile(r"<(\w+:?\w*)>")
-        relation_pattern = re.compile(r"/(\w+)/<\w+:\w+>$")
 
         for route in routes:
-            params = param_pattern.findall(route)
-            relation_match = relation_pattern.search(route)
+            params = self.url_params_mask_pattern.findall(route)
+            relation_match = self.relation_mask_pattern.search(route)
 
             # Group routes by the parameter
             if not params:
-                route_mapping["no_params"].append(route)
+                self.route_mapping["no_params"].append(route)
             else:
                 for param in params:
-                    if param not in route_mapping['params']:
-                        route_mapping['params'][param] = []
-                    route_mapping['params'][param].append(route) 
+                    if param not in self.route_mapping['params']:
+                        self.route_mapping['params'][param] = []
+                    self.route_mapping['params'][param].append(route) 
 
             # If a relation is found, group it under "relations"   
             if relation_match:
                 relation = relation_match.group(1)
-                if relation not in route_mapping['relations']:
-                    route_mapping['relations'][relation] = []
-                route_mapping['relations'][relation].append(route)
+                if relation not in self.route_mapping['relations']:
+                    self.route_mapping['relations'][relation] = []
+                self.route_mapping['relations'][relation].append(route)
         
-        return route_mapping
+        return self.route_mapping
     
     def _dispatch_route_by_criteria(self, model_name: str, criteria='no_params') -> Dict[str, Dict[str, List[str]]]:
         routes = self._get_blueprint_routes(model_name=model_name)
         return self._parse_and_dispatch_routes(routes=routes)[criteria]
+    
+    def _get_min_route(self, routes: List[str]):
+        min_arr_len_route = min(routes, key=lambda route: len(route.split("/")))
+        return min_arr_len_route
+
+    def _strip_route(self, route: str):
+        if not route:
+            return ""
+        segments = route.split("/")
+        stripped_segments = [self.url_params_mask_pattern.sub("", segment) for segment in segments]
+        stripped_route = f'/{"/".join(filter(None, stripped_segments))}/'
+        return stripped_route
+
+    def _get_flattened_routes_by_criteria(self, key: str, criteria: str):
+        routes_from_blp = self._dispatch_route_by_criteria(key, criteria)
+        # Flatten all routes from the dictionary
+        routes = [route for routes_by_pattern in routes_from_blp.values() for route in routes_by_pattern]
+        return self._strip_route(self._get_min_route(routes))
 
     @property
-    def wood_routes_no_params(self) -> List[str]:
-        return self._dispatch_route_by_criteria('wood')
-
-    @property
-    def subwood_routes_no_params(self) -> List[str]:
-        return self._dispatch_route_by_criteria('sub_wood')
+    def wood_route(self) -> str:
+        """`/wood` Endpoint to get the list of wood data, or post a new wood record to the list"""
+        key, criteria = 'wood', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
     
     @property
-    def design_routes_no_params(self) -> List[str]:
-        return self._dispatch_route_by_criteria('requirements')
+    def subwood_route(self) -> str:
+        """`/sub_wood` Endpoint to get the list of sub wood data, or post a new sub wood record to the list"""
+        key, criteria = 'sub_wood', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
+    
+    @property
+    def design_route(self) -> str:
+        """`/design/client` Endpoint to get the list of design data, or post a new design record to the list"""
+        key, criteria = 'requirements', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
 
     @property
-    def production_routes_no_params(self) -> List[str]:
-        return self._dispatch_route_by_criteria('production')
+    def production_route(self) -> str:
+        """`/production` Endpoint to get the list of production data, or post a new production record to the list"""
+        key, criteria = 'production', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
 
     @property
-    def taglist_routes_no_params(self) -> List[str]:
-        return self._dispatch_route_by_criteria('production')
+    def taglist_route(self) -> str:
+        """`/tags` Endpoint to get the list of tags data, or post a new tag record to the list"""
+        key, criteria = 'taglist', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
 
     @property
-    def wood_routes_with_id(self) -> List[str]:
-        return self._dispatch_route_by_criteria('wood', 'params').get('int:wood_id')
+    def wood_by_id_route(self) -> str:
+        """`/wood/<int:wood_id>` Endpoint to get, update or delete the wood data by ID"""
+        key, criteria = 'wood', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     @property
-    def subwood_routes_with_id(self):
-        return self._dispatch_route_by_criteria('sub_wood', 'params').get('int:subwood_id')
+    def subwood_by_id_route(self) -> str:
+        """`/sub_wood/<int:subwood_id>` Endpoint to get, update or delete the sub wood data by ID"""
+        key, criteria = 'sub_wood', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     @property
-    def design_routes_with_id(self):
-        return self._dispatch_route_by_criteria('requirements', 'params').get('int:requirement_id')
+    def design_by_id_route(self) -> str:
+        """`/design/client/<int:design_id>` Endpoint to get, update or delete the design data by ID"""
+        key, criteria = 'requirements', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     @property
-    def production_routes_with_id(self):
-        return self._dispatch_route_by_criteria('production', 'params').get('int:production_id')
+    def production_by_id_route(self) -> str:
+        """`/production/<int:production_id>` Endpoint to get, update or delete the production data by ID"""
+        key, criteria = 'production', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     @property
-    def taglist_routes_with_id(self):
-        return self._dispatch_route_by_criteria('taglist', 'params').get('int:tag_id')
+    def tag_by_id_route(self) -> str:
+        """`/tag/<int:tag_id>` Endpoint to get, update or delete the tag data by ID"""
+        key, criteria = 'taglist', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     # Back populated models
     @property
-    def wood_back_populating_subwood(self):
-        return self._dispatch_route_by_criteria('sub_wood', 'relations').get('wood')
+    def subwood_by_wood_id_route(self):
+        """`/subwood/wood/<int:wood_id>` Endpoint to get sub wood data linked to wood by wood ID"""
+        key, criteria, relation = 'sub_wood', 'relations', 'wood'
+        route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
+        return self._strip_route(route[0])
 
     @property
-    def design_back_populating_subwood(self):
-        return self._dispatch_route_by_criteria('sub_wood', 'relations').get('design')
+    def subwood_by_design_id_route(self):
+        """`/subwood/design/<int:design_id>` Endpoint to get sub wood data linked to design part by design ID"""
+        key, criteria, relation = 'sub_wood', 'relations', 'design'
+        route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
+        return self._strip_route(route[0])
+    
+    @property
+    def design_by_wood_id_route(self):
+        """`/design/wood/<int:wood_id>` Endpoint to get design part data linked to wood by wood ID"""
+        key, criteria, relation = 'requirements', 'relations', 'wood'
+        route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
+        # TODO: Check the routes better
+        return self._strip_route(route[-1])
 
     @property
-    def wood_back_populating_design(self):
-        return self._dispatch_route_by_criteria('requirements', 'relations').get('wood')
+    def production_by_wood_id_route(self):
+        """`/production/wood/<int:wood_id>` Endpoint to get production data linked to wood by wood ID"""
+        key, criteria, relation = 'production', 'relations', 'wood'
+        route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
+        return self._strip_route(route[0])
 
-    @property
-    def wood_back_populating_production(self):
-        return self._dispatch_route_by_criteria('production', 'relations').get('wood')
 
-
-class DataServiceApiHTTPClient:
-    def __init__(self, configs=configs):
+class HttpClientCore:
+    def __init__(self, configs=__configs__):
         self.configs = configs
         self.root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
         self.api_blueprints = ApiBlueprints()
@@ -205,49 +259,8 @@ class DataServiceApiHTTPClient:
             base_url=base_url,
             idemat=os.path.join(self.root, self.configs.get('data_service').external['tools']['idemat']['path'])
         )
-        logger.debug("data service api parameters loaded")
         return params
 
     @property
     def params(self):
         return self._get_api_client_configs()
-
-    def authenticate(self):
-        username = self.params.credentials['username']
-        password = self.params.credentials['password']
-        auth_endpoint = f"{self.params.base_url}/login"
-        payload = {
-            "username": username,
-            "password": password
-        }
-        access_token = ""
-        response = requests.post(url=auth_endpoint, json=payload)
-
-        if response.status_code == 200:
-            access_token = response.json()["access_token"]
-            return access_token
-        else:
-            logger.error(response.json())
-
-    def fetch_wood_data(self, wood_id=0):
-        wood_endpoints = self.api_blueprints.wood_routes_with_id
-        for e in wood_endpoints:
-            print(e)
-
-    def fetch_subwood_data(self, subwood_id=0):
-        subwood_endpoints = self.api_blueprints.subwood_routes_with_id
-        for e in subwood_endpoints:
-            print(e)
-
-    def fetch_design_data(self, design_id=0):
-        design_endpoints = self.api_blueprints.design_routes_with_id
-        for e in design_endpoints:
-            print(e)
-
-    def fetch_production_data(self, production_id=0):
-        prod_endpoints = self.api_blueprints.production_routes_with_id
-        for e in prod_endpoints:
-            print(e)
-
-
-a = DataServiceApiHTTPClient().fetch_design_data()
