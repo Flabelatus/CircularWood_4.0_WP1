@@ -7,6 +7,6 @@ __pycache__
 /static
 *.DS_Store
 /env
-test.py
+test.*
 .DS_Store
 *.db
