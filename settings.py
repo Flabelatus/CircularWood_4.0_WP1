@@ -74,7 +74,7 @@ class DataServiceConfigLoader(ConfigLoader):
     def environment(self) -> str:
         """Gets the current selected environment mode.
 
-        Returns:
+        :Returns:
             str: The selected environment mode ('development' or 'production').
         """
         return self.settings['server']['environment']['selected_mode']
