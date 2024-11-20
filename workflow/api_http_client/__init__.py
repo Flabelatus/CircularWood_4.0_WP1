@@ -193,32 +193,73 @@ class ApiBlueprints:
     # Back populated models
     @property
     def subwood_by_wood_id_route(self):
-        """`/subwood/wood/<int:wood_id>` Endpoint to get sub wood data linked to wood by wood ID"""
+        """
+        `/subwood/wood/<int:wood_id>` Endpoint to get sub wood data linked to wood by wood ID
+            
+            :Important: 'Sub wood data model and its registered blueprint in the API have naming inconsistency'. 
+
+                Sub wood tablename is `sub_wood`, while the endpoint route name referenced to it `subwood`
+        """
+        
         key, criteria, relation = 'sub_wood', 'relations', 'wood'
         route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
-        return self._strip_route(route[0])
+        
+        # Resolving the Inconsistency
+        key = key.replace("_", "")
+        return self._strip_route(*[end_pt for end_pt in route if key in end_pt])
 
     @property
     def subwood_by_design_id_route(self):
-        """`/subwood/design/<int:design_id>` Endpoint to get sub wood data linked to design part by design ID"""
+        """
+        `/subwood/design/<int:design_id>` Endpoint to get sub wood data linked to design part by design ID
+            
+            :Important: 'Sub wood data model and its registered blueprint in the API have naming inconsistency'. 
+
+                Sub wood tablename is `sub_wood`, while the endpoint route name referenced to it `subwood`
+        """
+        
         key, criteria, relation = 'sub_wood', 'relations', 'design'
         route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
-        return self._strip_route(route[0])
+        
+        # Resolving the Inconsistency
+        key = key.replace("_", "")
+        return self._strip_route(*[end_pt for end_pt in route if key in end_pt])
     
     @property
     def design_by_wood_id_route(self):
-        """`/design/wood/<int:wood_id>` Endpoint to get design part data linked to wood by wood ID"""
-        key, criteria, relation = 'requirements', 'relations', 'wood'
+        """
+        `/design/wood/<int:wood_id>` Endpoint to get design part data linked to wood by wood ID\n
+            
+            :Important: 'Design data model and its registered blueprint in the API have naming inconsistency'. 
+
+                Design data in the database is stored in the `requirements` table, while the endpoint 
+                name referenced to it within the api routes is `design`
+                
+                - Database tablename used as key `design_keys['tablename']` to extract the routes from the
+                design blueprint.
+                
+                - Endpoint name used as key `design_keys['endpoint']` to filter the desired route
+        """
+
+        design_keys = {
+            'tablename': 'requirements',
+            'endpoint': 'design'
+        }
+
+        # Database tablename used as key `design_keys['tablename']` to extract the routes from the design blueprint
+        key, criteria, relation = design_keys['tablename'], 'relations', 'wood'
         route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
-        # TODO: Check the routes better
-        return self._strip_route(route[-1])
+        
+        # Endpoint name used as key `design_keys['endpoint']` to filter the desired route
+        key = design_keys['endpoint']
+        return self._strip_route(*[end_pt for end_pt in route if key in end_pt])
 
     @property
     def production_by_wood_id_route(self):
         """`/production/wood/<int:wood_id>` Endpoint to get production data linked to wood by wood ID"""
         key, criteria, relation = 'production', 'relations', 'wood'
         route = self._dispatch_route_by_criteria(model_name=key, criteria=criteria).get(relation)
-        return self._strip_route(route[0])
+        return self._strip_route(*[end_pt for end_pt in route if key in end_pt])
 
 
 class HttpClientCore:

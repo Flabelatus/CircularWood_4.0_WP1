@@ -4,9 +4,7 @@
 
 import requests
 import json
-from collections import namedtuple
 from typing import Dict
-from os.path import dirname, abspath
 from workflow.api_http_client import logger, __configs__
 from workflow.api_http_client import HttpClientCore
 
@@ -19,23 +17,27 @@ class DataServiceApiHTTPClient(HttpClientCore):
         self.username = self.params.credentials['username']
         self.password = self.params.credentials['password']
         self.auth_endpoint = f"{self.base_url}/login"
-        self.authenticated = False
-        self.access_token = self.authenticate()
+        self.access_token = None
 
+    def logout(self):
+        try:
+            headers = {"Authorization": f"Bearer {self.access_token}"}
+            response = requests.post(url=f'{self.base_url}/logout', headers=headers)
+            if response.status_code == 200:
+                self.access_token = ""
+            else:
+                logger.error(f'{response.json()}, code: {response.status_code}')
+        except ConnectionError as e:
+            logger.error(e)
+            
     def authenticate(self):
-        access_token = ""
-        payload = {
-            "username": self.username,
-            "password": self.password
-        }
+        payload = {"username": self.username, "password": self.password}
         try:
             response = requests.post(url=self.auth_endpoint, json=payload)
             if response.status_code == 200:
-                access_token = response.json()["access_token"]
-                self.authenticated = True
-                return access_token
+                self.access_token = response.json()["access_token"]
             else:
-                logger.error(response.json())
+                logger.error(f'{response.json()}, code: {response.status_code}')
         except ConnectionError as e:
             logger.error(e)
 
@@ -49,10 +51,9 @@ class DataServiceApiHTTPClient(HttpClientCore):
             response = requests.get(url, headers=headers)    
             # If token is expired, re-authenticate and retry
             if response.status_code == 401:
-                self.access_token = self.authenticate()
+                self.authenticate()
                 headers["Authorization"] = f"Bearer {self.access_token}"
                 response = requests.get(url, headers=headers)
-
             if response.status_code != 200:
                 logger.error(f"Error fetching record: {response.status_code}, {response.text}")
                 return {}
@@ -90,7 +91,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
 
     def fetch_wood_by_id(self, wood_id=0):
         endpoint = self.api_blueprints.wood_by_id_route
-        print(f"{self.base_url}{endpoint}{wood_id}")
         return self._fetch_record(url=f"{self.base_url}{endpoint}{wood_id}")
 
     def fetch_subwood_by_id(self, subwood_id=0):
