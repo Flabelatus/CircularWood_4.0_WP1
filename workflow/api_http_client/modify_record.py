@@ -21,7 +21,6 @@ from models.tags import TagModel
 from models.design_requirements import DesignRequirementsModelFromClient
 from models.user import UserModel
 
-from resources.routes import Resources
 from workflow.api_http_client import logger, __resources__, __api__
 from workflow.api_http_client.api_client import DataServiceApiHTTPClient
 

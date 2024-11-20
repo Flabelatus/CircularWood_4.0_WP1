@@ -4,8 +4,6 @@
 
 import os
 import requests
-from collections import namedtuple
-from os.path import dirname, abspath
 from workflow.api_http_client import logger
 from workflow.api_http_client.api_client import DataServiceApiHTTPClient
 
