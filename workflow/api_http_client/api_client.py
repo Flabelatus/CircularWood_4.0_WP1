@@ -85,6 +85,7 @@ class DataServiceApiHTTPClient(HttpClientCore):
         bundle_schema['sub_wood'] = sub_woods
         bundle_schema['design_metadata'] = design_metadata
         
+        # TODO: Remove this test part later
         with open('test.json', 'w') as f:
             json.dump(bundle_schema, f, indent=4)
         return bundle_schema
