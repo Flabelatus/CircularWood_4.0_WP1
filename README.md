@@ -304,15 +304,6 @@ Used for communication with the database API
                 credentials:
                     username: <ADMIN_USERNAME>
                     password: <ADMIN_PASSWORD>
-                endpoints:
-                    post:
-                        authentication:
-                            path: "/login"
-                            auth_required: false
-                    get:
-                        wood_by_id:
-                            path: "/wood/{wood_id}"
-                            auth_required: false
 ```
 <br />
 
