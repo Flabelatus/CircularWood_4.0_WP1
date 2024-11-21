@@ -12,29 +12,30 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from workflow.production_run.Lector61x_V2D611D_MMSCE4 import Lector_QR_Reader
 from workflow.production_run.ftp_handler import RAPID_FTP
 from workflow.production_run.Call_Wood_Data_Variables_For_BLUE import Call_Wood_Data
-from settings import WorkflowManagerConfig
+from settings import WorkflowManagerConfigLoader
 
-mqttparams = WorkflowManagerConfig().get_mqtt_network_configs()
-
-
+# mqttparams = WorkflowManagerConfigLoader().get_mqtt_network_configs()
+mqttparams = WorkflowManagerConfigLoader().mqtt_network_configs
+print(f"mqttparams = \n{mqttparams}")
 #for the lector
-mqttTopic_StartScan = mqttparams['topic']['production']['lector']['scanStart']
-mqttTopic_ScanDone = mqttparams['topic']['production']['lector']['scanDone']
+mqttTopic_StartScan = mqttparams['topics']['production']['lector']['scanStart']
+mqttTopic_ScanDone = mqttparams['topics']['production']['lector']['scanDone']
 
 #the wood ID
-mqttTopic_WoodID = mqttparams['topic']['production']['general']['wood_data']['woodID']
+mqttTopic_WoodID = mqttparams['topics']['production']['general']['wood_data']['woodID']
 
 #for BLUE data transfer
-mqttTopic_Data_request = mqttparams['topic']['production']['from_PC_to_plc']['blue']['request_part_data']
-mqttTopic_Publish_Data = mqttparams['topic']['production']['from_plc_to_PC']['blue']['request_part_data']
+mqttTopic_Data_request = mqttparams['topics']['production']['from_PC_to_plc']['blue']['request_part_data']
+mqttTopic_Publish_Data = mqttparams['topics']['production']['from_plc_to_PC']['blue']['request_part_data']
 
 #for RED RAPID
-mqttTopic_CB = mqttparams['topic']['production']['from_PC_to_plc']['red']['fetch_rapid']['CB_RAPID_Needed']
-mqttTopic_RAPID_Fetched_Fence = mqttparams['topic']['production']['from_plc_to_PC']['red']['fetch_rapid']['CB_RAPID_Fetched']
+mqttTopic_CB = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetch_rapid']['CB_RAPID_Needed']
+mqttTopic_RAPID_Fetched_Fence = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CB_RAPID_Fetched']
 
 #broker information
-mqttHost = mqttparams['broker']['hostname']
-mqttPort = mqttparams['broker']['port']
+mqttHost = mqttparams['broker_info']['hostname']
+
+mqttPort = mqttparams['broker_info']['port']
 
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
@@ -62,7 +63,6 @@ def on_message(client, userdata, msg):
             while QR_data == lector.get_NoRead_item():
                 QR_data = lector.read_QR_Code()
             mqttc.publish(mqttTopic_ScanDone,QR_data, qos=2)
-            #mqttc.publish("PLC_coms/Stool/WoodID",QR_data,qos=2,retain=True)
             mqttc.publish(mqttTopic_WoodID, QR_data, qos=2, retain=True)
         except TimeoutError:
             print("ERROR: cant connect to lector")
@@ -90,17 +90,17 @@ def on_message(client, userdata, msg):
     if topic == str(mqttTopic_CB):
         print(f"Topic: RED RAPID FTP")
         try:
-            ftp_params = WorkflowManagerConfig().get_ftp_params()
+            ftp_params = WorkflowManagerConfigLoader().ftp_network_configs
 
-            ip = ftp_params["RED"]['ip']
-            user = ftp_params["RED"]['username']
-            passwd = ftp_params["RED"]['password']
+            ip = ftp_params["red_robot"]['ip']
+            user = ftp_params["red_robot"]['credentials']['username']
+            passwd = ftp_params["red_robot"]['credentials']['password']
 
             rapid_ftp = RAPID_FTP(ip=ip, user=user, passwd=passwd)
             #TODO
             # put the old RED code back
             rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="MILLING_UPLOAD",
-                                  targetPath="Example.mod")
+                                  targetPath="Example_ABC_abc.mod")
             mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
             #TODO
             # uncomment later when correct database call implementation in ftp class is done

@@ -195,26 +195,34 @@ workflow_manager:
         # Event broker between the database, gateway and the controllers
         # documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/wiki/Mqtt%20and%20Profinet%20communications.aspx"
         broker_info:
-          ip: 10.0.0.9
+          hostname: 10.0.0.9
           port: 1883
         topics:
           production:
-            - wood_data: PLC_coms/Stool/WoodID
-          robots:
-            from_robot_to_plc:
+            general:
+              wood_data:
+                woodID: PLC_coms/Stool/WoodID
+            from_PC_to_plc:
               blue:
-                request_part_data: PLC_coms/stoolReady
+                request_part_data: PLC_coms/Stool/GimmeData
+                new_data_ready: PLC_coms/stoolReady
               red:
                 fetch_rapid:
-                  - PLC_coms/Stool/CW_RAPID_Needed
-                  - PLC_coms/Stool/CB_RAPID_Needed
-            from_plc_to_robot:
+                  CW_RAPID_Needed: PLC_coms/Stool/RAPID_Needed_CW
+                  CB_RAPID_Needed: PLC_coms/Stool/RAPID_Needed_CB
+            from_plc_to_PC:
               blue:
                 request_part_data: PLC_coms/Stool/NewStoolData
               red:
                 fetch_rapid:
-                  - PLComs/RAPID_Fetched_Windw
-                  - PLC_coms/RAPID_Fetched_Fence
+                  CW_RAPID_Fetched: PLComs/RAPID_Fetched_Window
+                  CB_RAPID_Fetched: PLC_coms/RAPID_Fetched_Fence
+            lector:
+              #lector respose will also be published to WoodID
+              woodID: PLC_coms/Stool/WoodID
+              scanStart: PLC_coms/Stool/Scan/StartScan
+              scanDone: PLC_coms/Stool/Scan/StartDone
+
           status_flags:
             pickup:
               - Stool/Status/PU_Start
@@ -240,10 +248,6 @@ workflow_manager:
               - Stool/Status/DropOff
             process_end:
               - Stool/Status/PlankDone
-          lector:
-            # lector response will also be published to WoodID
-            - PLC_coms/Stool/WoodID
-            - PLC_coms/Stool/Scan/StartScan
       http:
         database_service:
           # Used for communication with the database API

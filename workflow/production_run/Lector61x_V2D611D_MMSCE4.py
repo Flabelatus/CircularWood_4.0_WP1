@@ -5,20 +5,20 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from settings import WorkflowManagerConfig
+from settings import WorkflowManagerConfigLoader
 
 class Lector_QR_Reader:
     def __init__(self):
         """
         Initializes the QR reader by creating a socket and connecting to the specified IP address and port.
         """
-        lector_socket_params = WorkflowManagerConfig().get_socket_params()
+        lector_socket_params = WorkflowManagerConfigLoader().tcp_network_configs
 
         print(lector_socket_params)
 
-        self.ip = lector_socket_params['LECTOR']['ip']
-        self.port = int(lector_socket_params['LECTOR']['port'])
-        self.responseport = int(lector_socket_params['LECTOR']['response_port'])
+        self.ip = lector_socket_params['lector']['ip']
+        self.port = int(lector_socket_params['lector']['ports']['command_port'])
+        self.responseport = int(lector_socket_params['lector']['ports']['response_port'])
         print(f"ip: {self.ip}, port: {self.port}, responseport: {self.responseport}")
 
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

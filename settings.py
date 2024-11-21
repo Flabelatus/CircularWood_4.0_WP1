@@ -214,6 +214,7 @@ class WorkflowManagerConfigLoader(ConfigLoader):
 
     @property
     def mqtt_network_configs(self) -> Dict[str, Any]:
+        print("getting mqtt network configurations")
         """Get the MQTT network configurations."""
         return self.production_run_configs['communication_protocols']['mqtt']
 
