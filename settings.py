@@ -1,13 +1,12 @@
-# TODO: "control_system_configs" check to see if the "work_cell_configs" is not 
-# returned as a list, and if so, then handle the condition
-
 import sys
 import os
 import logging
-import typing
+
+from typing import Dict, List, Any
 
 from load_dotenv import load_dotenv
 from ruamel.yaml import YAML
+from terminal_settings import *
 
 try:
     import coloredlogs
@@ -16,59 +15,8 @@ except ImportError:
 
 load_dotenv()
 
-# Text Reset
-RESET = "\033[0m"
 
-# Text Styles
-BOLD = "\033[1m"
-DIM = "\033[2m"
-ITALIC = "\033[3m"
-UNDERLINE = "\033[4m"
-BLINK = "\033[5m"
-INVERT = "\033[7m" 
-
-# Foreground Colors
-BLACK = "\033[30m"
-RED = "\033[31m"
-GREEN = "\033[32m"
-YELLOW = "\033[33m"
-BLUE = "\033[34m"
-MAGENTA = "\033[35m"
-CYAN = "\033[36m"
-WHITE = "\033[37m"
-
-# Bright Foreground Colors
-BRIGHT_BLACK = "\033[90m"
-BRIGHT_RED = "\033[91m"
-BRIGHT_GREEN = "\033[92m"
-BRIGHT_YELLOW = "\033[93m"
-BRIGHT_BLUE = "\033[94m"
-BRIGHT_MAGENTA = "\033[95m"
-BRIGHT_CYAN = "\033[96m"
-BRIGHT_WHITE = "\033[97m"
-
-# Background Colors
-BG_BLACK = "\033[40m"
-BG_RED = "\033[41m"
-BG_GREEN = "\033[42m"
-BG_YELLOW = "\033[43m"
-BG_BLUE = "\033[44m"
-BG_MAGENTA = "\033[45m"
-BG_CYAN = "\033[46m"
-BG_WHITE = "\033[47m"
-
-# Bright Background Colors
-BG_BRIGHT_BLACK = "\033[100m"
-BG_BRIGHT_RED = "\033[101m"
-BG_BRIGHT_GREEN = "\033[102m"
-BG_BRIGHT_YELLOW = "\033[103m"
-BG_BRIGHT_BLUE = "\033[104m"
-BG_BRIGHT_MAGENTA = "\033[105m"
-BG_BRIGHT_CYAN = "\033[106m"
-BG_BRIGHT_WHITE = "\033[107m"
-
-
-class Configurator:
+class ConfigLoader:
     def __init__(self):
         self.yaml = YAML()
         self.path = os.getenv("CONFIG_FILE", "./settings.yml")
@@ -86,67 +34,136 @@ class Configurator:
         return settings
 
 
-class ApiConfig(Configurator):
+class DataServiceConfigLoader(ConfigLoader):
     def __init__(self):
+        """Initializes the DataServiceConfigLoader with the base configuration from the parent class."""
         super().__init__()
 
     @property
-    def settings(self):
-        return self.general_settings['api']
+    def settings(self) -> Dict[str, Any]:
+        """Retrieves the main settings for the API.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for the 'api' section.
+        """
+        return self.general_settings['data_service_api']
 
     @property
-    def api_info(self):
+    def api_info(self) -> Dict[str, Any]:
+        """Retrieves basic API information including title, version, and description.
+
+        :Returns:
+            Dict[str, Any]: A dictionary containing API metadata.
+        """
         return {
             "title": self.settings['title'],
             "version": self.settings['version'],
             "description": self.settings['description']
         }
-        
+
     @property
-    def external(self):
+    def external(self) -> Dict[str, Any]:
+        """Retrieves external configurations related to external APIs and tools.
+
+        :Returns:
+            Dict[str, Any]: External API and tool configuration.
+        """
         return self.settings['external']
-        
+
     @property
-    def environment(self):
+    def environment(self) -> str:
+        """Gets the current selected environment mode.
+
+        Returns:
+            str: The selected environment mode ('development' or 'production').
+        """
         return self.settings['server']['environment']['selected_mode']
 
     @property
-    def backend_env(self):
+    def backend_env(self) -> Dict[str, Any]:
+        """Retrieves the backend environment configurations based on the selected mode.
+
+        :Returns:
+            Dict[str, Any]: The configuration for the current backend environment mode.
+        """
         if self.environment == 'development':
             return self.settings['server']['environment']['modes']['development']
         else:
-            return  self.settings['server']['environment']['modes']['production']
-        
+            return self.settings['server']['environment']['modes']['production']
+
     @property
-    def api_configs(self):
+    def api_configs(self) -> Dict[str, Any]:
+        """Retrieves general API configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for API settings.
+        """
         return self.settings['configs']
 
     @property
-    def db_configs(self):
+    def db_configs(self) -> Dict[str, Any]:
+        """Retrieves the database configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for database settings.
+        """
         return self.settings['database']
 
     @property
-    def doc_configs(self):
+    def doc_configs(self) -> Dict[str, Any]:
+        """Retrieves the documentation configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for documentation settings.
+        """
         return self.settings['documentation']
 
     @property
-    def server_configs(self):
+    def server_configs(self) -> Dict[str, Any]:
+        """Retrieves the server configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for server settings.
+        """
         return self.settings['server']
 
     @property
-    def security_configs(self):
+    def security_configs(self) -> Dict[str, Any]:
+        """Retrieves the security configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for security settings.
+        """
         return self.settings['security']
 
     @property
-    def logging_configs(self):
+    def logging_configs(self) -> Dict[str, Any]:
+        """Retrieves the logging configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for logging settings.
+        """
         return self.settings['logging']
 
     @property
-    def cache_configs(self):
+    def cache_configs(self) -> Dict[str, Any]:
+        """Retrieves the cache configuration settings.
+
+        :Returns:
+            Dict[str, Any]: The configuration dictionary for cache settings.
+        """
         return self.settings['cache']
-    
+
     @logging_configs.setter
-    def set_logging_configs(self, new_logging_configs):
+    def set_logging_configs(self, new_logging_configs: Dict[str, Any]) -> None:
+        """Sets new logging configurations with validation for required fields.
+
+        Args:
+            new_logging_configs (Dict[str, Any]): A dictionary containing new logging settings.
+
+        :Raises:
+            AssertionError: If the 'format' or 'output' key is missing in the new configurations.
+        """
         assert 'format' in new_logging_configs, "format should be specified e.g. json"
         assert 'output' in new_logging_configs, "output field should be specified e.g. stdout"
 
@@ -154,179 +171,62 @@ class ApiConfig(Configurator):
         self.logging_configs['output'] = new_logging_configs['output']
 
 
-class WorkflowManagerConfig(Configurator):
+class WorkflowManagerConfigLoader(ConfigLoader):
     def __init__(self):
         super().__init__()
     
     @property
-    def settings(self):
+    def workflow_settings(self) -> Dict[str, Any]:
         return self.general_settings['workflow_manager']
 
     @property
-    def api_http_client_configs(self):
-        return self.settings['api_http_client']
-
-    @api_http_client_configs.setter
-    def set_api_http_client_configs(self, new_config):
-        ...
+    def api_http_client_configs(self) -> List[Dict[str, Any]]:
+        return self.workflow_settings['api_http_client']['clients']
 
     @property
-    def production_run_configs(self):
-        return self.settings['production_run']
-    
-    @property
-    def work_cell_configs(self):
-        return self.production_run_configs['work_cell']
-    
-    @property
-    def control_system_configs(self):
-        return self.work_cell_configs['processor_nodes']['control_system']
-    
-    @control_system_configs.setter
-    def set_control_system_configs(self, new_config):
-        ...
-    
-    @property
-    def hardware_equipment_configs(self) -> typing.List:
-        """Get the factory hardware equipment configurations."""
-        return self.work_cell_configs['processor_nodes']['hardware_equipment']
+    def production_run_configs(self) -> Dict[str, Any]:
+        return self.workflow_settings['production_run']
 
     @property
-    def ftp_network_configs(self):
+    def network_configuration(self) -> Dict[str, Any]:
+        """Get the network configuration settings."""
+        return self.production_run_configs['network_configuration']
+
+    @property
+    def control_system_configs(self) -> Dict[str, Any]:
+        """Get the control system configurations."""
+        return self.production_run_configs['hardware_components']['control_system']
+
+    @property
+    def hardware_equipment_configs(self) -> List[Dict[str, Any]]:
+        """Get the hardware equipment configurations."""
+        return self.production_run_configs['hardware_components']['equipment']
+
+    @property
+    def ftp_network_configs(self) -> Dict[str, Dict[str, Any]]:
         """Get the FTP network configurations."""
-        return self.work_cell_configs['processor_nodes']['network_protocols']['ftp']
-
-    #TODO replace this temp function with an actual implementation with an @property
-    def get_ftp_params(self):
-        return self.work_cell_configs['processor_nodes']['network_protocols']['ftp']
-
-    #TODO replace this temp function with an actual implementation with an @property
-    def get_socket_params(self):
-        return self.work_cell_configs['processor_nodes']['network_protocols']['tcp']['socket']
-
-    @ftp_network_configs.setter
-    def set_ftp_network_configs(self, client_name: str,  new_configs: dict):
-        """
-        Update the FTP network configurations for a specific client.
-
-        Args:
-            client_name (str): The name of the client to update.
-            new_configs (dict): A dictionary with the new configuration for the client.
-                                It must include 'client', 'ip', 'username', and 'password' keys.
-
-        Raises:
-            ValueError: If required keys are missing in new_configs or if the client is not found in the existing configuration.
-        """
-        required_keys = ['client', 'ip', 'username', 'password']
-        
-        missing_keys = [key for key in required_keys if key not in new_configs]
-        if missing_keys:
-            raise ValueError(f"Missing required keys in new_configs: {missing_keys}")
-
-        for ftp in self.socket_network_configs:
-            if ftp.get('client') == client_name:
-                ftp.update(new_configs)
-                return
-
-        raise ValueError(f"Client '{client_name}' not found in ftp configurations inside the network_protocol settings")
-        
-    @property
-    def socket_network_configs(self):
-        """Get the TCP socket network configurations."""
-        return self.work_cell_configs['processor_nodes']['network_protocols']['tcp']['socket']
-
-    @socket_network_configs.setter
-    def socket_network_configs(self, client_name: str, new_configs: dict):
-        """
-        Update the TCP/Socket network configurations for a specific client.
-
-        Args:
-            client_name (str): The name of the client to update.
-            new_configs (dict): A dictionary with the new configuration for the client.
-                                It must include 'client', 'ip', 'port', and 'response_port' keys.
-
-        Raises:
-            ValueError: If required keys are missing in new_configs or if the client is not found in the existing configuration.
-        """
-        required_keys = ['client', 'ip', 'port', 'response_port']
-        
-        missing_keys = [key for key in required_keys if key not in new_configs]
-        if missing_keys:
-            raise ValueError(f"Missing required keys in new_configs: {missing_keys}")
-
-        for soc in self.socket_network_configs:
-            if soc.get('client') == client_name:
-                soc.update(new_configs)
-                return
-
-        raise ValueError(f"Client '{client_name}' not found in socket configurations inside the network_protocol settings")
+        return self.production_run_configs['communication_protocols']['ftp']['robot_configuration']
 
     @property
-    def mqtt_network_configs(self):
+    def tcp_network_configs(self) -> Dict[str, Dict[str, Any]]:
+        """Get the TCP network configurations."""
+        return self.production_run_configs['communication_protocols']['tcp']['connections']
+
+    @property
+    def mqtt_network_configs(self) -> Dict[str, Any]:
         """Get the MQTT network configurations."""
-        return self.work_cell_configs['processor_nodes']['network_protocols']['mqtt']
+        return self.production_run_configs['communication_protocols']['mqtt']
 
-    def get_mqtt_network_configs(self):
-        """Get the MQTT network configurations."""
-        return self.work_cell_configs['processor_nodes']['network_protocols']['mqtt']
-    
-    @mqtt_network_configs.setter
-    def mqtt_network_configs(self, new_configs: dict):
-        """
-        Update the MQTT network configurations.
-
-        Args:
-            new_configs (dict): A dictionary with new configurations. Expected keys depend on the configuration level:
-                                - For broker: 'ip', 'port'
-                                - For topics under production: 'general', 'from_robot_to_plc', 'from_plc_to_robot', 'status_flags', 'lector'
-
-        Raises:
-            ValueError: If required keys are missing in new_configs or if the section to update is not found.
-        """
-        # Top-level expected keys for 'mqtt' field
-        required_top_level_keys = ['broker', 'topic']
-        
-        missing_top_level_keys = [key for key in required_top_level_keys if key not in new_configs]
-        if missing_top_level_keys:
-            raise ValueError(f"Missing top-level keys in new_configs: {missing_top_level_keys}")
-        
-        # Handle 'broker' configuration updates
-        if 'broker' in new_configs:
-            broker_required_keys = ['ip', 'port']
-            broker_config = new_configs['broker']
-            missing_broker_keys = [key for key in broker_required_keys if key not in broker_config]
-            
-            if missing_broker_keys:
-                raise ValueError(f"Missing broker keys in new_configs['broker']: {missing_broker_keys}")
-            
-            self.mqtt_network_configs['broker'].update(broker_config)
-        
-        # Handle 'topic' configuration updates
-        if 'topic' in new_configs:
-            topic_config = new_configs['topic']
-            
-            for topic_key, subtopics in topic_config.items():
-                if topic_key not in self.mqtt_network_configs['topic']:
-                    raise ValueError(f"Topic '{topic_key}' not found in existing MQTT configuration inside the network_protocol settings")
-                
-                self.mqtt_network_configs['topic'][topic_key].update(subtopics)
-        
     @property
-    def http_network_configs(self):
-        return self.work_cell_configs['processor_nodes']['network_protocols']['http']
-    
-    @http_network_configs.setter
-    def set_http_network_configs(self, new_configs):
-        ...
-    
+    def http_network_configs(self) -> Dict[str, Any]:
+        """Get the HTTP database service configurations."""
+        return self.production_run_configs['communication_protocols']['http']['database_service']
+
     @property
-    def profinet_network_configs(self):
-        return self.production_run_configs['processor_nodes']['network']['protocols']['profinet']
-    
-    @profinet_network_configs.setter
-    def set_profinet_network_configs(self, new_configs):
-        ...
-    
+    def profinet_network_configs(self) -> Dict[str, Any]:
+        """Get the PROFINET network configurations."""
+        return self.production_run_configs['communication_protocols']['profinet']
+
 
 class CustomLogFormatter(logging.Formatter):
     
@@ -401,16 +301,19 @@ class AppLogger:
         return True
 
 
-# Instantiate `app_settings`
-app_settings = ApiConfig()
+# Instantiate data service API configurations loader
+data_service_config_loader = DataServiceConfigLoader()
+
+# Instantiate workflow config settings loader
+workflow_manager_config_loader = WorkflowManagerConfigLoader()
 
 # Instantiate logger
-api_logging = AppLogger(app_settings)
+api_logging = AppLogger(data_service_config_loader)
 
 package_names = ['urllib3', 'tzlocal', 'passlib']
 api_logging.disable_external_package_logging(package_names)
-logger = logging.getLogger('wood-api')
+logger = logging.getLogger('cw4.0-api')
 
 
 if __name__ == "__main__":
-    logger.info("API Config settings:", app_settings.settings)
+    logger.info(f"API Config settings: {data_service_config_loader.api_configs}")

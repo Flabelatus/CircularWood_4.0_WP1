@@ -20,6 +20,7 @@ def find_image_any_format(filename: str, folder: str) -> Union[str, None]:
     """
     Given a format-less filename, try to find the file by appending each of the allowed formats to the given
     filename and check if the file exists
+    
     :param filename: formatless filename
     :param folder: the relative folder in which to search
     :return: the path of the image if exists, otherwise None

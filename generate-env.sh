@@ -39,33 +39,33 @@ else
 fi
 
 # Extracting other settings
-DATABASE_USER=$($YQ e '.api.database.user // "null"' $SETTINGS_FILE)
-DATABASE_URL=$($YQ e '.api.database.uri // "sqlite:///instance/data.db"' $SETTINGS_FILE)
+DATABASE_USER=$($YQ e '.data_service_api.database.user // "null"' $SETTINGS_FILE)
+DATABASE_URL=$($YQ e '.data_service_api.database.uri // "sqlite:///instance/data.db"' $SETTINGS_FILE)
 
-DATABASE_PASSWORD=$($YQ e '.api.database.password // "null"' $SETTINGS_FILE)
-DATABASE_DB=$($YQ e '.api.database.dbname // "null"' $SETTINGS_FILE)
+DATABASE_PASSWORD=$($YQ e '.data_service_api.database.password // "null"' $SETTINGS_FILE)
+DATABASE_DB=$($YQ e '.data_service_api.database.dbname // "null"' $SETTINGS_FILE)
 
 # Extract allowedOrigins and join them into a single line separated by commas
-ALLOWED_ORIGINS=$($YQ e '.api.configs.cors.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
+ALLOWED_ORIGINS=$($YQ e '.data_service_api.configs.cors.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
 
 # Extract JWT settings
 # JWT_SECRET=$($YQ e '.api.security.jwt.secret' $SETTINGS_FILE)
 # JWT_EXPIRATION_TIME=$($YQ e '.api.security.jwt.expirationTime' $SETTINGS_FILE)
-JWT_ISSUER=$($YQ e '.api.security.jwt.issuer' $SETTINGS_FILE)
-JWT_AUDIENCE=$($YQ e '.api.security.jwt.audience' $SETTINGS_FILE)
+JWT_ISSUER=$($YQ e '.data_service_api.security.jwt.issuer' $SETTINGS_FILE)
+JWT_AUDIENCE=$($YQ e '.data_service_api.security.jwt.audience' $SETTINGS_FILE)
 
 
 URL=""
 ENVIRONMENT=$($YQ e '.api.server.environment.selected_mode' $SETTINGS_FILE)
 
 if [[ "$ENVIRONMENT" == "development" ]]; then
-    URL="$($YQ e '.api.server.environment.modes.development.url' $SETTINGS_FILE)${ENDPOINT}"
+    URL="$($YQ e '.data_service_api.server.environment.modes.development.url' $SETTINGS_FILE)${ENDPOINT}"
 else
-    URL="$($YQ e '.api.server.environment.modes.production.url' $SETTINGS_FILE)${ENDPOINT}"
+    URL="$($YQ e '.data_service_api.server.environment.modes.production.url' $SETTINGS_FILE)${ENDPOINT}"
 fi
 
-API_LOG_LEVEL_DEBUG=$($YQ e '.api.server.environment.modes.development.logging' $SETTINGS_FILE)
-API_LOG_LEVEL_INFO=$($YQ e '.api.server.environment.modes.production.logging' $SETTINGS_FILE)
+API_LOG_LEVEL_DEBUG=$($YQ e '.data_service_api.server.environment.modes.development.logging' $SETTINGS_FILE)
+API_LOG_LEVEL_INFO=$($YQ e '.data_service_api.server.environment.modes.production.logging' $SETTINGS_FILE)
 
 # Generate the .env file
 cat > .env <<EOL

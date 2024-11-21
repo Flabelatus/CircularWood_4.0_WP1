@@ -4,12 +4,12 @@
 
 import os
 import sys
+
 from inspect import getmembers, isclass
 from collections import defaultdict
 
 import requests
 
-from load_dotenv import load_dotenv
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy import inspect
 from marshmallow import Schema, fields
@@ -22,11 +22,12 @@ from models.design_requirements import DesignRequirementsModelFromClient
 from models.user import UserModel
 
 from resources.routes import Resources
+from workflow.api_http_client import logger
+from workflow.api_http_client import DataServiceApiHTTPClient
 
-from schema import WoodSchema, SubWoodSchema, ProductionSchema, UserSchema, DesignRequirementSchema, TagSchema
-from settings import logger
-
-load_dotenv()
+from schema import WoodSchema, SubWoodSchema
+from schema import ProductionSchema, UserSchema
+from schema import DesignRequirementSchema, TagSchema
 
 __models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
 
@@ -34,7 +35,7 @@ resources = Resources()
 data_endpts = [resources.endpoints_by_field(model)[0] for model in __models__]
 tablenames = [resources.tablename_by_field(model) for model in __models__]
 
-__params__ = {
+__data_model_params__ = {
     __models__[i]: { 
         "field_endpoints": f"/{__models__[i]}/modifiable-fields",
         "data_endpoint": data_endpts[i],
@@ -43,12 +44,13 @@ __params__ = {
 }
 
 
-class ModelModifier:
+class ModelModifier(DataServiceApiHTTPClient):
 
     def __init__(self) -> None:
-        self.url = os.environ.get("URL")
+        super().__init__()
+        self.url = self.params.base_url
 
-        self.params = defaultdict(field_endpoints="/", data_endpoint="/", tablename="")
+        self.data_model_params = defaultdict(field_endpoints="/", data_endpoint="/", tablename="")
         
         self.schema = Schema()
         self.model = "base"
@@ -66,7 +68,7 @@ class ModelModifier:
         return self._get_fields()
     
     def _get_fields(self):
-        response = requests.get(url=f"{self.url}{self.params.fields_endpoint}")
+        response = requests.get(url=f"{self.url}{self.data_model_params.get('field_endpoints')}")
         if response.status_code == 200:
             # logger.debug(response.json())
             return response.json()['modifiable_fields']
@@ -77,30 +79,13 @@ class ModelModifier:
         assert record_id > 0, "The ID can not be 0"
         assert isinstance(record_id, int), "The record ID must be an integer"
 
-        response = requests.get(url=f"{self.url}{self.params.get('data_endpoint')}/{record_id}")
+        response = requests.get(url=f"{self.url}{self.data_model_params.get('data_endpoint')}/{record_id}")
         if response.status_code == 200:
             return response.json()
         else:
             logger.error(response.json())
             return None
         
-    def authenticate(self):
-        username = input("Username: ")
-        password = input("Password: ")
-        auth_endpoint = f"{self.url}/login"
-        payload = {
-            "username": username,
-            "password": password
-        }
-        access_token = ""
-        response = requests.post(url=auth_endpoint, json=payload)
-
-        if response.status_code == 200:
-            access_token = response.json()["access_token"]
-            return access_token
-        else:
-            logger.error(response.json())
-
     def modify_data(self, record_id, data):
         record = self._get_data(record_id)
         updated_data = {}
@@ -134,8 +119,8 @@ class ModelModifier:
             updated_data[field] = record[field]
 
         # Get the data endpoints
-        data_endpoint = self.params["data_endpoint"]
-        if self.params["tablename"] == "users":
+        data_endpoint = self.data_model_params["data_endpoint"]
+        if self.data_model_params["tablename"] == "users":
             data_endpoint = "/user"
 
         # Send the API call with the new record
@@ -156,7 +141,7 @@ class ModelModifier:
 
         for record_id in record_id_list:
             response = requests.delete(
-                url=f"{self.url}{self.params.data_endpoint}/{record_id}",
+                url=f"{self.url}{self.data_model_params.data_endpoint}/{record_id}",
                 headers=headers
             )
             if response.status_code == 200:
@@ -176,8 +161,8 @@ class WoodModifier(ModelModifier):
         super().__init__()
         self.model = WoodModel.__tablename__
         self.schema = WoodSchema()
-        self.params = __params__.get("wood")
-        assert self.model == self.params.get("tablename"), "The model is not compatible with wood modifier"
+        self.data_model_params = __data_model_params__.get("wood")
+        assert self.model == self.data_model_params.get("tablename"), "The model is not compatible with wood modifier"
 
     def handle_reservation(self, wood_id_list: list, reserve_wood=True):
         
@@ -191,7 +176,7 @@ class WoodModifier(ModelModifier):
 
         for wood_id in wood_id_list:
             response = requests.get(
-                url=f"{self.url}{self.params.data_endpoint}/{action}/{wood_id}",
+                url=f"{self.url}{self.data_model_params.data_endpoint}/{action}/{wood_id}",
                 headers=headers
             )
             if action == "reserve" and response.status_code == 200:
@@ -214,7 +199,7 @@ class WoodModifier(ModelModifier):
 
         for wood_id in wood_id_list:
             response = requests.post(
-                url=f"{self.url}{self.params.data_endpoint}/used/{wood_id}",
+                url=f"{self.url}{self.data_model_params.data_endpoint}/used/{wood_id}",
                 headers=headers
             )
 
@@ -235,8 +220,8 @@ class SubWoodModifier(ModelModifier):
         super().__init__()
         self.model = SubWoodModel.__tablename__
         self.schema = SubWoodSchema()
-        self.params = self.params = __params__.get("sub_wood")
-        assert self.model == self.params.get('tablename'), "The model is not compatible with subwood modifier"
+        self.data_model_params = __data_model_params__.get("sub_wood")
+        assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with subwood modifier"
 
     def update(self, subwood_id, data):
         self.modify_data(record_id=subwood_id, data=data)
@@ -247,8 +232,8 @@ class DesignMetaDataModifier(ModelModifier):
         super().__init__()
         self.model = DesignRequirementsModelFromClient.__tablename__
         self.schema = DesignRequirementSchema()
-        self.params = self.params = __params__.get("requirements")
-        assert self.model == self.params.get('tablename'), "The model is not compatible with design requirements modifier"
+        self.data_model_params = __data_model_params__.get("requirements")
+        assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with design requirements modifier"
 
     def update(self, requirement_id, data):
         self.modify_data(record_id=requirement_id, data=data)
@@ -259,8 +244,8 @@ class ProductionModifier(ModelModifier):
         super().__init__()
         self.model = ProductionModel.__tablename__
         self.schema = ProductionSchema()
-        self.params = __params__.get("production")
-        assert self.model == self.params.get('tablename'), "The model is not compatible with production modifier"
+        self.data_model_params = __data_model_params__.get("production")
+        assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with production modifier"
 
     def update(self, prod_id, data):
         self.modify_data(record_id=prod_id, data=data)
@@ -271,8 +256,8 @@ class UserModifier(ModelModifier):
         super().__init__()
         self.model = UserModel.__tablename__
         self.schema = UserSchema()
-        self.params = __params__.get("users")
-        assert self.model == self.params.get('tablename'), "The model is not compatible with users modifier"
+        self.data_model_params = __data_model_params__.get("users")
+        assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with users modifier"
 
     def update(self, user_id, data):
         self.modify_data(record_id=user_id, data=data)
@@ -283,8 +268,8 @@ class TagsModifier(ModelModifier):
         super().__init__()
         self.model = TagModel.__tablename__
         self.schema = TagSchema()
-        self.params = __params__.get("taglist")
-        assert self.model == self.params.get('tablename'), "The model is not compatible with tags modifier"
+        self.data_model_params = __data_model_params__.get("taglist")
+        assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with tags modifier"
     
     def update(self, tag_id, data):
         self.modify_data(record_id=tag_id, data=data)
