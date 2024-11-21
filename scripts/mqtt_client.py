@@ -1,6 +1,8 @@
 # The code for subscribing to the mqtt broker and parsing all the
 # messages and flags
 
+import json
+
 import paho.mqtt.client as mqtt
 from time import sleep
 
@@ -55,15 +57,52 @@ def on_message(client, userdata, msg):
 
     topic = msg.topic
     print(f"Topic: {topic}")
-    if topic == str(mqttTopic_StartScan):
-        print(f"Topic: scanstart")
+    # if topic == str(mqttTopic_StartScan):
+    #     print(f"Topic: scanstart")
+    #     try:
+    #         lector = Lector_QR_Reader()
+    #         QR_data = lector.read_QR_Code()
+    #         while QR_data == lector.get_NoRead_item():
+    #             QR_data = lector.read_QR_Code()
+    #         mqttc.publish(mqttTopic_ScanDone,QR_data, qos=2)
+    #         mqttc.publish(mqttTopic_WoodID, QR_data, qos=2, retain=True)
+    #     except TimeoutError:
+    #         print("ERROR: cant connect to lector")
+    if topic == "PLC_coms/Prod/BLUE_Gimmedata_CW":
         try:
             lector = Lector_QR_Reader()
             QR_data = lector.read_QR_Code()
             while QR_data == lector.get_NoRead_item():
                 QR_data = lector.read_QR_Code()
-            mqttc.publish(mqttTopic_ScanDone,QR_data, qos=2)
-            mqttc.publish(mqttTopic_WoodID, QR_data, qos=2, retain=True)
+            mqttc.publish("PLC_coms/Prod/CW_DATA_Scanned",QR_data, qos=2)
+            mqttc.publish("PLC_coms/WoodID/CW", QR_data, qos=2, retain=True)
+        except TimeoutError:
+            print("ERROR: cant connect to lector")
+    if topic == "PLC_coms/Prod/BLUE_Gimmedata_CB":
+        try:
+            lector = Lector_QR_Reader()
+            QR_data = lector.read_QR_Code()
+            while QR_data == lector.get_NoRead_item():
+                QR_data = lector.read_QR_Code()
+            #TODO database call to go from woodID to plank width
+            width = 225
+            MqttPayload = dict()
+            MqttPayload["P_AMOUNT"] = str(1)
+
+            MqttPayload["Width"] = str(width)
+
+            count = 0
+            temp_num = width
+            while temp_num != 0:
+                temp_num //= 10
+                count += 1
+
+            MqttPayload["Width_Len"] = str(count)
+            json_str = json.dumps(MqttPayload)
+            print(json_str)
+
+            mqttc.publish("PLC_coms/Prod/CB_DATA_Scanned",payload=json_str, qos=2)
+            mqttc.publish("PLC_coms/WoodID/CB", QR_data, qos=2, retain=True)
         except TimeoutError:
             print("ERROR: cant connect to lector")
 
@@ -138,6 +177,9 @@ def mqttMAIN():
     mqttSubscribe(mqttTopic_Data_request)
     mqttSubscribe(mqttTopic_WoodID)
     mqttSubscribe(mqttTopic_CB)
+
+    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CB")
+    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CW")
 
     mqttc.loop_forever()
 
