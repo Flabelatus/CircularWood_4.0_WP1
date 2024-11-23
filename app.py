@@ -296,7 +296,7 @@ def create_app(db_url=None):
 
             if isinstance(reservation_date, str):
                 reservation_date = datetime.datetime.strptime(
-                    reservation_date, "%Y-%m-%d %H:%M:%S")
+                    reservation_date, '%d-%m-%Y %H:%M:%S')
 
             expiry_date = reservation_date + timedelta(days=EXPIRY_TIME)
 
