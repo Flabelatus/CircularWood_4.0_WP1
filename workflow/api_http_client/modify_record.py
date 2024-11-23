@@ -21,26 +21,24 @@ from models.tags import TagModel
 from models.design_requirements import DesignRequirementsModelFromClient
 from models.user import UserModel
 
-from resources.routes import Resources
-from workflow.api_http_client import logger
-from workflow.api_http_client import DataServiceApiHTTPClient
+from workflow.api_http_client import logger, __resources__, __api__
+from workflow.api_http_client.api_client import DataServiceApiHTTPClient
 
 from schema import WoodSchema, SubWoodSchema
 from schema import ProductionSchema, UserSchema
 from schema import DesignRequirementSchema, TagSchema
 
-__models__ = ["wood", "users", "taglist", "production", "requirements", "sub_wood"]
 
-resources = Resources()
-data_endpts = [resources.endpoints_by_field(model)[0] for model in __models__]
-tablenames = [resources.tablename_by_field(model) for model in __models__]
+_models = [key for key in __api__]
+data_endpts = [__resources__.endpoints_by_field(model)[0] for model in _models]
+tablenames = [__resources__.tablename_by_field(model) for model in _models]
 
-__data_model_params__ = {
-    __models__[i]: { 
-        "field_endpoints": f"/{__models__[i]}/modifiable-fields",
+_data_model_params = {
+    _models[i]: { 
+        "field_endpoints": f"/{_models[i]}/modifiable-fields",
         "data_endpoint": data_endpts[i],
         "tablename": tablenames[i]
-    } for i in range(len(__models__))
+    } for i in range(len(_models))
 }
 
 
@@ -48,7 +46,6 @@ class ModelModifier(DataServiceApiHTTPClient):
 
     def __init__(self) -> None:
         super().__init__()
-        self.url = self.params.base_url
 
         self.data_model_params = defaultdict(field_endpoints="/", data_endpoint="/", tablename="")
         
@@ -68,7 +65,7 @@ class ModelModifier(DataServiceApiHTTPClient):
         return self._get_fields()
     
     def _get_fields(self):
-        response = requests.get(url=f"{self.url}{self.data_model_params.get('field_endpoints')}")
+        response = requests.get(url=f"{self.base_url}{self.data_model_params.get('field_endpoints')}")
         if response.status_code == 200:
             # logger.debug(response.json())
             return response.json()['modifiable_fields']
@@ -79,7 +76,7 @@ class ModelModifier(DataServiceApiHTTPClient):
         assert record_id > 0, "The ID can not be 0"
         assert isinstance(record_id, int), "The record ID must be an integer"
 
-        response = requests.get(url=f"{self.url}{self.data_model_params.get('data_endpoint')}/{record_id}")
+        response = requests.get(url=f"{self.base_url}{self.data_model_params.get('data_endpoint')}/{record_id}")
         if response.status_code == 200:
             return response.json()
         else:
@@ -124,7 +121,7 @@ class ModelModifier(DataServiceApiHTTPClient):
             data_endpoint = "/user"
 
         # Send the API call with the new record
-        response = requests.patch(url=f"{self.url}{data_endpoint}/{record_id}", json=updated_data, headers=headers)
+        response = requests.patch(url=f"{self.base_url}{data_endpoint}/{record_id}", json=updated_data, headers=headers)
         if response.status_code == 200:
             logger.info(f"{len(data)} fields updated: {data}")
             # logger.debug(existing_record)
@@ -141,7 +138,7 @@ class ModelModifier(DataServiceApiHTTPClient):
 
         for record_id in record_id_list:
             response = requests.delete(
-                url=f"{self.url}{self.data_model_params.data_endpoint}/{record_id}",
+                url=f"{self.base_url}{self.data_model_params.data_endpoint}/{record_id}",
                 headers=headers
             )
             if response.status_code == 200:
@@ -161,7 +158,7 @@ class WoodModifier(ModelModifier):
         super().__init__()
         self.model = WoodModel.__tablename__
         self.schema = WoodSchema()
-        self.data_model_params = __data_model_params__.get("wood")
+        self.data_model_params = _data_model_params.get("wood")
         assert self.model == self.data_model_params.get("tablename"), "The model is not compatible with wood modifier"
 
     def handle_reservation(self, wood_id_list: list, reserve_wood=True):
@@ -176,7 +173,7 @@ class WoodModifier(ModelModifier):
 
         for wood_id in wood_id_list:
             response = requests.get(
-                url=f"{self.url}{self.data_model_params.data_endpoint}/{action}/{wood_id}",
+                url=f"{self.base_url}{self.data_model_params.data_endpoint}/{action}/{wood_id}",
                 headers=headers
             )
             if action == "reserve" and response.status_code == 200:
@@ -199,7 +196,7 @@ class WoodModifier(ModelModifier):
 
         for wood_id in wood_id_list:
             response = requests.post(
-                url=f"{self.url}{self.data_model_params.data_endpoint}/used/{wood_id}",
+                url=f"{self.base_url}{self.data_model_params.data_endpoint}/used/{wood_id}",
                 headers=headers
             )
 
@@ -220,7 +217,7 @@ class SubWoodModifier(ModelModifier):
         super().__init__()
         self.model = SubWoodModel.__tablename__
         self.schema = SubWoodSchema()
-        self.data_model_params = __data_model_params__.get("sub_wood")
+        self.data_model_params = _data_model_params.get("sub_wood")
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with subwood modifier"
 
     def update(self, subwood_id, data):
@@ -232,7 +229,7 @@ class DesignMetaDataModifier(ModelModifier):
         super().__init__()
         self.model = DesignRequirementsModelFromClient.__tablename__
         self.schema = DesignRequirementSchema()
-        self.data_model_params = __data_model_params__.get("requirements")
+        self.data_model_params = _data_model_params.get("requirements")
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with design requirements modifier"
 
     def update(self, requirement_id, data):
@@ -244,7 +241,7 @@ class ProductionModifier(ModelModifier):
         super().__init__()
         self.model = ProductionModel.__tablename__
         self.schema = ProductionSchema()
-        self.data_model_params = __data_model_params__.get("production")
+        self.data_model_params = _data_model_params.get("production")
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with production modifier"
 
     def update(self, prod_id, data):
@@ -256,7 +253,7 @@ class UserModifier(ModelModifier):
         super().__init__()
         self.model = UserModel.__tablename__
         self.schema = UserSchema()
-        self.data_model_params = __data_model_params__.get("users")
+        self.data_model_params = _data_model_params.get("users")
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with users modifier"
 
     def update(self, user_id, data):
@@ -268,7 +265,7 @@ class TagsModifier(ModelModifier):
         super().__init__()
         self.model = TagModel.__tablename__
         self.schema = TagSchema()
-        self.data_model_params = __data_model_params__.get("taglist")
+        self.data_model_params = _data_model_params.get("taglist")
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with tags modifier"
     
     def update(self, tag_id, data):

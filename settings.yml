@@ -257,37 +257,6 @@ workflow_manager:
             # This field is not DSN connection string. It is only for the auth for protected routes
             username: robotlab-admin
             password: robotlab2024
-          endpoints:
-            post:
-              authentication:
-                path: "/login"
-                auth_required: false
-              process:
-                path: "/process"
-                auth_required: true
-            get:
-              wood_by_id:
-                path: "/wood/{wood_id}"
-                auth_required: false
-              subwood_by_wood_id:
-                path: "/subwood/wood/{wood_id}"
-                auth_required: false
-              production_by_wood_id:
-                path: "/production/wood/{wood_id}"
-                auth_required: false
-              design_by_wood_id:
-                path: "/design/wood/{wood_id}"
-                auth_required: false
-              process_by_wood_id:
-                path: "/process/wood/{wood_id}"
-                auth_required: true
-            patch:
-              wood_by_id:
-                path: "/wood/{wood_id}"
-                auth_required: true
-              process_by_id:
-                path: "/process/{process_id}"
-                auth_required: true
       profinet:
         section: StoolProduction
         # documentation: "https://icthva.sharepoint.com/sites/ft-engineering-rola/Gedeelde%20documenten/[DOCUMENTATION]%202024-2025%20sem%201%20pre-makeathon%20PLC%20communications.pdf"
