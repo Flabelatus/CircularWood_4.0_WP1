@@ -37,7 +37,8 @@ mqttTopic_BLUE_Data_REQ_CB = "PLC_coms/Prod/BLUE_Gimmedata_CB"
 
 #for RED RAPID
 mqttTopic_CB = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetch_rapid']['CB_RAPID_Needed']
-mqttTopic_RAPID_Fetched_Fence = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CB_RAPID_Fetched']
+mqttTopic_RAPID_Fetched_CW = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CW_RAPID_Fetched']
+mqttTopic_RAPID_Fetched_CB = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CB_RAPID_Fetched']
 
 #broker information
 mqttHost = mqttparams['broker_info']['hostname']
@@ -170,7 +171,10 @@ def on_disconnect(client, userdata, rc):
     connected_flag=False #set flag
     print("disconnected OK")
 
-def mqttSubscribe(topic):
+def mqttSubscribe(topic, clear):
+    if clear == True:
+        mqttc.publish(payload="", topic=topic, retain=False)
+        print(f"cleared topic {topic}")
     mqttc.subscribe(topic, qos=2)
     print("subscribed to " + topic)
 def mqttMAIN():
@@ -182,13 +186,16 @@ def mqttMAIN():
 
     mqttc.connect(mqttHost, mqttPort)
 
-    mqttSubscribe(mqttTopic_StartScan)
-    mqttSubscribe(mqttTopic_Data_request)
-    mqttSubscribe(mqttTopic_WoodID)
-    mqttSubscribe(mqttTopic_CB)
+    mqttSubscribe(mqttTopic_StartScan, True)
+    mqttSubscribe(mqttTopic_Data_request, False)
+    mqttSubscribe(mqttTopic_WoodID, False)
+    mqttSubscribe(mqttTopic_CB, True)
 
-    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CB")
-    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CW")
+    mqttSubscribe(mqttTopic_RAPID_Fetched_CW, True)
+    mqttSubscribe(mqttTopic_RAPID_Fetched_CB, True)
+
+    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CB", True)
+    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CW", True)
 
     mqttc.loop_forever()
 
