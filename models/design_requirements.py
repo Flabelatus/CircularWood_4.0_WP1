@@ -39,3 +39,15 @@ class DesignRequirementsModelFromClient(db.Model, DataModelInterface):
         "WoodModel", back_populates='requirements', secondary='woods_requirements')
     sub_wood = db.relationship(
         "SubWoodModel", back_populates='requirements', lazy="dynamic")
+    
+    @property
+    def partials(self):
+        partials = (
+            [
+                "id",
+                "created_at",
+                "status"
+            ],
+        )
+
+        return self._get_status_fields(partials[0])
