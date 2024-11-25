@@ -26,6 +26,10 @@ from settings import workflow_manager_config_loader as wrkflow_cfg
 from settings import data_service_config_loader as ds_api_cfg
 from models.interface_model import DataModelInterface
 
+from schema import WoodSchema, SubWoodSchema
+from schema import ProductionSchema, UserSchema
+from schema import DesignRequirementSchema, TagSchema
+
 # Logging scope
 logger = logging.getLogger('cw4.0-api').getChild('workflows.api-client')
 
@@ -39,13 +43,34 @@ __configs__ = {
 __resources__ = Resources()
 
  # Dict of data model names and imported blueprints as `Dict[name: blueprint]`
+# __api__ = {
+#     "wood": wood_blueprint,
+#     "users": user_blp,
+#     "taglist": tags_blueprint,
+#     "production": production_blp,
+#     "requirements": design_blp,
+#     "sub_wood": sub_wood_blp
+# }
+
 __api__ = {
-    "wood": wood_blueprint,
-    "users": user_blp,
-    "taglist": tags_blueprint,
-    "production": production_blp,
-    "requirements": design_blp,
-    "sub_wood": sub_wood_blp
+    "wood": {"blueprint": wood_blueprint, "schema": WoodSchema},
+    "users": {"blueprint": user_blp, "schema": UserSchema},
+    "taglist": {"blueprint": tags_blueprint, "schema": TagSchema},
+    "production": {"blueprint": production_blp, "schema": ProductionSchema},
+    "requirements": {"blueprint": design_blp, "schema": DesignRequirementSchema},
+    "sub_wood": {"blueprint": sub_wood_blp, "schema": SubWoodSchema}
+}
+
+_models = [key for key in __api__]
+data_endpts = [__resources__.endpoints_by_field(model)[0] for model in _models]
+tablenames = [__resources__.tablename_by_field(model) for model in _models]
+
+_data_model_params = {
+    _models[i]: { 
+        "field_endpoints": f"/{_models[i]}/modifiable-fields",
+        "data_endpoint": data_endpts[i],
+        "tablename": tablenames[i]
+    } for i in range(len(_models))
 }
 
 
@@ -68,7 +93,7 @@ class ApiBlueprints:
     def _get_blueprint_routes(self, model_name: str) -> List[str]:
         assert model_name in __api__, f'{model_name} not found in data models'
         
-        blueprint = self.blueprints[model_name]
+        blueprint = self.blueprints[model_name].get('blueprint')
 
         routes = []
         for func in blueprint.deferred_functions:

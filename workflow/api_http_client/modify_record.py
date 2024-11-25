@@ -72,62 +72,52 @@ class ModelModifier(DataServiceApiHTTPClient):
         else:
             logger.error(response.json())
 
-    def _get_data(self, record_id):
-        assert record_id > 0, "The ID can not be 0"
-        assert isinstance(record_id, int), "The record ID must be an integer"
-
-        response = requests.get(url=f"{self.base_url}{self.data_model_params.get('data_endpoint')}/{record_id}")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            logger.error(response.json())
-            return None
-        
-    def modify_data(self, record_id, data):
-        record = self._get_data(record_id)
+    def _modify_record(self, record_id, data) -> requests.Response:
+        """
+        Fetch a record from the given URL. Re-authenticates if the token is expired.
+        """
+        # Get the data endpoints
+        data_endpoint = self.data_model_params["data_endpoint"]
+        url = f"{self.base_url}{data_endpoint}/{record_id}"
+        record = self._fetch_record(url).json()
         updated_data = {}
+
         if not record:
             logger.error("No valid record with the ID {0} found".format(record_id))
 
         for field in data:
             record[field] = data[field]
 
-        access_token = self.authenticate()
-
         headers = {
-            "Authorization": "Bearer " + access_token,
+            "Authorization": "Bearer " + self.access_token,
             "Content-Type": "application/json"
         }
 
         for field in self.fields:
-
             # Handle the Null fields
             if field in record and not record[field]:
                 field_type = type(self.schema.declared_fields[field])
                 python_supported_type = self.field_type_mapping.get(field_type, 'Unknown')
-                
                 if python_supported_type == type(str()):
                     record[field] = ""
                 elif python_supported_type == type(bool()):
                     record[field] = False
                 elif python_supported_type == type(int()):
                     record[field] = 0
-
             updated_data[field] = record[field]
 
-        # Get the data endpoints
-        data_endpoint = self.data_model_params["data_endpoint"]
         if self.data_model_params["tablename"] == "users":
             data_endpoint = "/user"
 
         # Send the API call with the new record
-        response = requests.patch(url=f"{self.base_url}{data_endpoint}/{record_id}", json=updated_data, headers=headers)
+        response = requests.patch(url, json=updated_data, headers=headers)
         if response.status_code == 200:
             logger.info(f"{len(data)} fields updated: {data}")
             # logger.debug(existing_record)
         else: 
             logger.error(response.json())
-            return False
+        
+        return response
 
     def delete(self, record_id_list):
         access_token = self.authenticate()
@@ -209,7 +199,7 @@ class WoodModifier(ModelModifier):
                 continue
 
     def update(self, wood_id, data):
-        self.modify_data(record_id=wood_id, data=data)
+        self._modify_record(record_id=wood_id, data=data)
 
 
 class SubWoodModifier(ModelModifier):
@@ -221,7 +211,7 @@ class SubWoodModifier(ModelModifier):
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with subwood modifier"
 
     def update(self, subwood_id, data):
-        self.modify_data(record_id=subwood_id, data=data)
+        self._modify_record(record_id=subwood_id, data=data)
 
 
 class DesignMetaDataModifier(ModelModifier):
@@ -233,7 +223,7 @@ class DesignMetaDataModifier(ModelModifier):
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with design requirements modifier"
 
     def update(self, requirement_id, data):
-        self.modify_data(record_id=requirement_id, data=data)
+        self._modify_record(record_id=requirement_id, data=data)
 
 
 class ProductionModifier(ModelModifier):
@@ -245,7 +235,7 @@ class ProductionModifier(ModelModifier):
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with production modifier"
 
     def update(self, prod_id, data):
-        self.modify_data(record_id=prod_id, data=data)
+        self._modify_record(record_id=prod_id, data=data)
 
 
 class UserModifier(ModelModifier):
@@ -257,7 +247,7 @@ class UserModifier(ModelModifier):
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with users modifier"
 
     def update(self, user_id, data):
-        self.modify_data(record_id=user_id, data=data)
+        self._modify_record(record_id=user_id, data=data)
 
 
 class TagsModifier(ModelModifier):
@@ -269,7 +259,7 @@ class TagsModifier(ModelModifier):
         assert self.model == self.data_model_params.get('tablename'), "The model is not compatible with tags modifier"
     
     def update(self, tag_id, data):
-        self.modify_data(record_id=tag_id, data=data)
+        self._modify_record(record_id=tag_id, data=data)
 
 
 def get_modifiers_mapping():
