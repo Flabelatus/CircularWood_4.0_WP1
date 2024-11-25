@@ -25,10 +25,15 @@ mqttTopic_ScanDone = mqttparams['topics']['production']['lector']['scanDone']
 
 #the wood ID
 mqttTopic_WoodID = mqttparams['topics']['production']['general']['wood_data']['woodID']
-
+mqttTopic_WoodID_CW = "PLC_coms/Prod/WoodID/CW"
+mqttTopic_WoodID_CB = "PLC_coms/Prod/WoodID/CB"
 #for BLUE data transfer
 mqttTopic_Data_request = mqttparams['topics']['production']['from_PC_to_plc']['blue']['request_part_data']
 mqttTopic_Publish_Data = mqttparams['topics']['production']['from_plc_to_PC']['blue']['request_part_data']
+mqttTopic_BLUE_Data_ACK_CW = "PLC_coms/Prod/CW_DATA_Scanned"
+mqttTopic_BLUE_Data_ACK_CB = "PLC_coms/Prod/CB_DATA_Scanned"
+mqttTopic_BLUE_Data_REQ_CW = "PLC_coms/Prod/BLUE_Gimmedata_CW"
+mqttTopic_BLUE_Data_REQ_CB = "PLC_coms/Prod/BLUE_Gimmedata_CB"
 
 #for RED RAPID
 mqttTopic_CB = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetch_rapid']['CB_RAPID_Needed']
@@ -42,6 +47,8 @@ mqttPort = mqttparams['broker_info']['port']
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
 woodID = 1
+woodID_CW = 1
+woodID_CB = 1
 
 def on_connect(client, userdata, flags, rc, null):
     print("Connected with result code " + str(rc))
@@ -54,55 +61,51 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties=None):
 
 def on_message(client, userdata, msg):
     global woodID
+    global woodID_CW
+    global woodID_CB
 
     topic = msg.topic
     print(f"Topic: {topic}")
-    # if topic == str(mqttTopic_StartScan):
-    #     print(f"Topic: scanstart")
-    #     try:
-    #         lector = Lector_QR_Reader()
-    #         QR_data = lector.read_QR_Code()
-    #         while QR_data == lector.get_NoRead_item():
-    #             QR_data = lector.read_QR_Code()
-    #         mqttc.publish(mqttTopic_ScanDone,QR_data, qos=2)
-    #         mqttc.publish(mqttTopic_WoodID, QR_data, qos=2, retain=True)
-    #     except TimeoutError:
-    #         print("ERROR: cant connect to lector")
-    if topic == "PLC_coms/Prod/BLUE_Gimmedata_CW":
+
+    if topic == mqttTopic_BLUE_Data_REQ_CW:
         try:
             lector = Lector_QR_Reader()
             QR_data = lector.read_QR_Code()
             while QR_data == lector.get_NoRead_item():
                 QR_data = lector.read_QR_Code()
-            mqttc.publish("PLC_coms/Prod/CW_DATA_Scanned",QR_data, qos=2)
-            mqttc.publish("PLC_coms/WoodID/CW", QR_data, qos=2, retain=True)
+
+            mqttc.publish(mqttTopic_WoodID_CB, QR_data, qos=2, retain=True)
+
+            #TODO add database call to get width from woodID, remove this line below later
+            width = 225
+
+            publishdata = dict()
+            publishdata["P_AMOUNT"] = "1"
+            publishdata["P1L"] = str(width)
+            publishdata["P1L_len"] = len(str(width))
+            json_str = json.dumps(publishdata)
+            mqttc.publish(mqttTopic_BLUE_Data_ACK_CW,json_str, qos=2)
         except TimeoutError:
             print("ERROR: cant connect to lector")
-    if topic == "PLC_coms/Prod/BLUE_Gimmedata_CB":
+
+    if topic == mqttTopic_BLUE_Data_REQ_CB:
         try:
             lector = Lector_QR_Reader()
             QR_data = lector.read_QR_Code()
             while QR_data == lector.get_NoRead_item():
                 QR_data = lector.read_QR_Code()
-            #TODO database call to go from woodID to plank width
-            width = 225
-            MqttPayload = dict()
-            MqttPayload["P_AMOUNT"] = str(1)
 
-            MqttPayload["Width"] = str(width)
+            mqttc.publish(mqttTopic_WoodID_CB, QR_data, qos=2, retain=True)
 
-            count = 0
-            temp_num = width
-            while temp_num != 0:
-                temp_num //= 10
-                count += 1
+            #TODO add database call to get width from woodID, remove this line below later
+            width = 325
 
-            MqttPayload["Width_Len"] = str(count)
-            json_str = json.dumps(MqttPayload)
-            print(json_str)
-
-            mqttc.publish("PLC_coms/Prod/CB_DATA_Scanned",payload=json_str, qos=2)
-            mqttc.publish("PLC_coms/WoodID/CB", QR_data, qos=2, retain=True)
+            publishdata = dict()
+            publishdata["P_AMOUNT"] = "1"
+            publishdata["P1L"] = str(width)
+            publishdata["P1L_len"] = len(str(width))
+            json_str = json.dumps(publishdata)
+            mqttc.publish(mqttTopic_BLUE_Data_ACK_CB,json_str, qos=2)
         except TimeoutError:
             print("ERROR: cant connect to lector")
 
@@ -119,10 +122,16 @@ def on_message(client, userdata, msg):
         except:
             print("ERROR with calling wood data for BLUE ")
 
-    if topic == str(mqttTopic_WoodID):
-        print(f"Topic: woodID")
+    if topic == str(mqttTopic_WoodID_CW):
+        print(f"Topic: woodID_CW")
         try:
-            woodID = int(msg.payload)
+            woodID_CW = int(msg.payload)
+        except ValueError:
+            print(ValueError)
+    if topic == str(mqttTopic_WoodID_CB):
+        print(f"Topic: woodID_CB")
+        try:
+            woodID_CB = int(msg.payload)
         except ValueError:
             print(ValueError)
 
