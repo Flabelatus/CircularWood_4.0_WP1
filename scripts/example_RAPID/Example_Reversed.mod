@@ -1,4 +1,4 @@
-MODULE Building
+MODULE Module2
     PROC main()
             WaitTime(3);
             !!!!!!!!!!!!REversed!!!!

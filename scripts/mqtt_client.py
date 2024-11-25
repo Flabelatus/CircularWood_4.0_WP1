@@ -40,6 +40,9 @@ mqttTopic_CB = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetc
 mqttTopic_RAPID_Fetched_CW = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CW_RAPID_Fetched']
 mqttTopic_RAPID_Fetched_CB = mqttparams['topics']['production']['from_plc_to_PC']['red']['fetch_rapid']['CB_RAPID_Fetched']
 
+mqttTopic_RED_RAPID_NEEDED_CW = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetch_rapid']['CW_RAPID_Needed']
+mqttTopic_RED_RAPID_NEEDED_CB = mqttparams['topics']['production']['from_PC_to_plc']['red']['fetch_rapid']['CB_RAPID_Needed']
+
 #broker information
 mqttHost = mqttparams['broker_info']['hostname']
 
@@ -136,33 +139,82 @@ def on_message(client, userdata, msg):
         except ValueError:
             print(ValueError)
 
-    if topic == str(mqttTopic_CB):
-        print(f"Topic: RED RAPID FTP")
+    if topic == str(mqttTopic_RED_RAPID_NEEDED_CW):
+        print(f"Topic: RED RAPID FTP CW")
         try:
             ftp_params = WorkflowManagerConfigLoader().ftp_network_configs
 
             ip = ftp_params["red_robot"]['ip']
             user = ftp_params["red_robot"]['credentials']['username']
             passwd = ftp_params["red_robot"]['credentials']['password']
-
+            print("params loaded")
             rapid_ftp = RAPID_FTP(ip=ip, user=user, passwd=passwd)
-            #TODO
-            # put the old RED code back
-            rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="MILLING_UPLOAD",
-                                  targetPath="Example_ABC_abc.mod")
-            mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
-            #TODO
-            # uncomment later when correct database call implementation in ftp class is done
-            #
-            #
-            # rapid_ftp = RAPID_FTP(ip='10.0.0.14',user='Default User',passwd='robotics')
-            # rapid_ftp.RAPID_FTP_main(WoodID=woodID,
-            #                          msg=msg,
-            #                          rapid_File_Path_1="Normal__abc.mod",
-            #                          rapid_File_Path_2="Reversed__abc.mod",
-            #                          Inbetween_RAPID_Marker='\nINBETWEEN\n',
-            #                          targetDirectory='RED_Milling')
-            # mqttc.publish(mqttTopic_RAPID_Fetched_Fence, 'N/A')
+            print("ftp object made")
+
+            #TODO use database call to get correct RAPID scripts
+            #TODO--------------------------------------
+            #TODO--------------------------------------
+            #TODO--------------------------------------
+            #TODO--------------------------------------
+
+
+            #TODO keep if vertical milling
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="WallPannelMIllingScripts",
+                                  targetPath="VerticalWindow.mod")
+            print("vertical file uploaded")
+
+
+            #TODO keep if with flipping
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="WallPannelMIllingScripts",
+                                  targetPath="Window.mod")
+            print("file uploaded")
+            #TODO keep if with flipping
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example_Reversed.mod", targetDirectory="WallPannelMIllingScripts",
+                                  targetPath="Window_Reversed.mod")
+            print("reversed file uploaded")
+
+            mqttc.publish(mqttTopic_RAPID_Fetched_CW, 'N/A')
+            print("published CW ack")
+
+        except:
+            print("error in ftp for CW")
+
+    if topic == str(mqttTopic_RED_RAPID_NEEDED_CB):
+        print(f"Topic: RED RAPID FTP CW")
+        try:
+            ftp_params = WorkflowManagerConfigLoader().ftp_network_configs
+
+            ip = ftp_params["red_robot"]['ip']
+            user = ftp_params["red_robot"]['credentials']['username']
+            passwd = ftp_params["red_robot"]['credentials']['password']
+            print("params loaded")
+            rapid_ftp = RAPID_FTP(ip=ip, user=user, passwd=passwd)
+            print("ftp object made")
+
+            # TODO use database call to get correct RAPID scripts
+            # TODO--------------------------------------
+            # TODO--------------------------------------
+            # TODO--------------------------------------
+            # TODO--------------------------------------
+
+            # TODO keep if vertical milling
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="WallPannelMillingScripts",
+                                  targetPath="VerticalBuilding.mod")
+            print("vertical file uploaded")
+
+            # TODO keep if with flipping
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="WallPannelMillingScripts",
+                                  targetPath="Building.mod")
+            print("file uploaded")
+            # TODO keep if with flipping
+            rapid_ftp.upload_file(inputPath="example_RAPID/Example_Reversed.mod",
+                                  targetDirectory="WallPannelMIllingScripts",
+                                  targetPath="Building_Reversed.mod")
+            print("reversed file uploaded")
+
+            mqttc.publish(mqttTopic_RAPID_Fetched_CB, 'N/A')
+            print("published CB ack")
+
         except:
             print("error in ftp")
 
@@ -175,6 +227,7 @@ def mqttSubscribe(topic, clear):
     if clear == True:
         mqttc.publish(payload="", topic=topic, retain=False)
         print(f"cleared topic {topic}")
+    sleep(0.1)
     mqttc.subscribe(topic, qos=2)
     print("subscribed to " + topic)
 def mqttMAIN():
@@ -186,16 +239,16 @@ def mqttMAIN():
 
     mqttc.connect(mqttHost, mqttPort)
 
-    mqttSubscribe(mqttTopic_StartScan, True)
-    mqttSubscribe(mqttTopic_Data_request, False)
-    mqttSubscribe(mqttTopic_WoodID, False)
-    mqttSubscribe(mqttTopic_CB, True)
+    mqttSubscribe(topic=mqttTopic_StartScan, clear=True)
+    mqttSubscribe(topic=mqttTopic_Data_request, clear=True)
+    mqttSubscribe(topic=mqttTopic_WoodID, clear=False)
+    mqttSubscribe(topic=mqttTopic_CB, clear=True)
 
-    mqttSubscribe(mqttTopic_RAPID_Fetched_CW, True)
-    mqttSubscribe(mqttTopic_RAPID_Fetched_CB, True)
+    mqttSubscribe(topic=mqttTopic_RED_RAPID_NEEDED_CW, clear=True)
+    mqttSubscribe(topic=mqttTopic_RED_RAPID_NEEDED_CB, clear=True)
 
-    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CB", True)
-    mqttSubscribe("PLC_coms/Prod/BLUE_Gimmedata_CW", True)
+    mqttSubscribe(topic="PLC_coms/Prod/BLUE_Gimmedata_CB", clear=True)
+    mqttSubscribe(topic="PLC_coms/Prod/BLUE_Gimmedata_CW", clear=True)
 
     mqttc.loop_forever()
 

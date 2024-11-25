@@ -215,8 +215,8 @@ workflow_manager:
                 request_part_data: PLC_coms/Stool/NewStoolData
               red:
                 fetch_rapid:
-                  CW_RAPID_Fetched: PLComs/RAPID_Fetched_Window
-                  CB_RAPID_Fetched: PLC_coms/RAPID_Fetched_Fence
+                  CW_RAPID_Fetched: PLC_coms/Prod/RAPID_Fetched_CW
+                  CB_RAPID_Fetched: PLC_coms/Prod/RAPID_Fetched_CB
             lector:
               #lector respose will also be published to WoodID
               woodID: PLC_coms/Stool/WoodID
