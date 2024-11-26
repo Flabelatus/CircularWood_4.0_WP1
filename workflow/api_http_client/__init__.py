@@ -11,9 +11,7 @@ import logging
 
 from collections import namedtuple
 from typing import List, Dict
-from inspect import getmembers, isclass
 
-import requests
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy import inspect
 

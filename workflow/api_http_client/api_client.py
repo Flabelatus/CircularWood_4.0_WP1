@@ -5,7 +5,6 @@
 import urllib
 import urllib.parse
 import requests
-import json
 from typing import Dict, List, Union
 from workflow.api_http_client import logger, __configs__
 from workflow.api_http_client import HttpClientCore, __api__
