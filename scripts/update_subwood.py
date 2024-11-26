@@ -6,12 +6,11 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.api_http_client import modify_record
+from workflow.api_http_client.api_client import http_client
 
 
 def modify_subwood(subwood_id, data):
-    subwood_modifier = modify_record.SubWoodModifier()
-    subwood_modifier.update(subwood_id, data=data)
+    http_client.update_subwood_by_id(subwood_id, data)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from models import *
 
 
+# TODO: Add the method to dispatch routes
 class Resources:
     
     __routes__ = {
@@ -22,11 +23,11 @@ class Resources:
                 "endpoints": [
                     "/wood",             
                     "/wood/<int:wood_id>",      
-                    "/wood/used/<int:wood_id>",
                 ]
             },
             "function_handler": {
                 "endpoints": [
+                    "/wood/used/<int:wood_id>",
                     "/wood/reserve/<int:wood_id>",
                     "/wood/unreserve/<int:wood_id>"
                 ]

@@ -6,12 +6,12 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.api_http_client import modify_record
+from workflow.api_http_client.api_client import http_client
 
 
 def modify_tag(tag_id, data):
-    tag_modifier = modify_record.TagsModifier()
-    tag_modifier.modify_data(tag_id, data=data)
+    url = f"{http_client.base_url}{http_client.api_blueprints.tag_by_id_route}{tag_id}"
+    http_client._update_record(url=url, data=data)
 
 
 if __name__ == "__main__":

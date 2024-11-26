@@ -6,12 +6,12 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.api_http_client import modify_record
+from workflow.api_http_client.api_client import http_client
 
 
 def modify_production(production_id, data):
-    production_modifier = modify_record.ProductionModifier()
-    production_modifier.update(production_id, data=data)
+    url = f"{http_client.base_url}{http_client.api_blueprints.production_by_id_route}{production_id}"
+    http_client._update_record(url=url, data=data)
 
 
 if __name__ == "__main__":

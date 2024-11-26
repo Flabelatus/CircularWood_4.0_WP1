@@ -28,7 +28,6 @@ class DataModelInterface:
             if isinstance(attr.property, RelationshipProperty):
                 relationship_fields.append(attr_name)
         
-        logger.debug(f"Relationship fields: {relationship_fields}")
         return relationship_fields
 
     def _get_status_fields(self, status_fields):
