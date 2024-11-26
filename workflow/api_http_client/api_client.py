@@ -92,7 +92,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
             response = requests.get(url)    
             if response.status_code != 200:
                 logger.error(f"Error fetching record: {response.status_code}, {response.text}")
-                return None
             return response
         except ConnectionError as e:
             logger.error(f"Connection error: {e}")
@@ -111,7 +110,14 @@ class DataServiceApiHTTPClient(HttpClientCore):
             return None
         
     def _insert_record(self, url: str, record: dict) -> requests.Response:
-        ...
+        try:
+            response = requests.post(url=url, json=record)
+            if response.status_code != 201:
+                logger.error(f"Error inserting record: {response.status_code}, {response.text}")
+                return None
+        except ConnectionError as e:
+            logger.error(f"Connection error: {e}")
+            return None
 
     def _update_record(self, url: str, data: dict =None) -> requests.Response:
         model = self._extract_model_name_from_url(url)
@@ -260,27 +266,80 @@ class DataServiceApiHTTPClient(HttpClientCore):
         return self._update_record(url=url, data=data)
     
     def remove_wood_by_id(self, wood_id: int) -> requests.Response:
-        ...
+        url = f"{self.base_url}{self.api_blueprints.wood_by_id_route}{wood_id}"
+        return self._delete_record(url=url)
 
     def remove_subwood_by_id(self, subwood_id: int) -> requests.Response:
-        ...
+        url = f"{self.base_url}{self.api_blueprints.subwood_by_id_route}{subwood_id}"
+        return self._delete_record(url=url)
     
     def remove_design_by_id(self, design_id: int) -> requests.Response:
-        ...
+        url = f"{self.base_url}{self.api_blueprints.design_by_id_route}{design_id}"
+        return self._delete_record(url=url)    
     
     def remove_production_by_id(self, production_id: int) -> requests.Response:
-        ...
-
-    def remove_tag_by_id(self, tag_id: int) -> requests.Response:
-        ... 
-
-    def post_wood(self, data):
-        endpoint = self.api_blueprints.wood_route
+        url = f"{self.base_url}{self.api_blueprints.production_by_id_route}{production_id}"
+        return self._delete_record(url=url)
     
-    def set_wood_as_used(self, wood_id: int) -> requests.Response:
-        ...
+    def remove_tag_by_id(self, tag_id: int) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.tag_by_id_route}{tag_id}"
+        return self._delete_record(url=url)
+    
+    def add_wood(self, data) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.wood_route}"
+        return self._insert_record(url=url, record=data)
+    
+    def add_subwood(self, data) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.subwood_route}"
+        return self._insert_record(url=url, record=data)
 
-    def reserve_wood(self, wood_id: int) -> requests.Response: ...
+    def add_production(self, data) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.production_route}"
+        return self._insert_record(url=url, record=data)
+
+    def add_design(self, data) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.design_route}"
+        return self._insert_record(url=url, record=data)
+
+    def add_tag(self, data) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.taglist_route}"
+        return self._insert_record(url=url, record=data)    
+
+    def set_wood_as_used(self, wood_id: int) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.wood_set_used_route}{wood_id}"
+        self._check_auth_status()
+        headers = {"Authorization": "Bearer " + self.access_token}
+        try:
+            response = requests.post(url=url, headers=headers)
+            if response.status_code != 200:
+                logger.error(f"Error setting the wood usage status: {response.status_code} - {response.text}")
+            return response
+        except ConnectionError as e:
+            logger.error(f"Connection error: {e}")
+
+    def reserve_wood(self, wood_id: int) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.wood_reserve_route}{wood_id}"
+        self._check_auth_status()
+        headers = {"Authorization": "Bearer " + self.access_token}
+        try:
+            response = requests.get(url=url, headers=headers)
+            if response.status_code != 200:
+                logger.error(f"Error reserving wood: {response.status_code} - {response.text}")
+            return response
+        except ConnectionError as e:
+            logger.error(f"Connection error: {e}")
+
+    def unreserve_wood(self, wood_id: int) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.wood_unreserve_route}{wood_id}"
+        self._check_auth_status()
+        headers = {"Authorization": "Bearer " + self.access_token}
+        try:
+            response = requests.get(url=url, headers=headers)
+            if response.status_code != 200:
+                logger.error(f"Error reserving wood: {response.status_code} - {response.text}")
+            return response
+        except ConnectionError as e:
+            logger.error(f"Connection error: {e}")
 
 
 http_client = DataServiceApiHTTPClient()

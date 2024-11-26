@@ -168,6 +168,21 @@ class ApiBlueprints:
         """`/wood/<int:wood_id>` Endpoint to get, update or delete the wood data by ID"""
         key, criteria = 'wood', 'params'
         return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
+    
+    @property
+    def wood_reserve_route(self) -> str:
+        key = 'reserve'
+        return f"{self.wood_by_id_route}{key}/"
+
+    @property
+    def wood_unreserve_route(self) -> str:
+        key = 'unreserve'
+        return f"{self.wood_by_id_route}{key}/"
+
+    @property
+    def wood_set_used_route(self) -> str:
+        key = 'used'
+        return f"{self.wood_by_id_route}{key}/"
 
     @property
     def subwood_by_id_route(self) -> str:
