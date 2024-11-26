@@ -13,14 +13,14 @@ from settings import workflow_manager_config_loader as wrkflow_configs
 
 
 logger = logging.getLogger('cw4.0-api').getChild('workflows.prod-gateway')
-configs = {
+__configs__ = {
     'data_service': ds_api_configs,
     'workflow': wrkflow_configs
 }
 
 
 class ProductionCore:
-    def __init__(self, configs=configs):
+    def __init__(self, configs=__configs__):
         self.configs = configs
         self.root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -30,7 +30,7 @@ class ProductionCore:
                 field_names=[
                     'root_dir',
                     'lector',
-                    'printer',
+                    'label_printer',
                     'ftp',
                     'tcp',
                     'mqtt',
@@ -49,7 +49,7 @@ class ProductionCore:
         production_run_params = ProductionRunParameters(
             root_dir=self.root,
             lector=lector_configs,
-            printer=printer_configs,
+            label_printer=printer_configs,
             ftp=wrkflow_configs.ftp_network_configs,
             tcp=wrkflow_configs.tcp_network_configs,
             mqtt=wrkflow_configs.mqtt_network_configs,
@@ -57,7 +57,6 @@ class ProductionCore:
             database_service=database_service,
         )
 
-        logger.debug("production run parameters loaded")
         return production_run_params
 
     @property
