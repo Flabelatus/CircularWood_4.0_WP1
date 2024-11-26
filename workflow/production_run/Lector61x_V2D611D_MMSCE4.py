@@ -1,41 +1,46 @@
-import socket, time
-
 import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from settings import WorkflowManagerConfigLoader
+import socket
 
-class Lector_QR_Reader:
+from workflow.production_run import logger, ProductionCore
+
+logger.getChild('lector')
+
+
+class LectorQrCodeReader(ProductionCore):
     def __init__(self):
+        super().__init__()
         """
         Initializes the QR reader by creating a socket and connecting to the specified IP address and port.
         """
-        lector_socket_params = WorkflowManagerConfigLoader().tcp_network_configs
-
-        print(lector_socket_params)
-
-        self.ip = lector_socket_params['lector']['ip']
-        self.port = int(lector_socket_params['lector']['ports']['command_port'])
-        self.responseport = int(lector_socket_params['lector']['ports']['response_port'])
-        print(f"ip: {self.ip}, port: {self.port}, responseport: {self.responseport}")
-
-        self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.device_title = 'Lector61x_V2D611D_MMSCE4'
+        self.device_configs = self._get_production_run_params().lector
+        self.device_network_configs = self._get_production_run_params().tcp.get('lector')
+        self.ip = self.device_network_configs['ip']
+        self.port = self.device_network_configs['ports']['command_port']
+        self.response_port = self.device_network_configs['ports']['response_port']
+        self.no_read_item = ""
+        self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
         self.connect()
-
-
 
     def connect(self):
         """
         Establishes a connection to the QR reader device.
         Sets a 5-second timeout for the connection attempt.
         """
-        self.clientsocket.settimeout(5.0)
-        self.clientsocket.connect((self.ip, self.port))
-        self.NoReadItem = "NoRead"
+        try:
+            self.socket_client.settimeout(5.0)
+            self.socket_client.connect((self.ip, self.port))
+            self.no_read_item = "NoRead"
+            logger.debug(f"Connected to device:\nip: {self.ip}, port: {self.port}, response_port: {self.response_port}")
+        except OSError as e:
+            logger.error(f"Error in `def connect(self): ...` while trying to connect to the socket: {e}")
 
-    def sendcommand(self, command):
+    def send_command(self, command):
         """
         Sends a command to the QR reader device and waits for a response.
         Formats the command with specific delimiters and sends it over the socket.
@@ -44,13 +49,16 @@ class Lector_QR_Reader:
         Returns `True` if the command was executed successfully, `False` otherwise.
         """
         payload = '\x02{}\x03'.format(command)
-        print('sending {}'.format(payload))
-        self.clientsocket.send(payload.encode())
-        self.clientsocket.settimeout(8.0)
-        response = self.clientsocket.recv(self.responseport)
-        print('sent {} and received back {}'.format(payload, response.decode()))
-        if response.decode().strip().replace('\x02', '').replace('\x03', '') == '{}'.format(command):
-            print('command executed and confirmed')
+        logger.debug('sending {0}'.format(payload))
+
+        self.socket_client.send(payload.encode())
+        self.socket_client.settimeout(8.0)
+        
+        response = self.socket_client.recv(self.response_port)
+        logger.debug('sent {0} and received back {1}'.format(payload, response.decode()))
+
+        if response.decode().strip().replace('\x02', '').replace('\x03', '') == '{0}'.format(command):
+            logger.debug('command executed and confirmed')
             return True
         else:
             return False
@@ -59,20 +67,21 @@ class Lector_QR_Reader:
         """
         Sends a command to the QR reader to start reading QR codes.
         """
-        self.sendcommand(21)
+        self.send_command(21)
 
     def stop_reading(self):
         """
         Sends a command to the QR reader to stop reading QR codes.
         """
-        self.sendcommand(22)
+        self.send_command(22)
 
-    def get_NoRead_item(self):
+    def get_no_read_item(self):
         """
         Returns a string indicating that no QR code was read.
         """
-        return self.NoReadItem
-    def read_QR_Code(self):
+        return self.no_read_item
+    
+    def read_qr_code(self):
         """
         Starts the QR code reading process.
         Continuously receives data from the QR reader until a QR code is detected or a timeout occurs.
@@ -81,16 +90,16 @@ class Lector_QR_Reader:
         """
         self.start_reading()
         reading = True
-        while True:
+        while reading:
             try:
-                self.clientsocket.settimeout(8.0)
-                response = self.clientsocket.recv(self.responseport)
-                print(response)
+                self.socket_client.settimeout(8.0)
+                response = self.socket_client.recv(self.response_port)
+                logger.debug(response)
                 response = response.decode().strip().replace('\x02', '').replace('\x03', '')
-                print('found code:{}'.format(response))
+                logger.debug('found code:{}'.format(response))
                 self.stop_reading()
                 break;
-            except TimeoutError:
-                print('nothing received for 5s')
-                response = self.get_NoRead_item()
+            except TimeoutError as e:
+                logger.error(f'nothing received for 5s: {e}')
+                response = self.get_no_read_item()
         return response
