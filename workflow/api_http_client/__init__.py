@@ -11,20 +11,19 @@ import logging
 
 from collections import namedtuple
 from typing import List, Dict
+from inspect import getmembers, isclass
 
 import requests
-from requests.exceptions import ConnectionError
-from flask_smorest import Blueprint
+from sqlalchemy.orm import RelationshipProperty
+from sqlalchemy import inspect
 
 from resources import wood_blueprint, sub_wood_blp
 from resources import production_blp, design_blp
 from resources import user_blp, tags_blueprint
 from resources.routes import Resources
 
-from settings import logger
 from settings import workflow_manager_config_loader as wrkflow_cfg
 from settings import data_service_config_loader as ds_api_cfg
-from models.interface_model import DataModelInterface
 
 from schema import WoodSchema, SubWoodSchema
 from schema import ProductionSchema, UserSchema
@@ -43,15 +42,6 @@ __configs__ = {
 __resources__ = Resources()
 
  # Dict of data model names and imported blueprints as `Dict[name: blueprint]`
-# __api__ = {
-#     "wood": wood_blueprint,
-#     "users": user_blp,
-#     "taglist": tags_blueprint,
-#     "production": production_blp,
-#     "requirements": design_blp,
-#     "sub_wood": sub_wood_blp
-# }
-
 __api__ = {
     "wood": {"blueprint": wood_blueprint, "schema": WoodSchema},
     "users": {"blueprint": user_blp, "schema": UserSchema},
@@ -59,18 +49,6 @@ __api__ = {
     "production": {"blueprint": production_blp, "schema": ProductionSchema},
     "requirements": {"blueprint": design_blp, "schema": DesignRequirementSchema},
     "sub_wood": {"blueprint": sub_wood_blp, "schema": SubWoodSchema}
-}
-
-_models = [key for key in __api__]
-data_endpts = [__resources__.endpoints_by_field(model)[0] for model in _models]
-tablenames = [__resources__.tablename_by_field(model) for model in _models]
-
-_data_model_params = {
-    _models[i]: { 
-        "field_endpoints": f"/{_models[i]}/modifiable-fields",
-        "data_endpoint": data_endpts[i],
-        "tablename": tablenames[i]
-    } for i in range(len(_models))
 }
 
 
@@ -330,3 +308,36 @@ class HttpClientCore:
     @property
     def params(self):
         return self._get_api_client_configs()
+
+
+def get_modifiable_fields(model):
+    """
+    Identifies modifiable fields in a SQLAlchemy model that are not part of specified
+    relationships or partial fields.
+    """
+    model_instance = model()
+    mapper = inspect(model)
+
+    all_columns = [
+        prop.key for prop in mapper.attrs if not isinstance(prop, RelationshipProperty)
+    ]
+
+    # Assume relationship_fields and wood_partials are either methods or properties
+    if callable(getattr(model_instance, "relationship_fields", None)):
+        fk_relations = model_instance.relationship_fields()
+    else:
+        fk_relations = getattr(model_instance, "relationship_fields", [])
+
+    if callable(getattr(model_instance, "partials", None)):
+        partials = model_instance.partials
+    else:
+        partials = getattr(model_instance, "partials", [])
+
+    # Identify modifiable fields by excluding relationships and partials
+    modifiable_fields = [
+        field
+        for field in all_columns
+        if field not in fk_relations and field not in partials
+    ]
+
+    return modifiable_fields

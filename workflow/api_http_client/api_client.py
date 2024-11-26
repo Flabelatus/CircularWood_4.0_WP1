@@ -6,9 +6,8 @@ import urllib
 import urllib.parse
 import requests
 import json
-from typing import Dict, List, Union, Any
-from requests import Response
-from workflow.api_http_client import logger, __configs__, _data_model_params
+from typing import Dict, List, Union
+from workflow.api_http_client import logger, __configs__
 from workflow.api_http_client import HttpClientCore, __api__
 from marshmallow import Schema, fields
 
@@ -20,7 +19,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
         self.base_url = self.params.base_url
         self.username = self.params.credentials['username']
         self.password = self.params.credentials['password']
-        # self.data_model_params = _data_model_params
         self.auth_endpoint = f"{self.base_url}/login"
         self.access_token = ""
         self.schema = __api__
@@ -57,7 +55,7 @@ class DataServiceApiHTTPClient(HttpClientCore):
 
     def _get_schema(self, model) -> Schema:
         return self.schema.get(model).get('schema')()
-            
+      
     def _extract_model_name_from_url(self, url: str) -> str:
         path = urllib.parse.urlparse(url).path
         path_segments = path.split("/")
@@ -69,6 +67,9 @@ class DataServiceApiHTTPClient(HttpClientCore):
         elif model_name == 'design/client':
             model_name = 'requirements'
         return model_name
+    
+    def _extract_record_id_from_url(self, url: str) -> str:
+        return urllib.parse.urlparse(url).path.split("/")[-1]
     
     def _get_fields(self, model_name: str) -> List[str]:
         
@@ -87,22 +88,8 @@ class DataServiceApiHTTPClient(HttpClientCore):
         """
         Fetch a record from the given URL.
         """
-        self._check_auth_status()
-        headers = {"Authorization": f"Bearer {self.access_token}"}
         try:
-            response = requests.get(url, headers=headers)    
-            response = requests.get(url, headers=headers)    
-            # If token is expired, re-authenticate and retry
-            if response.status_code == 401:
-                self.authenticate()
-                headers["Authorization"] = f"Bearer {self.access_token}"
-                response = requests.get(url, headers=headers)
-            response = requests.get(url, headers=headers)
-            # If token is expired, re-authenticate and retry
-            if response.status_code == 401:
-                self.authenticate()
-                headers["Authorization"] = f"Bearer {self.access_token}"
-                response = requests.get(url, headers=headers)
+            response = requests.get(url)    
             if response.status_code != 200:
                 logger.error(f"Error fetching record: {response.status_code}, {response.text}")
                 return None
@@ -130,7 +117,7 @@ class DataServiceApiHTTPClient(HttpClientCore):
         model = self._extract_model_name_from_url(url)
         existing_record = self._fetch_record(url).json()
         updated_record = {}
-        record_id = urllib.parse.urlparse(url).path.split("/")[-1]
+        record_id = self._extract_record_id_from_url(url)
         if not existing_record:
             logger.error("No valid record with the ID {0} found".format(record_id))
         
@@ -146,7 +133,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
         for field in self._get_fields(model):
             # Handle the Null fields
             if field in existing_record and not existing_record[field]:
-
                 field_type = type(self._get_schema(model).declared_fields[field])
                 python_supported_type = self.field_type_mapping.get(field_type, 'Unknown')
                 
@@ -157,7 +143,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
                 elif python_supported_type == type(int()):
                     existing_record[field] = 0
             updated_record[field] = existing_record[field]        
-
         try:
             response = requests.patch(url, json=updated_record, headers=headers)
             if response.status_code == 200:
@@ -170,9 +155,29 @@ class DataServiceApiHTTPClient(HttpClientCore):
             logger.error(f"Connection error: {e}")
             return None
 
-    def _delete_record(self, url_list: List[str]) -> List[requests.Response]:
-        ...
-    
+    def _delete_record(self, url: str) -> List[requests.Response]:
+        self._check_auth_status()
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + self.access_token
+        }
+        record_id = self._extract_record_id_from_url(url)
+        model = self._extract_model_name_from_url(url)
+        response = requests.delete(url=url, headers=headers)
+        if response.status_code == 200:
+            logger.info(
+                "Record from {0} table; with ID: {1} successfully removed - 200"
+                .format(model, record_id)
+            )
+        elif response.status_code == 404:
+            logger.error(
+                "Record from {0} table; with ID: {1} not found - 404: message: {2}"
+                .format(model, record_id, response.json())
+            )
+        else:
+            logger.error(response.json())
+        return response
+
     def wood_bundle_data(self, resource_id=0):
         
         bundle_schema = dict()
@@ -195,9 +200,6 @@ class DataServiceApiHTTPClient(HttpClientCore):
         bundle_schema['sub_wood'] = sub_woods
         bundle_schema['design_metadata'] = design_metadata
         
-        # TODO: Remove this test part later
-        with open('test.json', 'w') as f:
-            json.dump(bundle_schema, f, indent=4)
         return bundle_schema
 
     def fetch_wood_by_id(self, wood_id=0) -> Union[Dict, None]:
@@ -237,9 +239,48 @@ class DataServiceApiHTTPClient(HttpClientCore):
         endpoint = self.api_blueprints.production_by_wood_id_route
         return self._fetch_record(url=f"{self.base_url}{endpoint}{wood_id}").json()
     
+    def update_wood_by_id(self, wood_id: int, data: dict) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.wood_by_id_route}{wood_id}"
+        return self._update_record(url=url, data=data)
+
+    def update_subwood_by_id(self, subwood_id: int, data: dict) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.subwood_by_id_route}{subwood_id}"
+        return self._update_record(url=url, data=data)
+        
+    def update_production_by_id(self, production_id: int, data: dict) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.production_by_id_route}{production_id}"
+        return self._update_record(url=url, data=data)
+        
+    def update_design_by_id(self, design_id: int, data: dict) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.design_by_id_route}{design_id}"
+        return self._update_record(url=url, data=data)            
+    
+    def update_tag_by_id(self, tag_id: int, data: dict) -> requests.Response:
+        url = f"{self.base_url}{self.api_blueprints.tag_by_id_route}{tag_id}"
+        return self._update_record(url=url, data=data)
+    
+    def remove_wood_by_id(self, wood_id: int) -> requests.Response:
+        ...
+
+    def remove_subwood_by_id(self, subwood_id: int) -> requests.Response:
+        ...
+    
+    def remove_design_by_id(self, design_id: int) -> requests.Response:
+        ...
+    
+    def remove_production_by_id(self, production_id: int) -> requests.Response:
+        ...
+
+    def remove_tag_by_id(self, tag_id: int) -> requests.Response:
+        ... 
+
     def post_wood(self, data):
         endpoint = self.api_blueprints.wood_route
     
-
-    def set_wood_as_used(self, wood_id=0):
+    def set_wood_as_used(self, wood_id: int) -> requests.Response:
         ...
+
+    def reserve_wood(self, wood_id: int) -> requests.Response: ...
+
+
+http_client = DataServiceApiHTTPClient()

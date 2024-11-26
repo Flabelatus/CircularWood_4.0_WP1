@@ -21,7 +21,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # Custom modules 
 from db import db
 from blocklist import BLOCKLIST
-from workflow.api_http_client.modify_record import get_modifiable_fields
+from workflow.api_http_client import get_modifiable_fields
 from settings import data_service_config_loader as ds_api_cfg, logger
 from utils.image_helpers import IMAGE_SET
 
