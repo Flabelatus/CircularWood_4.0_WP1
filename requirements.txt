@@ -18,3 +18,4 @@ sqlalchemy-data-model-visualizer
 coloredlogs==15.0.1
 ruamel.yaml
 sphinx
+paho-mqtt~=2.1.0
