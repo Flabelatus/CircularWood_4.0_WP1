@@ -384,3 +384,109 @@ make html
 ```
 
 This would overwrite the contents of the documentations in the html and add your module as well. 
+
+
+## Template Usage Instructions for CHANGELOG.md File
+
+### **How to Document Changes**
+   - Start all new updates under the `[Unreleased]` section.
+   - Categorize each change under the appropriate section:
+     - **✨ Added** — New features, new API endpoints, enhancements, etc.
+     - **🛠️ Changed** — Changes to existing features, workflows, or refactoring.
+     - **🐛 Fixed** — Resolved issues, crashes, performance improvements, etc.
+     - **⚠️ Deprecated** — Features planned for removal in a future release.
+     - **🚫 Removed** — Features, code, endpoints, or functionalities that have been removed.
+   
+### **When Releasing a New Version**
+   - Move all entries from **[Unreleased]** to a new version section (e.g., `## [1.2.0] - 2024-11-15`).
+   - Use [Semantic Versioning](https://semver.org/):
+     - **MAJOR** version when you make incompatible API changes.
+     - **MINOR** version when you add functionality in a backward-compatible manner.
+     - **PATCH** version when you make backward-compatible bug fixes.
+   
+#### **Example Changelog Entry**
+   ```markdown
+   ## [1.2.0] - 2024-11-15
+   ### ✨ Added
+   - [x] New admin dashboard for role management.
+   - [x] Added support for multi-factor authentication (MFA).
+
+   ### 🛠️ Changed
+   - [x] Updated `/api/users` endpoint to support pagination.
+   - [x] Improved the performance of the login process.
+
+   ### 🐛 Fixed
+   - [x] Resolved issue with JWT tokens expiring prematurely.
+   - [x] Fixed race condition in the data synchronization process.
+
+   ### ⚠️ Deprecated
+   - [x] Deprecated `/api/v1/old-endpoint`. Please migrate to `/api/v2/new-endpoint`.
+
+   ### 🚫 Removed
+   - [x] Removed unused endpoints `/api/v1/test-endpoint`.
+
+### 📘 How to Phrase Deprecation Notices
+
+When deprecating features, methods, or endpoints, it's important to clearly communicate **what's being deprecated**, **when it will be deprecated**, and **what users should do instead**. Use the following guidelines and phrasing examples to ensure clarity and consistency in your changelog.
+
+---
+
+#### 🔥 **Best Practices**
+1. **Be Specific About the Version**  
+   Indicate the exact version where the deprecation will occur, e.g.,  
+   _"Will be deprecated in v2.0.0"_.  
+   If the version is unknown, use **"in an upcoming release"** or **"in the next major release"**.
+
+2. **Provide a Migration Path**  
+   Suggest an alternative method, function, or endpoint that users should switch to.  
+   Example:  
+   > The `oldFunctionName()` method will be deprecated in v3.0.0.  
+   > Use `newFunctionName()` instead to ensure compatibility with future versions.
+
+3. **Clarify Future Removal**  
+   If deprecation will lead to removal, communicate it clearly.  
+   Example:  
+   > The `/api/old-endpoint` will be deprecated in v2.5.0 and **removed in v3.0.0**.  
+   > Migrate to `/api/new-endpoint` before v3.0.0 to avoid issues.
+
+4. **Use Consistent Phrasing**  
+   Stick to consistent terms, such as:  
+   - **"Scheduled for deprecation in vX.X.X"**  
+   - **"Will be deprecated in vX.X.X"**  
+   - **"This feature will be deprecated after vX.X.X"**  
+
+---
+
+#### 📘 **Phrasing Templates**
+Use these ready-to-go phrases to document your deprecations in changelogs.
+
+#### ⚠️ **Simple Deprecation**
+> The `oldFunctionName()` method will be deprecated in v2.0.0.  
+> Use `newFunctionName()` instead to maintain compatibility.
+
+#### ⚠️ **Deprecation with Exact Version**
+> The `/api/old-endpoint` is **scheduled for deprecation in v2.0.0**.  
+> Users are encouraged to migrate to `/api/new-endpoint`.
+
+#### ⚠️ **Deprecation with Removal Notice**
+> The `oldFunctionName()` method will be deprecated in v2.5.0 and **removed in v3.0.0**.  
+> Please switch to `newFunctionName()` to avoid breaking changes.
+
+#### ⚠️ **Deprecation with No Version Specified**
+> The `legacyFunction()` method is scheduled for deprecation **in an upcoming release**.  
+> We recommend migrating to `modernFunction()`.
+
+#### ⚠️ **Deprecation with Migration Path**
+> The `/api/legacy-auth` endpoint will be deprecated in v1.8.0.  
+> Switch to `/api/oauth2-auth` to stay up-to-date with security standards.
+
+---
+
+#### 📘 **How to Document Deprecations in a Changelog**
+
+Here’s an example of how to add deprecation notices to a **CHANGELOG.md** file.
+
+    ## [Unreleased]
+    ### ⚠️ Deprecated
+    - The `/api/old-endpoint` is **scheduled for deprecation in v2.0.0**. Use `/api/new-endpoint` instead.
+    - The `oldFunctionName()` method **will be deprecated in v1.5.0**. Use `newFunctionName()` to ensure compatibility.
