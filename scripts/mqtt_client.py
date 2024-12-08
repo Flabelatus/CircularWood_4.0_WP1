@@ -12,7 +12,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from workflow.production_run.Lector61x_V2D611D_MMSCE4 import Lector_QR_Reader
-from workflow.production_run.ftp_handler import RAPID_FTP
+from workflow.production_run.rapid_transfer_link import RAPID_FTP
 from workflow.production_run.Call_Wood_Data_Variables_For_BLUE import Call_Wood_Data
 from settings import WorkflowManagerConfigLoader
 

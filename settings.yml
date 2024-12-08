@@ -202,10 +202,16 @@ workflow_manager:
             general:
               wood_data:
                 woodID: PLC_coms/Stool/WoodID
+                CW_WoodID: PLC_coms/Prod/WoodID/CW
+                CB_WoodID: PLC_coms/Prod/WoodID/CB
             from_PC_to_plc:
               blue:
                 request_part_data: PLC_coms/Stool/GimmeData
                 new_data_ready: PLC_coms/stoolReady
+                CW_Ack: PLC_coms/Prod/CW_DATA_Scanned
+                CB_Ack: PLC_coms/Prod/CB_DATA_Scanned
+                CW_Req: PLC_coms/Prod/BLUE_Gimmedata_CW
+                CB_Req: PLC_coms/Prod/BLUE_Gimmedata_CB
               red:
                 fetch_rapid:
                   CW_RAPID_Needed: PLC_coms/Stool/RAPID_Needed_CW
