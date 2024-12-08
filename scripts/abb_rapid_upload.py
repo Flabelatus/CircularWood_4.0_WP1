@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.production_run import ftp_handler
+from workflow.production_run import rapid_transfer_link
 from settings import WorkflowManagerConfig
 
 if __name__ == '__main__':
@@ -13,6 +13,6 @@ if __name__ == '__main__':
     user = ftp_params["RED"]['username']
     passwd = ftp_params["RED"]['password']
 
-    rapid_ftp = ftp_handler.RAPID_FTP(ip=ip, user=user, passwd=passwd)
+    rapid_ftp = rapid_transfer_link.RAPID_FTP(ip=ip, user=user, passwd=passwd)
     rapid_ftp.upload_file(inputPath="example_RAPID/Example.mod", targetDirectory="MILLING_UPLOAD",
                           targetPath="Example.mod")

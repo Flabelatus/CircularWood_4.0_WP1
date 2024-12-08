@@ -66,6 +66,31 @@ class Resources:
             "tablename": ProductionModel.__tablename__
         },
         
+        "project": {
+            "crud": {
+                "endpoints": [
+                    "/projects",
+                    "/projects/<int:project_id>",
+                ]
+            },
+            "tablename": ProjectModel.__tablename__
+        },
+
+        "design_geometry": {
+            "crud": {
+                "endpoints": [
+                    "/design_geometries",
+                    "/design_geometries/<int:geometry_id>",
+                ]
+            },
+            "relation": {
+                "endpoints": [
+                    "/design_geometries/project/<int:project_id>"
+                ]
+            },
+            "tablename": DesignGeometryModel.__tablename__
+        },
+        
         "requirements": {
             "crud": {
                 "endpoints": [

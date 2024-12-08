@@ -5,10 +5,10 @@ with open("stp/stool_leg_test.stp", "r") as rapid_file:
     escaped = instructions.replace('"', '\\"')
 
 design = {
-    "features": escaped,
+    "part_file_path": escaped,
     "part": "leg_01",
     "wood_id": 1,
-    "part_index": 1,
+    "part_name": 1,
     "project_id": "ABC-123",
     "tag": "stool"
 }

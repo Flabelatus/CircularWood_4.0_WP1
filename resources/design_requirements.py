@@ -103,8 +103,8 @@ class DesignRequirementsFromClientByID(MethodView):
         """
         design_req = DesignRequirementsModelFromClient.query.get_or_404(requirement_id)
         if design_req:
-            design_req.part_index = parsed_data.get("part_index", 0)
-            design_req.features = parsed_data.get("features", "")
+            design_req.part_name = parsed_data.get("part_name", 0)
+            design_req.part_file_path = parsed_data.get("part_file_path", "")
             design_req.part = parsed_data.get("part", "")
             design_req.tag = parsed_data.get("tag", "")
             design_req.project_id = parsed_data.get("project_id", 0)

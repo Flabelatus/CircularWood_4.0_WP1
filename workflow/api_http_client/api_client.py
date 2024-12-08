@@ -196,7 +196,7 @@ class DataServiceApiHTTPClient(HttpClientCore):
         design_data = self.fetch_design_by_wood_id(wood_id=resource_id)
         
         if design_data:
-            design_metadata = [{key: value for key, value in design.items() if key != 'features'} for design in design_data ]
+            design_metadata = [{key: value for key, value in design.items() if key != 'part_file_path'} for design in design_data ]
             process_title = [d['project_id'] for d in design_data][0]
         
         bundle_schema['wood'] = wood
@@ -230,7 +230,7 @@ class DataServiceApiHTTPClient(HttpClientCore):
     def get_design_raw_cad_data(self, design_id=0) -> str:
         design_part_data = self.fetch_design_by_id(design_id).json()
         if design_part_data:
-            return design_part_data.get('features')
+            return design_part_data.get('part_file_path')
 
     def fetch_design_by_wood_id(self, wood_id=0) -> Union[List[Dict], None]:
         endpoint = self.api_blueprints.design_by_wood_id_route

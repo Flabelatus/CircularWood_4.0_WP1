@@ -18,6 +18,7 @@ from sqlalchemy import inspect
 from resources import wood_blueprint, sub_wood_blp
 from resources import production_blp, design_blp
 from resources import user_blp, tags_blueprint
+from resources import design_geometry_blp, project_blp
 from resources.routes import Resources
 
 from settings import workflow_manager_config_loader as wrkflow_cfg
@@ -26,6 +27,7 @@ from settings import data_service_config_loader as ds_api_cfg
 from schema import WoodSchema, SubWoodSchema
 from schema import ProductionSchema, UserSchema
 from schema import DesignRequirementSchema, TagSchema
+from schema import DesignGeometrySchema, ProjectSchema
 
 # Logging scope
 logger = logging.getLogger('cw4.0-api').getChild('workflows.api-client')
@@ -46,7 +48,9 @@ __api__ = {
     "taglist": {"blueprint": tags_blueprint, "schema": TagSchema},
     "production": {"blueprint": production_blp, "schema": ProductionSchema},
     "requirements": {"blueprint": design_blp, "schema": DesignRequirementSchema},
-    "sub_wood": {"blueprint": sub_wood_blp, "schema": SubWoodSchema}
+    "sub_wood": {"blueprint": sub_wood_blp, "schema": SubWoodSchema},
+    "design_geometry": {"blueprint": design_geometry_blp, "schema": DesignGeometrySchema},
+    "project": {"blueprint": project_blp, "schema": ProjectSchema}
 }
 
 
@@ -162,6 +166,20 @@ class ApiBlueprints:
         return self._get_min_route(routes)
 
     @property
+    def design_geometry_route(self) -> str:
+        """`/design_geometries` Endpoint to get the list of 3d geometry metadata, or post a new ones to the list"""
+        key, criteria = 'design_geometry', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
+
+    @property
+    def project_route(self) -> str:
+        """`/projects` Endpoint to get the list of projects metadata, or post a new ones to the list"""
+        key, criteria = 'project', 'no_params'
+        routes = self._dispatch_route_by_criteria(model_name=key, criteria=criteria)
+        return self._get_min_route(routes)
+    
+    @property
     def wood_by_id_route(self) -> str:
         """`/wood/<int:wood_id>` Endpoint to get, update or delete the wood data by ID"""
         key, criteria = 'wood', 'params'
@@ -204,6 +222,18 @@ class ApiBlueprints:
     def tag_by_id_route(self) -> str:
         """`/tag/<int:tag_id>` Endpoint to get, update or delete the tag data by ID"""
         key, criteria = 'taglist', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
+
+    @property
+    def design_geometry_by_id_route(self) -> str:
+        """`/design_geometries/<int:geometry_id>` Endpoint to get, update or delete the 3d geometry metadata by ID"""
+        key, criteria = 'design_geometries', 'params'
+        return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
+
+    @property
+    def design_geometry_by_id_route(self) -> str:
+        """`/projects/<int:project_id>` Endpoint to get, update or delete the project metadata by ID"""
+        key, criteria = 'project', 'params'
         return self._get_flattened_routes_by_criteria(key=key, criteria=criteria)
 
     # Back populated models

@@ -8,3 +8,5 @@ from resources.tagslist import blp as tags_blueprint
 from resources.user import user_blp
 from resources.wood import blp as wood_blueprint
 from resources.impact import impact_blp
+from resources.project import project_blp
+from resources.design_geometry import design_geometry_blp

@@ -59,7 +59,7 @@ feat: New feature
 fix: Bug fix
 docs: Documentation changes
 style: Code style changes (formatting, etc.)
-refactor: Code changes without fixing bugs or adding features
+refactor: Code changes without fixing bugs or adding part_file_path
 test: Adding or updating tests
 chore: Other changes that don't modify src or test files
 scope: (Optional) The area of the code affected (e.g., parser, api).

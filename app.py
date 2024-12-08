@@ -31,6 +31,8 @@ from models import SubWoodModel
 from models import ProductionModel
 from models import UserModel
 from models import DesignRequirementsModelFromClient
+from models import DesignGeometryModel
+from models import ProductionModel
 from models import TagModel
 
 # Api resources
@@ -44,6 +46,8 @@ from resources import pointcloud_blp
 from resources import impact_blp
 from resources import sub_wood_blp
 from resources import image_blueprint
+from resources import project_blp
+from resources import design_geometry_blp
 
 
 def create_app(db_url=None):
@@ -198,6 +202,18 @@ def create_app(db_url=None):
         modifiable_fields = get_modifiable_fields(DesignRequirementsModelFromClient)
         return jsonify(modifiable_fields=modifiable_fields)
     
+
+    @app.route('/design_geometry/modifiable-fields')
+    def get_design_geometry_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(DesignGeometryModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
+
+    @app.route('/project/modifiable-fields')
+    def get_project_model_modifiable_fields():
+        modifiable_fields = get_modifiable_fields(ProductionModel)
+        return jsonify(modifiable_fields=modifiable_fields)
+    
     # ================ JWT Claims ================
 
     @jwt.needs_fresh_token_loader
@@ -339,5 +355,7 @@ def create_app(db_url=None):
     api.register_blueprint(impact_blp)
     api.register_blueprint(sub_wood_blp)
     api.register_blueprint(image_blueprint)
+    api.register_blueprint(design_geometry_blp)
+    api.register_blueprint(project_blp)
 
     return app

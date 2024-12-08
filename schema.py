@@ -85,12 +85,14 @@ class TagAndWoodSchema(Schema):
 
 class PlainDesignRequirementSchema(Schema):
     id = fields.Int(dump_only=True)
-    part_index = fields.Int()
-    features = fields.Str()
+    part_name = fields.Str()
+    part_file_path = fields.Str()
     tag = fields.Str()
-    part = fields.Str()
-    project_id = fields.Str()
+    part = fields.Int()
     created_at = fields.Str()
+    # Foreign keys
+    project_id = fields.Int()
+    design_geometry_id = fields.Int()
     wood_id = fields.Int()
 
 
@@ -110,6 +112,32 @@ class UserSchema(Schema):
     username = fields.Str(required=True)
     # This must stay load only, since we never want to return the password
     password = fields.Str(required=True, load_only=True)
+
+
+class PlainProjectSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True)
+    created_at = fields.Str(dump_only=True)
+    client = fields.Str()
+    design_geometry_count = fields.Int()
+    parts_count = fields.Int()
+    
+
+class PlainDesignGeometrySchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    created_at = fields.Str(dump_only=True)
+    type = fields.Str()
+    file_path = fields.Str()
+    project_id = fields.Int()
+
+
+class DesignGeometrySchema(PlainDesignGeometrySchema):
+    design_parts = fields.Nested(PlainDesignRequirementSchema(), load_instance=True)
+
+
+class ProjectSchema(PlainProjectSchema):
+    design_geometries = fields.Nested(PlainDesignGeometrySchema(), load_instance=True)
 
 
 class ProductionSchema(Schema):

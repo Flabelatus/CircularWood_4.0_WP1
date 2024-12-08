@@ -9,3 +9,5 @@ from models.history import HistoryModel
 from models.point_cloud import PointCloudModel
 from models.impact import ImpactModel
 from models.sub_wood import SubWoodModel
+from models.project import ProjectModel
+from models.design_geometry import DesignGeometryModel
