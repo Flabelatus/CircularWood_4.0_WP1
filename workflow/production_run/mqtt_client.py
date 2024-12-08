@@ -14,9 +14,9 @@ import sys
 #TODO take care of these imports later
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from settings import WorkflowManagerConfig
-from Lector61x_V2D611D_MMSCE4 import Lector_QR_Reader
+from lector61x_v2d611d_mmsce4 import LectorQrCodeReader
 import Call_Wood_Data_Variables_For_BLUE
-from ftp_handler import RAPID_FTP
+from workflow.production_run.rapid_transfer_link import RapidTransferLink
 #TODO
 
 #for the lector
@@ -56,7 +56,7 @@ def on_message(client, userdata, msg):
     print(f"Topic: {topic}")
     if topic == str(mqttTopic_StartScan):
         print(f"Topic: scanstart")
-        lector = Lector_QR_Reader()
+        lector = LectorQrCodeReader()
         QR_data = lector.read_QR_Code()
         while QR_data == lector.get_NoRead_item():
             QR_data = lector.read_QR_Code()
@@ -83,8 +83,8 @@ def on_message(client, userdata, msg):
 
     if topic == str(mqttTopic_CB):
         print(f"Topic: RED RAPID FTP")
-        rapid_ftp = RAPID_FTP(ip='10.0.0.14',user='Default User',passwd='robotics')
-        rapid_ftp.RAPID_FTP_main(WoodID=woodID,
+        rapid_ftp = RapidTransferLink()
+        rapid_ftp.transfer_rapid_code(WoodID=woodID,
                                  msg=msg,
                                  rapid_File_Path_1="Normal__abc.mod",
                                  rapid_File_Path_2="Reversed__abc.mod",

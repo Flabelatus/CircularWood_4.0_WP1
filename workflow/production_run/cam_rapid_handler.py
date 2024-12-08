@@ -1,1 +1,0 @@
-# Upload CAM files to the database

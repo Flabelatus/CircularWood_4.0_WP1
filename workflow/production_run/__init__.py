@@ -8,7 +8,7 @@ import logging
 
 from collections import namedtuple
 
-from settings import logger, data_service_config_loader as ds_api_configs
+from settings import data_service_config_loader as ds_api_configs
 from settings import workflow_manager_config_loader as wrkflow_configs
 
 
