@@ -124,6 +124,7 @@ class Resources:
             "relation": {
                 "endpoints": [
                     "/history-by-wood-id/<int:wood_id>",
+                    "/history-by-requirement-id/<int:requirement_id>"
                 ],
             },
             "tablename": HistoryModel.__tablename__

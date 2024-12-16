@@ -3,7 +3,7 @@
 """
 
 import datetime
-from typing import List, Dict
+from typing import List, Dict, Union
 
 from flask_smorest import abort, Blueprint
 from flask.views import MethodView
@@ -56,6 +56,25 @@ class HistoryList(MethodView):
             abort(500, message=str(err))
 
         return history
+
+
+@history_blp.route("/history-by-requirement-id/<int:requirement_id>")
+class HistoryByRequirementID(MethodView):
+
+    @history_blp.response(200, HistorySchema(many=True))
+    def get(self, requirement_id: int) -> Union[List[HistoryModel], None]:
+        """
+        Get the list of histories by requirement ID descending according to time of creation.
+
+        Args:
+            requirement_id (int): The ID of the design requirement record to have its histories retrieved.
+
+        Returns:
+            List[HistoryModel]: The list of history objects with the specified wood ID.
+        """
+
+        return HistoryModel.query.filter_by(requirement_id=requirement_id).order_by(HistoryModel.created_at.desc()).all()
+
 
 
 @history_blp.route("/history-by-wood-id/<int:wood_id>")

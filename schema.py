@@ -19,9 +19,12 @@ class FileStorageField(fields.Field):
 
 class HistorySchema(Schema):
     id = fields.Int(dump_only=True)
+    name = fields.Str()
     event = fields.Str()
     created_at = fields.Str()
+    success = fields.Bool()
     wood_id = fields.Int()
+    requirement_id = fields.Int()
 
 
 class WoodSchema(Schema):
