@@ -9,35 +9,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### ✨ Added
-- [ ] New database tables `design_geometry` and `project` to structure the data of the design metadata in a more clear way and integrate with the live monitorin dashboard better
-- [ ] New API resource blueprints and endpoints 
-`/design_geometries`, 
-`/design_geometries<int:design_geometry_id>`
-`/project`
-`/project/<int:project_id>` 
 - [ ] New endpoints to upload `.obj`, `.step` file formats in the project instead of I/O to the database
   
 ### 🛠️ Changed
-- [ ] The requirements table schema has been updated: The features field is now part_file_path, which stores the file path of the `.step` file instead of its content as a string.
 
-- [ ] A new directory structure is added for serving design geometry files, including whole models and sub-parts, organized as follows:
-    ```
-    └───static
-        ├───design
-        │   └───<design_id>_<project_id>
-        │       │   <design_geometry_id>.obj   # The whole model
-        │       │   <design_geometry_id>.step  # The whole model
-        │       │
-        │       └───parts
-        │               <requirement_id>_<partname_1>.obj
-        │               <requirement_id>_<partname_1>.step
-        │               <requirement_id>_<partname_2>.obj
-        │               <requirement_id>_<partname_2>.step
-        │               ...
-        └───img
-    ```
 - [ ] Refactored MQTT topics names to cover broader and more universal processes in the production run
-- [ ] Production process logs table and resource blueprints to add new logs from the production processes
 
 ### 🐛 Fixed
 - [ ] WIP
@@ -55,8 +31,32 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v1.3.0] - 16-12-2024
 
+### ✨ Added
+- [x] New database tables `design_geometry` and `project` to structure the data of the design metadata in a more clear way and integrate with the live monitorin dashboard better
+- [x] New API resource blueprints and endpoints 
+`/design_geometries`, 
+`/design_geometries<int:design_geometry_id>`
+`/project`
+`/project/<int:project_id>` 
+
 ### 🛠️ Changed
 - [x] Updated the schema of the `history` model adding new fields of `name`, `success`, `requirement_id` to the table in order to adjust with the digital twin dashboard schema
+
+- [x] A new directory structure is added for serving design geometry files, including whole models and sub-parts, organized as follows:
+    ```
+    └───static
+        ├───design
+        │   └───<design_id>_<project_id>
+        │       │   <design_geometry_id>.obj   # The whole model
+        │       │   <design_geometry_id>.step  # The whole model
+        │       │
+        │       └───parts
+        │               <requirement_id>_<partname_1>.obj
+        │               <requirement_id>_<partname_1>.step
+        │               <requirement_id>_<partname_2>.obj
+        │               <requirement_id>_<partname_2>.step
+        │               ...
+        └───img
 
 ---
 
