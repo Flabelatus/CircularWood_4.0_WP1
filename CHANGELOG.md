@@ -53,21 +53,42 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [v1.2.0] - 28-12-2024
+## [v1.3.0] - 16-12-2024
+
+### 🛠️ Changed
+- [x] Updated the schema of the `history` model adding new fields of `name`, `success`, `requirement_id` to the table in order to adjust with the digital twin dashboard schema
+
+---
+
+## [v1.2.2] - 16-12-2024
+
+### 🛠️ Fixed
+- [x] Added the new added models and apie endpoints to the `sphinx` library congig file for the developer documentation
+
+---
+
+## [v1.2.1] - 16-12-2024
+
+### 🛠️ Changed
+- [x] New commit message format added to the CONTRIBUTING.md document
+
+---
+
+## [v1.2.0] - 28-11-2024
 
 ### ✨ Added
 - [x] New endpoint to set wood as used `/wood/used/<int:wood_id>`
 
 ---
 
-## [v1.1.0] - 26-12-2024
+## [v1.1.0] - 26-11-2024
 
 ### 🛠️ Changed
 - [x] Refortored modules of the `/workflow` components to comprehend with the dynamic loading of the settings from the `settings.yml`
 - [x] Changes to logging, and API settings 
 
 ---
-## [v1.0.1] - 24-12-2024
+## [v1.0.1] - 24-11-2024
 
 ### 🐛 Fixed
 - [x] Fixed bugs in the datetime formatting for the background schedueler keeping track of reservations

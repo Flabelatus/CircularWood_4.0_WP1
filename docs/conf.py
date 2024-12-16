@@ -78,7 +78,7 @@ excluded_fields = list(set(excluded_fields))
 project = 'CircularWood_4.0 Database API'
 copyright = '2024, Javid Jooshesh'
 author = 'Javid Jooshesh'
-release = '1.2.1'
+release = '1.3.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -1,6 +1,6 @@
 data_service_api:
   title: "Circular Wood 4.0 API"
-  version: 1.0.0
+  version: 1.3.0
   description: "REST API to operate the database, processors and several workflows within the CW4.0 project goals"
   developers: 
     - "Javid Jooshesh"
@@ -201,59 +201,54 @@ workflow_manager:
           production:
             general:
               wood_data:
-                woodID: PLC_coms/Stool/WoodID
-                CW_WoodID: PLC_coms/Prod/WoodID/CW
-                CB_WoodID: PLC_coms/Prod/WoodID/CB
-            from_PC_to_plc:
+                wood_id: PLC_COMS/PROD/WOOD_ID
+                cw_wood_id: PLC_COMS/PROD/WOOD_ID/CW
+                cb_wood_id: PLC_COMS/PROD/WOOD_ID/CB
+            from_processor_to_plc:
               blue:
-                request_part_data: PLC_coms/Stool/GimmeData
-                new_data_ready: PLC_coms/stoolReady
-                CW_Ack: PLC_coms/Prod/CW_DATA_Scanned
-                CB_Ack: PLC_coms/Prod/CB_DATA_Scanned
-                CW_Req: PLC_coms/Prod/BLUE_Gimmedata_CW
-                CB_Req: PLC_coms/Prod/BLUE_Gimmedata_CB
+                request_part_data: PLC_COMS/REQ_DATA
+                new_data_ready: PLC_COMS/READY
+                cw_ack: PLC_COMS/PROD/DATA_SCANNED/CW
+                cb_ack: PLC_COMS/PROD/DATA_SCANNED/CB
+                cw_req: PLC_COMS/PROD/BLUE/REQ_DATA/CW
+                cb_req: PLC_COMS/PROD/BLUE/REQ_DAT/CB
               red:
                 fetch_rapid:
-                  CW_RAPID_Needed: PLC_coms/Stool/RAPID_Needed_CW
-                  CB_RAPID_Needed: PLC_coms/Stool/RAPID_Needed_CB
-            from_plc_to_PC:
+                  cw_rapid_needed: PLC_COMS/RAPID_NEEDED/CW
+                  cb_rapid_needed: PLC_COMS/RAPID_NEEDED/CB
+            from_plc_to_processor:
               blue:
-                request_part_data: PLC_coms/Stool/NewStoolData
+                request_part_data: PLC_COMS/REQ_DATA
               red:
                 fetch_rapid:
-                  CW_RAPID_Fetched: PLC_coms/Prod/RAPID_Fetched_CW
-                  CB_RAPID_Fetched: PLC_coms/Prod/RAPID_Fetched_CB
+                  cw_rapid_fetched: PLC_COMS/PROD/RAPID_FETCHED/CW
+                  cb_rapid_fetched: PLC_COMS/PROD/RAPID_FETCHED/CB
             lector:
               #lector respose will also be published to WoodID
-              woodID: PLC_coms/Stool/WoodID
-              scanStart: PLC_coms/Stool/Scan/StartScan
-              scanDone: PLC_coms/Stool/Scan/StartDone
-
+              wood_id: PLC_COMS/PROD/WOOD_ID
+              scan_start: PLC_COMS/SCAN/START_SCAN
+              scan_done: PLC_COMS/SCAN/START_SCAN
           status_flags:
             pickup:
-              - Stool/Status/PU_Start
-              - Stool/Status/PU_Done
-            centering_unit:
-              - Stool/Status/CU_Drop
-              - Stool/Status/CU_Pickup
-            sawing:
-              - Stool/Status/SAW_start
-              - Stool/Status/SAW_done
+              - PICKUP/CW/START
+              - PICKUP/CB/START
+              - PICKUP/CW/DONE
+              - PICKUP/CB/DONE
+              - PICKUP/PLANK/CW
+              - PICKUP/PLANK/CB
             clamping:
-              - Stool/Status/CW_PL
-              - Stool/Status/CW_PU
-              - Stool/Status/CB_PL
-              - Stool/Status/CB_PU
+              - PLACE/PLANK/CW
+              - PLACE/PLANK/CB
             milling:
-              - PLC_coms/status/milling/RED_CW_Milling_started
-              - PLC_coms/status/milling/RED_CW_Milling_done
-              - PLC_coms/status/milling/RED_CB_Milling_started
-              - PLC_coms/status/milling/RED_CB_Milling_done
-              - PLC_coms/status/milling/CurPart
+              - CURR_PART/CW
+              - CURR_PART/CW/R
+              - CURR_PART/CB
+              - CURR_PART/CB/R
             drop_off:
-              - Stool/Status/DropOff
+              - DROPOFF/CW
+              - DROPOFF/CB
             process_end:
-              - Stool/Status/PlankDone
+              - DONE
       http:
         database_service:
           # Used for communication with the database API
