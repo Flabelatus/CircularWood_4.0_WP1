@@ -52,11 +52,12 @@ To maintain a clean and readable git history, we follow the Conventional Commits
 
 #### Format
 
-`<type>(<scope>): <subject>`
+`<version>_<type>(<scope>): <subject>`
 type: Indicates the type of change. Use one of the following:
 
 feat: New feature
 fix: Bug fix
+dev: Development
 docs: Documentation changes
 style: Code style changes (formatting, etc.)
 refactor: Code changes without fixing bugs or adding part_file_path
@@ -68,9 +69,9 @@ subject: A brief description of the change in imperative, present tense (e.g., "
 
 #### Examples
 
-feat(parser): add ability to parse arrays
-fix(api): handle null response correctly
-docs(readme): update installation instructions
+v1.0.1_feat(parser): add ability to parse arrays
+v1.2.0_fix(api): handle null response correctly
+v1.3.12_docs(readme): update installation instructions
 References
 If your commit closes an issue, include it in the message footer:
 
