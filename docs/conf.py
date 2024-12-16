@@ -26,6 +26,8 @@ user_attr_names = dir(models.UserModel)
 pointcloud_attr_names = dir(models.PointCloudModel)
 wood_tags_attr_names = dir(models.WoodTagsModel)
 woods_requirements_attr_names = dir(models.WoodsAndRequirementsFromClientModel)
+design_geometry_attr_names = dir(models.DesignGeometryModel)
+project_attr_names = dir(models.ProjectModel)
 
 # Define a function to exclude certain fields
 def exclude_fields(attr_names):
@@ -50,6 +52,8 @@ excl_user_attr = exclude_fields(user_attr_names)
 excl_pointcloud_attr = exclude_fields(pointcloud_attr_names)
 excl_wood_tags_attr = exclude_fields(wood_tags_attr_names)
 excl_woods_requirements_attr = exclude_fields(woods_requirements_attr_names)
+excl_design_geometries_attr = exclude_fields(design_geometry_attr_names)
+exlc_project_attr = exclude_fields(project_attr_names)
 
 # Combine all excluded fields
 excluded_fields = (
@@ -63,7 +67,9 @@ excluded_fields = (
     excl_user_attr + 
     excl_pointcloud_attr + 
     excl_wood_tags_attr + 
-    excl_woods_requirements_attr
+    excl_woods_requirements_attr +
+    excl_design_geometries_attr + 
+    exlc_project_attr
 )
 
 # Optionally, remove duplicates from the combined list
@@ -72,7 +78,7 @@ excluded_fields = list(set(excluded_fields))
 project = 'CircularWood_4.0 Database API'
 copyright = '2024, Javid Jooshesh'
 author = 'Javid Jooshesh'
-release = '1.0.0'
+release = '1.2.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -93,8 +99,6 @@ autodoc_default_options = {
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
-
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
