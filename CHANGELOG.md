@@ -29,6 +29,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [v1.3.1] - 17-12-2024
+
+### ✨ Added
+- [x] The MQTT client for the production run workflow
+- [x] Utility functions to help generating data classes as types automatically from given `yaml` schema to help with autocomplete dot notation data look up while developing
+
+### 🛠️ Changed
+- [x] Refactored the schema of the mqtt field `settings.yml` file 
+
+---
+
 ## [v1.3.0] - 16-12-2024
 
 ### ✨ Added

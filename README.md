@@ -278,15 +278,8 @@ Communicates as the event broker between the database, gateway application and t
             topics:
                 production:
                     [...]
-                robots:
-                    from_robot_to_plc:
-                        blue:
-                            request_part_data: PLC_coms/stoolReady
-                        red:
-                            fetch_rapid: [...]
                 status_flags:
-                    pickup:
-                        [...]
+                    [...]
 ```
 <br />
 
