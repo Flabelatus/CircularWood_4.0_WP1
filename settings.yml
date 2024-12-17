@@ -230,23 +230,28 @@ workflow_manager:
               scan_done: PLC_COMS/SCAN/START_SCAN
           status_flags:
             pickup:
-              - PICKUP/CW/START
-              - PICKUP/CB/START
-              - PICKUP/CW/DONE
-              - PICKUP/CB/DONE
-              - PICKUP/PLANK/CW
-              - PICKUP/PLANK/CB
+              start:
+                cw: PICKUP/CW/START
+                cb: PICKUP/CB/START
+              done:
+                cw: PICKUP/CW/DONE
+                cb: PICKUP/CB/DONE
+              plank:
+                cw: PICKUP/PLANK/CW
+                cb: PICKUP/PLANK/CB
             clamping:
-              - PLACE/PLANK/CW
-              - PLACE/PLANK/CB
+              cw: PLACE/PLANK/CW
+              cb: PLACE/PLANK/CB
             milling:
-              - CURR_PART/CW
-              - CURR_PART/CW/R
-              - CURR_PART/CB
-              - CURR_PART/CB/R
+              cw:
+                - CURR_PART/CW
+                - CURR_PART/CW/R
+              cb:
+                - CURR_PART/CB
+                - CURR_PART/CB/R
             drop_off:
-              - DROPOFF/CW
-              - DROPOFF/CB
+              cw: DROPOFF/CW
+              cb: DROPOFF/CB
             process_end:
               - DONE
       http:
