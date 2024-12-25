@@ -31,10 +31,10 @@ data_service_api:
     environment:
         selected_mode: development
         modes: 
-          development:
+          development_env:
             url: http://localhost:5050
             logging: DEBUG
-          production:
+          production_env:
             hosting_system: WEB_HOSTING_SERVICE
             vendor: render.com
             url: https://robotlab-residualwood.onrender.com

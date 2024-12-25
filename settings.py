@@ -2,11 +2,15 @@ import sys
 import os
 import logging
 
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 
+import generated_dataclasses as gd
+from utils.yaml_to_dataclass import generate_dataclass_file, generate_dataclasses_from_yaml
+from utils.yaml_to_dataclass import convert_commented_map_to_dict
 from load_dotenv import load_dotenv
 from ruamel.yaml import YAML
 from terminal_settings import *
+from generated_dataclasses import *
 
 try:
     import coloredlogs
@@ -15,38 +19,40 @@ except ImportError:
 
 load_dotenv()
 
+logger = logging.getLogger('cw4.0-api')
+
 
 class ConfigLoader:
     def __init__(self):
         self.yaml = YAML()
         self.path = os.getenv("CONFIG_FILE", "./settings.yml")
-
-    @property
-    def general_settings(self):
-        path = self.path
-        try:
-            open(self.path)
-        except FileNotFoundError:
-            path = os.path.join("..", self.path)
         
-        with open(path, "r") as settings_yml:
-            settings = self.yaml.load(settings_yml)
-        return settings
+        with open(self.path, 'r') as conf_file:
+            self.parsed_yml_settings = convert_commented_map_to_dict(
+                YAML().load(conf_file)
+            )
 
+    def load_settings(self):
+        with open(self.path, 'r') as settings_file:
+            settings_content = self.yaml.load(settings_file)
+            return settings_content
+        
 
 class DataServiceConfigLoader(ConfigLoader):
     def __init__(self):
         """Initializes the DataServiceConfigLoader with the base configuration from the parent class."""
         super().__init__()
+        # self.data_service_node = DataServiceApi(**self.settings)
 
     @property
-    def settings(self) -> Dict[str, Any]:
+    def settings(self) -> DataServiceApi:
         """Retrieves the main settings for the API.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for the 'api' section.
+            (class) DataServiceApi: The configuration dictionary for the 'api' section.
         """
-        return self.general_settings['data_service_api']
+        parent_node = RootSchema(**self.parsed_yml_settings).data_service_api
+        return DataServiceApi(**parent_node)
 
     @property
     def api_info(self) -> Dict[str, Any]:
@@ -55,41 +61,50 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: A dictionary containing API metadata.
         """
+        # api_conf = DataServiceApi(**self.settings)
         return {
-            "title": self.settings['title'],
-            "version": self.settings['version'],
-            "description": self.settings['description']
+            "title": self.settings.title,
+            "version": self.settings.version,
+            "description": self.settings.description
         }
 
     @property
-    def external(self) -> Dict[str, Any]:
+    def external(self) -> External:
         """Retrieves external configurations related to external APIs and tools.
 
         :Returns:
-            Dict[str, Any]: External API and tool configuration.
+            (class) External: External API and tool configuration.
         """
-        return self.settings['external']
+        # parent_node = 
+        return self.settings.external
 
     @property
-    def environment(self) -> str:
+    def environment(self) -> Environment:
+        environment = Server(**self.settings.server).environment
+        return Environment(**environment)
+
+    @property
+    def environment_selected_mode(self) -> str:
         """Gets the current selected environment mode.
 
         :Returns:
             str: The selected environment mode ('development' or 'production').
         """
-        return self.settings['server']['environment']['selected_mode']
+        return self.environment.selected_mode
 
     @property
-    def backend_env(self) -> Dict[str, Any]:
+    def backend_env(self) -> Union[DevelopmentEnv, ProductionEnv]:
         """Retrieves the backend environment configurations based on the selected mode.
 
         :Returns:
-            Dict[str, Any]: The configuration for the current backend environment mode.
+            Union[Development, Production]: The configuration for the current backend environment mode.
         """
-        if self.environment == 'development':
-            return self.settings['server']['environment']['modes']['development']
+        modes = Modes(**self.environment.modes)
+
+        if self.environment_selected_mode == 'development':
+            return DevelopmentEnv(**modes.development_env)
         else:
-            return self.settings['server']['environment']['modes']['production']
+            return ProductionEnv(**modes.production_env)
 
     @property
     def api_configs(self) -> Dict[str, Any]:
@@ -98,7 +113,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for API settings.
         """
-        return self.settings['configs']
+        return self.settings.configs
 
     @property
     def db_configs(self) -> Dict[str, Any]:
@@ -107,7 +122,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for database settings.
         """
-        return self.settings['database']
+        return self.settings.database
 
     @property
     def doc_configs(self) -> Dict[str, Any]:
@@ -116,7 +131,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for documentation settings.
         """
-        return self.settings['documentation']
+        return self.settings.documentation
 
     @property
     def server_configs(self) -> Dict[str, Any]:
@@ -125,7 +140,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for server settings.
         """
-        return self.settings['server']
+        return self.settings.server
 
     @property
     def security_configs(self) -> Dict[str, Any]:
@@ -134,7 +149,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for security settings.
         """
-        return self.settings['security']
+        return self.settings.security
 
     @property
     def logging_configs(self) -> Dict[str, Any]:
@@ -143,7 +158,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for logging settings.
         """
-        return self.settings['logging']
+        return self.settings.logging
 
     @property
     def cache_configs(self) -> Dict[str, Any]:
@@ -152,7 +167,7 @@ class DataServiceConfigLoader(ConfigLoader):
         :Returns:
             Dict[str, Any]: The configuration dictionary for cache settings.
         """
-        return self.settings['cache']
+        return self.settings.cache
 
     @logging_configs.setter
     def set_logging_configs(self, new_logging_configs: Dict[str, Any]) -> None:
@@ -176,52 +191,70 @@ class WorkflowManagerConfigLoader(ConfigLoader):
         super().__init__()
     
     @property
-    def workflow_settings(self) -> Dict[str, Any]:
-        return self.general_settings['workflow_manager']
+    def workflow_settings(self) -> WorkflowManager:
+        parent_node = RootSchema(**self.parsed_yml_settings).workflow_manager
+        return WorkflowManager(**parent_node)
 
     @property
-    def api_http_client_configs(self) -> List[Dict[str, Any]]:
-        return self.workflow_settings['api_http_client']['clients']
+    def api_http_client_configs(self) -> ApiHttpClient:
+        http_conf = self.workflow_settings.api_http_client
+        return ApiHttpClient(**http_conf)
+    
+    @property
+    def production_run_configs(self) -> ProductionRun:
+        prod_conf = self.workflow_settings.production_run
+        return ProductionRun(**prod_conf)
 
     @property
-    def production_run_configs(self) -> Dict[str, Any]:
-        return self.workflow_settings['production_run']
-
-    @property
-    def network_configuration(self) -> Dict[str, Any]:
+    def network_configuration(self) -> NetworkConfiguration:
         """Get the network configuration settings."""
-        return self.production_run_configs['network_configuration']
+        net_conf = self.production_run_configs.network_configuration
+        return NetworkConfiguration(**net_conf)
+    
+    @property
+    def hardware_configs(self) -> HardwareComponents:
+        hardware_comps = self.production_run_configs.hardware_components
+        return HardwareComponents(**hardware_comps)
 
     @property
-    def control_system_configs(self) -> Dict[str, Any]:
+    def control_system_configs(self) -> ControlSystem:
         """Get the control system configurations."""
-        return self.production_run_configs['hardware_components']['control_system']
+        return ControlSystem(**self.hardware_configs.control_system)
 
     @property
-    def hardware_equipment_configs(self) -> List[Dict[str, Any]]:
+    def hardware_equipment_configs(self) -> Equipment:
         """Get the hardware equipment configurations."""
-        return self.production_run_configs['hardware_components']['equipment']
+        return Equipment(**self.hardware_configs.equipment)
 
     @property
-    def ftp_network_configs(self) -> Dict[str, Dict[str, Any]]:
+    def communication_protocols(self) -> CommunicationProtocols:
+        return CommunicationProtocols(
+            **self.production_run_configs.communication_protocols
+        )
+
+    @property
+    def ftp_network_configs(self) -> Ftp:
         """Get the FTP network configurations."""
-        return self.production_run_configs['communication_protocols']['ftp']['robot_configuration']
+        return Ftp(**self.communication_protocols.ftp)
+    
+    @property
+    def ftp_net_robot_configurations(self) -> RobotConfiguration:
+        return RobotConfiguration(**self.ftp_network_configs.robot_configuration)
 
     @property
-    def tcp_network_configs(self) -> Dict[str, Dict[str, Any]]:
+    def tcp_network_configs(self) -> Tcp:
         """Get the TCP network configurations."""
-        return self.production_run_configs['communication_protocols']['tcp']['connections']
+        return Tcp(**self.communication_protocols.tcp)
 
     @property
-    def mqtt_network_configs(self) -> Dict[str, Any]:
-        logger.debug('Loading MQTT network congigs')
+    def mqtt_network_configs(self) -> Mqtt:
         """Get the MQTT network configurations."""
-        return self.production_run_configs['communication_protocols']['mqtt']
+        return Mqtt(**self.communication_protocols.mqtt)
 
     @property
-    def http_network_configs(self) -> Dict[str, Any]:
+    def http_network_configs(self) -> DatabaseService:
         """Get the HTTP database service configurations."""
-        return self.production_run_configs['communication_protocols']['http']['database_service']
+        return DatabaseService(**Http(**self.communication_protocols.http).database_service)
 
     @property
     def profinet_network_configs(self) -> Dict[str, Any]:
@@ -313,7 +346,6 @@ api_logging = AppLogger(data_service_config_loader)
 
 package_names = ['urllib3', 'tzlocal', 'passlib']
 api_logging.disable_external_package_logging(package_names)
-logger = logging.getLogger('cw4.0-api')
 
 
 if __name__ == "__main__":
