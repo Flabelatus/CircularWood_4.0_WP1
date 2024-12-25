@@ -8,6 +8,7 @@ import logging
 
 from collections import namedtuple
 
+from generated_dataclasses import *
 from settings import data_service_config_loader as ds_api_configs
 from settings import workflow_manager_config_loader as wrkflow_configs
 
@@ -38,13 +39,16 @@ class ProductionCore:
                     'database_service'
                 ]
             )   
-
-        auxiliary_devices = self.configs.get('workflow').hardware_equipment_configs['auxiliary_devices']
+        
+        auxiliary_devices = self.configs['workflow'].hardware_equipment_configs.auxiliary_devices
         lector_configs = [cfg for cfg in auxiliary_devices if cfg.get('title') == 'LECTOR'][0]
         printer_configs = [cfg for cfg in auxiliary_devices if cfg.get('title') == 'LABEL_PRINTER'][0]
-        http_conf = self.configs.get('workflow').http_network_configs
-        running_environment = self.configs.get('data_service').environment
-        database_service = http_conf['environments'][running_environment]
+        http_conf = self.configs['workflow'].http_network_configs
+        running_environment = self.configs['data_service'].environment_selected_mode
+        environment = Environments(**http_conf.environments)
+        if running_environment == 'production':
+            database_service = environment.production
+        database_service = environment.development
 
         production_run_params = ProductionRunParameters(
             root_dir=self.root,

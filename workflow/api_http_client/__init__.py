@@ -15,6 +15,7 @@ from typing import List, Dict
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy import inspect
 
+from generated_dataclasses import *
 from resources import wood_blueprint, sub_wood_blp
 from resources import production_blp, design_blp
 from resources import user_blp, tags_blueprint
@@ -311,11 +312,12 @@ class ApiBlueprints:
 class HttpClientCore:
     def __init__(self, configs=__configs__):
         self.configs = configs
+        self.credentials = Credentials(**self.configs['workflow'].http_network_configs.credentials)
         self.root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
         self.api_blueprints = ApiBlueprints()
 
     def _get_api_client_configs(self):
-        base_url = self.configs.get('data_service').backend_env['url']
+        base_url = self.configs['data_service'].backend_env.url
         ApiClientParameters = namedtuple(
             'ApiClientParameters',
             field_names=[
@@ -340,8 +342,8 @@ class HttpClientCore:
                 'img'
             ),
             credentials={
-                'username': self.configs.get('workflow').http_network_configs['credentials']['username'],
-                'password': self.configs.get('workflow').http_network_configs['credentials']['password']
+                'username': self.credentials.username,
+                'password': self.credentials.password
             },
             base_url=base_url,
             idemat=os.path.join(self.root, self.configs.get('data_service').external['tools']['idemat']['path'])

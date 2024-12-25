@@ -87,14 +87,14 @@ def create_app(db_url=None):
         logger.info(f"API_TITLE: {ds_api_cfg.api_info['title']}")
         logger.info(f"API_VERSION: {ds_api_cfg.api_info['version']}")
 
-        if ds_api_cfg.environment == 'development':
-            logger.debug(f"JWT issuer: {ds_api_cfg.backend_env['url']}")
-            logger.debug(f"ENVIRONMENT: {ds_api_cfg.environment}")    
-            logger.debug(f"BACKEND_URL: {ds_api_cfg.backend_env['url']}")   
+        if ds_api_cfg.environment_selected_mode == 'development':
+            logger.debug(f"JWT issuer: {ds_api_cfg.backend_env.url}")
+            logger.debug(f"ENVIRONMENT: {ds_api_cfg.environment_selected_mode}")    
+            logger.debug(f"BACKEND_URL: {ds_api_cfg.backend_env.url}")   
             logger.debug(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs['propogate_exceptions']}")  
         else:
             logger.info(f"JWT issuer: {ds_api_cfg.backend_env['url']}")
-            logger.info(f"ENVIRONMENT: {ds_api_cfg.environment}")    
+            logger.info(f"ENVIRONMENT: {ds_api_cfg.environment_selected_mode}")    
             logger.info(f"BACKEND_URL: {ds_api_cfg.backend_env['url']}")   
             logger.info(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs['propogate_exceptions']}")  
 
@@ -114,10 +114,10 @@ def create_app(db_url=None):
     jwt = JWTManager(app)               # JWT init
 
     logger.info("JWT manager initialized")
-    if ds_api_cfg.environment == 'development':
-        logger.debug(f"JWT issuer: {ds_api_cfg.backend_env['url']}")
+    if ds_api_cfg.environment_selected_mode == 'development':
+        logger.debug(f"JWT issuer: {ds_api_cfg.backend_env.url}")
     else:
-        logger.info(f"JWT issuer: {ds_api_cfg.backend_env['url']}")
+        logger.info(f"JWT issuer: {ds_api_cfg.backend_env.url}")
     if not ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']:
         logger.warning(f"JWT_CSRF_IN_COOKIES: {ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']}")
     else:
