@@ -29,6 +29,22 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [v1.3.2] - 24-12-2024
+
+### ✨ Added
+- [x] A Python script `convert_yaml_to_dataclass.py` to generate the typed dataclasses from yaml 
+- [x] Script `run.sh` to run the app from CLI for the configs to be generated and added in the application: 
+    Running commdands for:
+    1. Activating the virtual env 
+    2. Executing the `convert_yaml_to_dataclass.py`
+    3. Running the docker container via the `docker-compose up` command.
+
+### 🛠️ Changed
+- [x] Refactored the schema of the mqtt field `settings.yml` file `development` changed to `development_env` and `production` changed to `production_env`
+- [x] Changed the implementation of loading the configs in the global scale using the dot notation instead of using the dictionary key lookups. This help with the VS_Code autocomplete suggesting the attributes within each schema. The main modified files are `settings.py` and `__init__.py` files in each of the sub packages inside the `workflow` package 
+
+---
+
 ## [v1.3.1] - 17-12-2024
 
 ### ✨ Added
