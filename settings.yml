@@ -29,6 +29,7 @@ data_service_api:
     port: 5050
     host: 0.0.0.0
     environment:
+        # A choice between `production` or `development`
         selected_mode: development
         modes: 
           development_env:

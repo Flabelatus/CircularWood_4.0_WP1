@@ -25,6 +25,8 @@ from workflow.api_http_client import get_modifiable_fields
 from settings import data_service_config_loader as ds_api_cfg, logger
 from utils.image_helpers import IMAGE_SET
 
+from generated_dataclasses import Cors
+
 # Data models
 from models import WoodModel
 from models import SubWoodModel
@@ -59,27 +61,27 @@ def create_app(db_url=None):
     # ================ Application configurations ================
 
     if ds_api_cfg is not None:
-
+        cors_conf = Cors(**ds_api_cfg.api_configs.cors)
         app.config['API_TITLE'] = ds_api_cfg.api_info['title']
         app.config['API_VERSION'] = ds_api_cfg.api_info['version']
         app.config["SECRET_KEY"] = os.urandom(24)
-        app.config['PROPAGATE_EXCEPTIONS'] = ds_api_cfg.api_configs['propogate_exceptions']
-        app.config['OPENAPI_VERSION'] = ds_api_cfg.doc_configs['service']['openapi_version']
-        app.config["OPENAPI_URL_PREFIX"] = ds_api_cfg.doc_configs['service']['openapi_url_prefix']
-        app.config["OPENAPI_SWAGGER_UI_PATH"] = ds_api_cfg.doc_configs['service']['openapi_swagger_ui_path']
-        app.config["OPENAPI_SWAGGER_UI_URL"] = ds_api_cfg.doc_configs['service']['openapi_swagger_ui_url']
+        app.config['PROPAGATE_EXCEPTIONS'] = ds_api_cfg.api_configs.propogate_exceptions
+        app.config['OPENAPI_VERSION'] = ds_api_cfg.doc_configs.service['openapi_version']
+        app.config["OPENAPI_URL_PREFIX"] = ds_api_cfg.doc_configs.service['openapi_url_prefix']
+        app.config["OPENAPI_SWAGGER_UI_PATH"] = ds_api_cfg.doc_configs.service['openapi_swagger_ui_path']
+        app.config["OPENAPI_SWAGGER_UI_URL"] = ds_api_cfg.doc_configs.service['openapi_swagger_ui_url']
         # app.config["JWT_COOKIE_SECURE"] = False
         # app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
         # app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
         # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-        app.config["JWT_CSRF_IN_COOKIES"] = ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']
+        app.config["JWT_CSRF_IN_COOKIES"] = ds_api_cfg.cookie_configs.csrf_in_cookies
         app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", os.urandom(24))
         app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
             "DATABASE_URL", "sqlite:///instance/data.db")
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = ds_api_cfg.db_configs['track_modifications']
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = ds_api_cfg.db_configs.track_modifications
         app.config['UPLOADED_IMAGES_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'img')
-        app.config['MAX_CONTENT_LENGTH'] = ds_api_cfg.api_configs['max_content_length']
-        app.config['CORS_HEADERS'] = ds_api_cfg.api_configs['cors']['allow_headers']
+        app.config['MAX_CONTENT_LENGTH'] = ds_api_cfg.api_configs.max_content_length
+        app.config['CORS_HEADERS'] = cors_conf.allow_headers
 
         logger.getChild("app")
         
@@ -91,15 +93,15 @@ def create_app(db_url=None):
             logger.debug(f"JWT issuer: {ds_api_cfg.backend_env.url}")
             logger.debug(f"ENVIRONMENT: {ds_api_cfg.environment_selected_mode}")    
             logger.debug(f"BACKEND_URL: {ds_api_cfg.backend_env.url}")   
-            logger.debug(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs['propogate_exceptions']}")  
+            logger.debug(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs.propogate_exceptions}")  
         else:
-            logger.info(f"JWT issuer: {ds_api_cfg.backend_env['url']}")
+            logger.info(f"JWT issuer: {ds_api_cfg.backend_env.url}")
             logger.info(f"ENVIRONMENT: {ds_api_cfg.environment_selected_mode}")    
-            logger.info(f"BACKEND_URL: {ds_api_cfg.backend_env['url']}")   
-            logger.info(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs['propogate_exceptions']}")  
+            logger.info(f"BACKEND_URL: {ds_api_cfg.backend_env.url}")   
+            logger.info(f"PROPAGATE_EXCEPTIONS: {ds_api_cfg.api_configs.propogate_exceptions}")  
 
-        logger.info(f"OPENAPI_VERSION: {ds_api_cfg.doc_configs['service']['openapi_version']}")  
-        logger.info(f"MAX_CONTENT_LENGTH: {ds_api_cfg.api_configs['max_content_length']} (Bytes)")  
+        logger.info(f"OPENAPI_VERSION: {ds_api_cfg.doc_configs.service['openapi_version']}")  
+        logger.info(f"MAX_CONTENT_LENGTH: {ds_api_cfg.api_configs.max_content_length} (Bytes)")  
 
     # ================ Initialization of the App ================
 
@@ -118,10 +120,10 @@ def create_app(db_url=None):
         logger.debug(f"JWT issuer: {ds_api_cfg.backend_env.url}")
     else:
         logger.info(f"JWT issuer: {ds_api_cfg.backend_env.url}")
-    if not ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']:
-        logger.warning(f"JWT_CSRF_IN_COOKIES: {ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']}")
+    if not ds_api_cfg.cookie_configs.csrf_in_cookies:
+        logger.warning(f"JWT_CSRF_IN_COOKIES: {ds_api_cfg.cookie_configs.csrf_in_cookies}")
     else:
-        logger.info(f"JWT_CSRF_IN_COOKIES: {ds_api_cfg.security_configs['cookie_settings']['csrf_in_cookies']}")
+        logger.info(f"JWT_CSRF_IN_COOKIES: {ds_api_cfg.cookie_configs.csrf_in_cookies}")
     
     # @app.after_request
     # def refresh_expiring_jwts(response):
@@ -142,12 +144,12 @@ def create_app(db_url=None):
 
     cors = CORS(
         app,
-        origins=ds_api_cfg.api_configs['cors']['allowed_origins'],
-        allow_headers=ds_api_cfg.api_configs['cors']['allow_headers']
+        origins=cors_conf.allowed_origins,
+        allow_headers=cors_conf.allow_headers
     )
 
-    if not ds_api_cfg.api_configs['cors']['access_control_allow_credentials']:
-        logger.warning(f"CORS enabled: {ds_api_cfg.api_configs['cors']['access_control_allow_credentials']}\n")
+    if not cors_conf.access_control_allow_credentials:
+        logger.warning(f"CORS enabled: {cors_conf.access_control_allow_credentials}\n")
     else:
         logger.info(f"CORS enabled: {True}\n")
 

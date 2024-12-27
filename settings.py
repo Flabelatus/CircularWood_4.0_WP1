@@ -42,8 +42,8 @@ class DataServiceConfigLoader(ConfigLoader):
     def __init__(self):
         """Initializes the DataServiceConfigLoader with the base configuration from the parent class."""
         super().__init__()
-        # self.data_service_node = DataServiceApi(**self.settings)
 
+    # Getters
     @property
     def settings(self) -> DataServiceApi:
         """Retrieves the main settings for the API.
@@ -97,7 +97,7 @@ class DataServiceConfigLoader(ConfigLoader):
         """Retrieves the backend environment configurations based on the selected mode.
 
         :Returns:
-            Union[Development, Production]: The configuration for the current backend environment mode.
+            Union[DevelopmentEnv, ProductionEnv]: The configuration for the current backend environment mode.
         """
         modes = Modes(**self.environment.modes)
 
@@ -107,83 +107,76 @@ class DataServiceConfigLoader(ConfigLoader):
             return ProductionEnv(**modes.production_env)
 
     @property
-    def api_configs(self) -> Dict[str, Any]:
+    def api_configs(self) -> Configs:
         """Retrieves general API configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for API settings.
+            (class) Configs: The configuration for API settings.
         """
-        return self.settings.configs
+        return Configs(**self.settings.configs)
 
     @property
-    def db_configs(self) -> Dict[str, Any]:
+    def db_configs(self) -> Database:
         """Retrieves the database configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for database settings.
+            Dict[str, Any]: The configuration for database settings.
         """
-        return self.settings.database
+        return Database(**self.settings.database)
 
     @property
-    def doc_configs(self) -> Dict[str, Any]:
+    def doc_configs(self) -> Documentation:
         """Retrieves the documentation configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for documentation settings.
+           (class) Documentation: The configuration for documentation settings.
         """
-        return self.settings.documentation
+        return Documentation(**self.settings.documentation)
 
     @property
-    def server_configs(self) -> Dict[str, Any]:
+    def server_configs(self) -> Server:
         """Retrieves the server configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for server settings.
+            (class) Server: The configuration for server settings.
         """
-        return self.settings.server
+        return Server(**self.settings.server)
 
     @property
-    def security_configs(self) -> Dict[str, Any]:
+    def security_configs(self) -> Security:
         """Retrieves the security configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for security settings.
+            (class) Security: The configuration for security settings.
         """
-        return self.settings.security
+        return Security(**self.settings.security)
 
     @property
-    def logging_configs(self) -> Dict[str, Any]:
+    def cookie_configs(self) -> CookieSettings:
+        """Retrieves the cookie configuration settings.
+
+        :Returns:
+            (class) CookieSettings: The configuration for coockie settings.
+        """
+        return CookieSettings(**self.security_configs.cookie_settings)
+
+    @property
+    def logging_configs(self) -> Logging:
         """Retrieves the logging configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for logging settings.
+            (class) Logging: The configuration for logging settings.
         """
-        return self.settings.logging
+        return Logging(**self.settings.logging)
 
     @property
-    def cache_configs(self) -> Dict[str, Any]:
+    def cache_configs(self) -> Cache:
         """Retrieves the cache configuration settings.
 
         :Returns:
-            Dict[str, Any]: The configuration dictionary for cache settings.
+            (class) Cache: The configuration for cache settings.
         """
-        return self.settings.cache
-
-    @logging_configs.setter
-    def set_logging_configs(self, new_logging_configs: Dict[str, Any]) -> None:
-        """Sets new logging configurations with validation for required fields.
-
-        Args:
-            new_logging_configs (Dict[str, Any]): A dictionary containing new logging settings.
-
-        :Raises:
-            AssertionError: If the 'format' or 'output' key is missing in the new configurations.
-        """
-        assert 'format' in new_logging_configs, "format should be specified e.g. json"
-        assert 'output' in new_logging_configs, "output field should be specified e.g. stdout"
-
-        self.logging_configs['format'] = new_logging_configs['format']
-        self.logging_configs['output'] = new_logging_configs['output']
+        return Cache(**self.settings.cache)
 
 
 class WorkflowManagerConfigLoader(ConfigLoader):
@@ -257,9 +250,10 @@ class WorkflowManagerConfigLoader(ConfigLoader):
         return DatabaseService(**Http(**self.communication_protocols.http).database_service)
 
     @property
-    def profinet_network_configs(self) -> Dict[str, Any]:
+    def profinet_network_configs(self) -> Profinet:
         """Get the PROFINET network configurations."""
-        return self.production_run_configs['communication_protocols']['profinet']
+        print(Profinet(**self.communication_protocols.profinet))
+        return Profinet(**self.communication_protocols.profinet)
 
 
 class CustomLogFormatter(logging.Formatter):
@@ -295,7 +289,7 @@ class CustomLogFormatter(logging.Formatter):
 class AppLogger:
     LOG_FORMAT_DEBUG = '%(asctime)-5s : %(levelname)-8s | %(name)-5s.%(filename)-5s :: %(message)s'
     LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
-    LOG_LEVEL_PROD = logging.WARNING
+    LOG_LEVEL_PROD = logging.INFO
 
     def __init__(self, settings) -> None:
         """Initialize logging configuration based on the environment."""
@@ -311,7 +305,7 @@ class AppLogger:
             werkzeug_logger.handlers.clear()
 
         if self.is_production():
-            formatter = logging.Formatter(self.LOG_FORMAT_PROD, datefmt=self.date_format)
+            formatter = CustomLogFormatter(self.LOG_FORMAT_PROD, datefmt=self.date_format)
             self.console_handler.setFormatter(formatter)
             logging.basicConfig(level=self.LOG_LEVEL_PROD, handlers=[self.console_handler])
         else:
@@ -321,7 +315,7 @@ class AppLogger:
 
     def is_production(self) -> bool:
         """Determine if the environment is set to production."""
-        return self.settings.server_configs['environment']['selected_mode'].lower() == 'production'
+        return self.settings.server_configs.environment['selected_mode'].lower() == 'production'
     
     @staticmethod
     def disable_external_package_logging(package_names):
