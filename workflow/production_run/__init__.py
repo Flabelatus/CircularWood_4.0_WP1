@@ -38,9 +38,10 @@ class ProductionCore:
                     'http',
                     'database_service'
                 ]
-            )   
-        
-        auxiliary_devices = self.configs['workflow'].hardware_equipment_configs.auxiliary_devices
+            )
+           
+        workflow_conf = self.configs.get('workflow')
+        auxiliary_devices = workflow_conf.hardware_equipment_configs.auxiliary_devices
         lector_configs = [cfg for cfg in auxiliary_devices if cfg.get('title') == 'LECTOR'][0]
         printer_configs = [cfg for cfg in auxiliary_devices if cfg.get('title') == 'LABEL_PRINTER'][0]
         http_conf = self.configs['workflow'].http_network_configs
@@ -54,8 +55,8 @@ class ProductionCore:
             root_dir=self.root,
             lector=lector_configs,
             label_printer=printer_configs,
-            ftp=wrkflow_configs.ftp_network_configs,
-            tcp=wrkflow_configs.tcp_network_configs,
+            ftp=wrkflow_configs.ftp_net_robot_red,
+            tcp=wrkflow_configs.tcp_net_connections,
             mqtt=wrkflow_configs.mqtt_network_configs,
             http=http_conf,
             database_service=database_service,

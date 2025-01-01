@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import socket
 
+from generated_dataclasses import Lector, Ports
 from workflow.production_run import logger, ProductionCore
 
 logger.getChild('lector')
@@ -17,11 +18,12 @@ class LectorQrCodeReader(ProductionCore):
         Initializes the QR reader by creating a socket and connecting to the specified IP address and port.
         """
         self.device_title = 'Lector61x_V2D611D_MMSCE4'
-        self.device_configs = self._get_production_run_params().lector
-        self.device_network_configs = self._get_production_run_params().tcp.get('lector')
-        self.ip = self.device_network_configs['ip']
-        self.port = self.device_network_configs['ports']['command_port']
-        self.response_port = self.device_network_configs['ports']['response_port']
+        self.device_configs = self.params.lector
+        self.device_network_configs = Lector(**self.params.tcp.lector)
+        self.ports = Ports(**self.device_network_configs.ports)
+        self.ip = self.device_network_configs.ip
+        self.port = self.ports.command_port
+        self.response_port = self.ports.response_port
         self.no_read_item = ""
         self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         

@@ -235,9 +235,25 @@ class WorkflowManagerConfigLoader(ConfigLoader):
         return RobotConfiguration(**self.ftp_network_configs.robot_configuration)
 
     @property
+    def ftp_net_robot_red(self) -> RedRobot:
+        return RedRobot(**self.ftp_net_robot_configurations.red_robot)
+
+    @property
     def tcp_network_configs(self) -> Tcp:
         """Get the TCP network configurations."""
         return Tcp(**self.communication_protocols.tcp)
+
+    @property
+    def tcp_net_connections(self) -> Connections:
+        return Connections(**self.tcp_network_configs.connections)
+
+    @property
+    def tcp_net_label_printer(self) -> LabelPrinter:
+        return LabelPrinter(**self.tcp_net_connections.label_printer)
+
+    @property
+    def tcp_net_lector(self) -> Lector:
+        return Lector(**self.tcp_net_connections.lector)
 
     @property
     def mqtt_network_configs(self) -> Mqtt:

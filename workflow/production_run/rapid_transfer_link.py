@@ -17,22 +17,20 @@ class RapidTransferLink(FTP, ProductionCore):
     Handles transferring RAPID code files to the robot controller via FTP.
     """
 
-    def __init__(self, ip: str, user: str, passwd: str):
+    def __init__(self):
         """
         Initialize the FTP client and connect to the server.
 
-        Args:
-            ip (str): FTP server IP address.
-            user (str): FTP username.
-            passwd (str): FTP password.
         """
-        super().__init__()
-        self.root_dir = self._get_production_run_params().root_dir
-        self.robo_ftp_conf = self._get_production_run_params().ftp.get('robot_configuration').get('red_robot')
-        self.ip = self.robo_ftp_conf.get('ip', ip)
-        self.username = self.robo_ftp_conf.get('credentials').get('username', user)
-        self.password = self.robo_ftp_conf.get('credentials').get('password', passwd)
-        self.target_directory = self.robo_ftp_conf.get('directory')
+        FTP.__init__(self)
+        ProductionCore.__init__(self)
+
+        self.root_dir = self.params.root_dir
+        self.robo_ftp_conf = self.params.ftp
+        self.ip = self.robo_ftp_conf.ip
+        self.username = self.robo_ftp_conf.credentials.get('username')
+        self.password = self.robo_ftp_conf.credentials.get('password')
+        self.target_directory = self.robo_ftp_conf.directory
         self.connect(host=self.ip)
         self.login(user=self.username, passwd=self.password)
 

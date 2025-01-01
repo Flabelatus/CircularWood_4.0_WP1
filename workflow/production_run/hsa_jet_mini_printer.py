@@ -2,6 +2,7 @@ import socket
 
 from time import sleep
 
+from generated_dataclasses import LabelPrinter, Ports
 from workflow.production_run import logger, ProductionCore
 
 logger.getChild("label_printer")
@@ -12,10 +13,11 @@ class InkJetLabelPrinter(ProductionCore):
     def __init__(self):
         super().__init__()
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.device_configs = self._get_production_run_params().label_printer
-        self.device_network_configs = self._get_production_run_params().tcp.get('label_printer')
-        self.ip = self.device_network_configs.get('ip')
-        self.port = self.device_network_configs.get('command_port')
+        self.device_configs = self.params.label_printer
+        self.device_network_configs = LabelPrinter(**self.params.tcp.label_printer)
+        self.ports = Ports(**self.device_network_configs.ports)
+        self.ip = self.device_network_configs.ip
+        self.port = self.ports.command_port
         self.admin_usr = 'admin'
         self.admin_pwd = '1234'
         
