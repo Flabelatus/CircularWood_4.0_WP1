@@ -11,9 +11,9 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from workflow.production_run.Lector61x_V2D611D_MMSCE4 import Lector_QR_Reader
+from workflow.production_run.lector61x_v2d611d_mmsce4 import Lector_QR_Reader
 from workflow.production_run.rapid_transfer_link import RAPID_FTP
-from workflow.production_run.Call_Wood_Data_Variables_For_BLUE import Call_Wood_Data
+from workflow.production_run.database_handler import ProductionRunDBHandler
 from settings import WorkflowManagerConfigLoader
 
 # mqttparams = WorkflowManagerConfigLoader().get_mqtt_network_configs()
@@ -116,9 +116,9 @@ def on_message(client, userdata, msg):
     if topic == str(mqttTopic_Data_request):
         try:
             print(f"Topic: BLUE data request")
-            get_data = Call_Wood_Data()
+            get_data = ProductionRunDBHandler()
             print(f"Topic: {topic}")
-            data = get_data.get_wood_data_from_id(woodID)
+            data = get_data.get_processed_wood_data_by_id(woodID)
             print(f"ID {woodID} = {data}")
             sleep(1)
             print("sending data")

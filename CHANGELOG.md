@@ -29,6 +29,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [v1.3.3] - 13-01-2025
+
+### ✨ Added
+- [x] A the database handler to the production run workflow to fetch data for production run `workflow/production_run/database_handler.py`
+- [x] Added the finalized MQTT module in production run workflow
+
+### 🛠️ Changed
+- [x] Refactored naming of imported modules in `scripts/mqtt_client.py`
+
+---
+
 ## [v1.3.2] - 24-12-2024
 
 ### ✨ Added
