@@ -11,11 +11,14 @@ from flask_jwt_extended import jwt_required
 from flask.views import MethodView
 from flask_uploads import UploadNotAllowed
 from schema import ImageSchema
-from utils.image_helpers import save_image, get_basename, is_filename_safe, get_path
+from utils.file_upload_helpers import FileUploadHandler
 
 image_blueprint = Blueprint(
     "Image Upload", 'images', description="Operations on image upload endpoint")
 image_schema = ImageSchema()
+
+img_uploader = FileUploadHandler()
+img_uploader.file_type = 'IMAGES'
 
 
 @image_blueprint.route("/image/upload/<int:wood_id>")
@@ -38,9 +41,9 @@ class ImageUpload(MethodView):
             try:
                 image_data = image_schema.load(request.files)
                 filename = f'{wood_id}.png'
-                image_path = save_image(
+                image_path = img_uploader.save_file(
                     image_data["image"], folder=folder, name=filename)
-                basename = get_basename(image_path)
+                basename = img_uploader.get_basename(image_path)
 
                 return {
                     'error': False,
@@ -70,11 +73,11 @@ class ImageByWoodID(MethodView):
         folder = request.args.get("dir")
         filename = f'{str(wood_id)}.png'
 
-        if not is_filename_safe(filename):
+        if not img_uploader.is_filename_safe(filename):
             abort(400, message="image illegal file name")
 
         try:
-            return send_file(get_path(filename=filename, folder=folder))
+            return send_file(img_uploader.get_path(filename=filename, folder=folder))
         except FileNotFoundError as e:
             abort(404, message='image not found')
 
@@ -89,11 +92,11 @@ class ImageByWoodID(MethodView):
         folder = request.args.get("dir")
         filename = f'{str(wood_id)}.png'
 
-        if not is_filename_safe(filename):
+        if not img_uploader.is_filename_safe(filename):
             abort(400, message="image illegal file name")
 
         try:
-            os.remove(get_path(filename=filename, folder=folder))
+            os.remove(img_uploader.get_path(filename=filename, folder=folder))
             return jsonify({
                 "message": "image successfully removed"
             }), 200
