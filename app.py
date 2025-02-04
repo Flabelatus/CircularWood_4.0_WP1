@@ -23,7 +23,8 @@ from db import db
 from blocklist import BLOCKLIST
 from workflow.api_http_client import get_modifiable_fields
 from settings import data_service_config_loader as ds_api_cfg, logger
-from utils.image_helpers import IMAGE_SET
+from resources.image import img_uploader
+from resources.mesh_files import mesh_uploader
 
 from generated_dataclasses import Cors
 
@@ -50,6 +51,7 @@ from resources import sub_wood_blp
 from resources import image_blueprint
 from resources import project_blp
 from resources import design_geometry_blp
+from resources import mesh_blueprint
 
 
 def create_app(db_url=None):
@@ -80,6 +82,7 @@ def create_app(db_url=None):
             "DATABASE_URL", "sqlite:///instance/data.db")
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = ds_api_cfg.db_configs.track_modifications
         app.config['UPLOADED_IMAGES_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'img')
+        app.config['UPLOADED_MESH_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'design')
         app.config['MAX_CONTENT_LENGTH'] = ds_api_cfg.api_configs.max_content_length
         app.config['CORS_HEADERS'] = cors_conf.allow_headers
 
@@ -104,8 +107,12 @@ def create_app(db_url=None):
         logger.info(f"MAX_CONTENT_LENGTH: {ds_api_cfg.api_configs.max_content_length} (Bytes)")  
 
     # ================ Initialization of the App ================
+    upload_sets = [
+        img_uploader.upload_set,
+        mesh_uploader.upload_set
+        ]
 
-    configure_uploads(app, IMAGE_SET)   # image upload config
+    configure_uploads(app, upload_sets)   # image upload config
     db.init_app(app)                    # database init
     # flask alembic init for database migrations
     migrate = Migrate(app, db)
@@ -359,5 +366,6 @@ def create_app(db_url=None):
     api.register_blueprint(image_blueprint)
     api.register_blueprint(design_geometry_blp)
     api.register_blueprint(project_blp)
+    api.register_blueprint(mesh_blueprint)
 
     return app

@@ -201,3 +201,11 @@ class SubWoodSchema(PlainSubWoodSchema):
 
 class ImageSchema(Schema):
     image = FileStorageField()
+
+
+class MeshSchema(Schema):
+    mesh = FileStorageField()
+
+
+class CadSchema(Schema):
+    cad = FileStorageField()

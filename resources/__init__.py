@@ -10,3 +10,4 @@ from resources.wood import blp as wood_blueprint
 from resources.impact import impact_blp
 from resources.project import project_blp
 from resources.design_geometry import design_geometry_blp
+from resources.mesh_files import mesh_blueprint
