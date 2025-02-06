@@ -5,7 +5,8 @@ from models.interface_model import DataModelInterface
 
 class DesignRequirementsModelFromClient(db.Model, DataModelInterface):
     """
-    Represents the design requirements submitted by a client for a specific wood project.
+    Represents the metadata of a single part, phrased as design requirements. This is submitted from design client after
+    all parts are matched with the material resources.
 
     :Attributes:
         :id (int): The primary key representing a unique design requirement entry.
