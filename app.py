@@ -25,6 +25,7 @@ from workflow.api_http_client import get_modifiable_fields
 from settings import data_service_config_loader as ds_api_cfg, logger
 from resources.image import img_uploader
 from resources.mesh_files import mesh_uploader
+from resources.cad_files import cad_uploader
 
 from generated_dataclasses import Cors
 
@@ -52,6 +53,7 @@ from resources import image_blueprint
 from resources import project_blp
 from resources import design_geometry_blp
 from resources import mesh_blueprint
+from resources import cad_blueprint
 
 
 def create_app(db_url=None):
@@ -83,6 +85,7 @@ def create_app(db_url=None):
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = ds_api_cfg.db_configs.track_modifications
         app.config['UPLOADED_IMAGES_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'img')
         app.config['UPLOADED_MESH_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'design')
+        app.config['UPLOADED_CAD_DEST'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'design')
         app.config['MAX_CONTENT_LENGTH'] = ds_api_cfg.api_configs.max_content_length
         app.config['CORS_HEADERS'] = cors_conf.allow_headers
 
@@ -109,7 +112,8 @@ def create_app(db_url=None):
     # ================ Initialization of the App ================
     upload_sets = [
         img_uploader.upload_set,
-        mesh_uploader.upload_set
+        mesh_uploader.upload_set,
+        cad_uploader.upload_set,
         ]
 
     configure_uploads(app, upload_sets)   # image upload config
@@ -367,5 +371,6 @@ def create_app(db_url=None):
     api.register_blueprint(design_geometry_blp)
     api.register_blueprint(project_blp)
     api.register_blueprint(mesh_blueprint)
+    api.register_blueprint(cad_blueprint)
 
     return app

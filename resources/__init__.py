@@ -11,3 +11,4 @@ from resources.impact import impact_blp
 from resources.project import project_blp
 from resources.design_geometry import design_geometry_blp
 from resources.mesh_files import mesh_blueprint
+from resources.cad_files import cad_blueprint
