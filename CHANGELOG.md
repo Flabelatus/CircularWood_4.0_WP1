@@ -29,6 +29,20 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [v1.3.4] - 08-02-2025
+
+### ✨ Added
+- [x] The new file uploading helper in the utils
+- [x] The 3D MESH and CAD data file handling endpoints
+- [x] The Digital Twin workflow init
+
+### 🛠️ Changed
+- [x] Refactored the image uploading resources to use the general file upload helpers instead of the old image helpers from the utils
+
+### 🚫 Removed
+- [x] The `image_helper.py` from the utils
+---
+
 ## [v1.3.3] - 13-01-2025
 
 ### ✨ Added
